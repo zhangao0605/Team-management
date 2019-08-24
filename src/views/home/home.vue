@@ -117,7 +117,7 @@
   </div>
 </template>
 <script>
-  import {getMainInfo,selectGroup,selectGroupRole,exportResult} from '../../api/interface'
+  // import {getMainInfo,selectGroup,selectGroupRole,exportResult} from '../../api/interface'
 
   export default {
     name: 'Home',
