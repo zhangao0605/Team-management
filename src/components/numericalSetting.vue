@@ -174,22 +174,22 @@
         :visible.sync="dialog_de_all"
         append-to-body>
         <div>
-          共XX人，质押XXXXX TUE
+          共 {{nodeAllCheck_peoples==''?0:nodeAllCheck_peoples}} 人，质押 {{nodeAllCheck_tue==''?0:nodeAllCheck_tue}} TUE
         </div>
         <div>
-          <el-select style="margin-top: 30px" v-model="batch_of_details" placeholder="请选择">
+          <el-select style="margin-top: 30px" v-model="select_value_1" @change="change_nodeLevel()" placeholder="请选择">
             <el-option
-              v-for="item in node_options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              v-for="item in node_options_1"
+              :key="item.typeid"
+              :label="item.typename"
+              :value="item.typeid">
             </el-option>
           </el-select>
 
         </div>
         <div class="con_table" style="padding-bottom: 40px">
           <el-table
-            :data="subordinate_data"
+            :data="tableData_3"
             border
             style="width: 100%;margin-bottom: 30px;margin-top: 40px;min-height: 529px"
             :header-cell-style="this.tableHeaderColor"
@@ -198,42 +198,42 @@
               label="节点加入时间"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.name}}</span>
+                <span>{{timestampToTime(scope.row.time)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="节点级别"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{node_level_matching(scope.row.nodelevel)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="节点地址"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.nodeaddress}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="节点绑定手机"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.nodephone}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="节点类型"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.nodetype}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="节点质押金额"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.nodeamount}}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -270,7 +270,7 @@
         </el-form-item>
         <el-form-item label="节点下属全部节点数量：" :label-width="formLabelWidth_1">
           <span><span>{{form_2.childrenLevelsCount}}</span><span class="operating"
-                                                                 @click="see_de_all()">查看详情</span></span>
+                                                                 @click="see_de_all(form_2.address)">查看详情</span></span>
         </el-form-item>
         <el-form-item label="节点下属全部节点质押数量：" :label-width="formLabelWidth_1">
           <span><span>{{form_2.childrenPledgeBalance}} TUE</span></span>
@@ -304,8 +304,8 @@
             label="操作"
             align="center">
             <template slot-scope="scope">
-              <span class="operating" v-show="scope.row.isShow" @click="edit(scope.row.lable,scope.row.value)">修改</span>
-              <span class="operating" v-show="scope.row.isShow" @click="history_record(scope.row.lable)">历史记录</span>
+              <span class="operating" v-show="scope.row.isShow" @click="edit(scope.row.label,scope.row.value)">修改</span>
+              <span class="operating" v-show="scope.row.isShow" @click="history_record(scope.row.label)">历史记录</span>
             </template>
           </el-table-column>
         </el-table>
@@ -400,14 +400,16 @@
     insertCreationPerson,
     updateCreationPerson,
     unBindCreationAddress,
-    deleteCreationAddress
+    deleteCreationAddress,
+    subordinateNodeAllCheck,
+    nodeLevel,
   } from '../api/interface'
 
   export default {
     name: "numericalSetting",
     data() {
       return {
-        batch_of_details: 1,
+        select_value_1: '',
         dialog_de_all: false,
         formLabelWidth_1: '200px',
         dialogseedetail: false,
@@ -465,62 +467,7 @@
         item_default: 'item_default',
         number_seting: [],
         number_seting_1: [],
-        subordinate_data: [
-          {
-            "name": '青铜节点要求TUE',
-            "value": '1000',
-            "isoperating": false,
-            "recording": 0,
-          },
-          {
-            "name": '青铜节点解绑时间',
-            "value": '7',
-            "isoperating": false,
-            "recording": 0,
-          },
-          {
-            "name": '青铜节点一级下属数量及收益',
-            "value": '5%,10%,15%,20%',
-            "isoperating": false,
-            "recording": 0,
-          },
-          {
-            "name": '王者节点要求TUE',
-            "value": '10000000',
-            "isoperating": false,
-            "recording": 0,
-          },
-          {
-            "name": '王者节点解绑时间',
-            "value": '30',
-            "isoperating": false,
-            "recording": 0,
-          },
-          {
-            "name": '王者节点收益',
-            "value": '28%',
-            "isoperating": false,
-            "recording": 0,
-          },
-          {
-            "name": '王者节点下属一级节点、总节点数量要求及质押量要求',
-            "value": '10,100,1000000',
-            "isoperating": false,
-            "recording": 0,
-          },
-          {
-            "name": '权益池M',
-            "value": '',
-            "isoperating": true,
-            "recording": 1,
-          },
-          {
-            "name": '权益池N',
-            "value": '',
-            "isoperating": true,
-            "recording": 2,
-          },
-        ],
+        tableData_3: [],
         node_select: 1,
         node_options: [
           {
@@ -569,6 +516,12 @@
           },
 
         ],
+        node_options_1: [
+          {
+            "typeid": '',
+            "typename": "请选择节点级别"
+          },
+        ],
         currentPage: 1,
         pagesize: 10,
         totla: 0,
@@ -581,6 +534,9 @@
         },
         untied_address:'',
         remove_address:'',
+        nodeAllCheck_peoples: 0,
+        nodeAllCheck_tue: 0,
+        hi_re_3: '',
       }
     },
     methods: {
@@ -646,7 +602,7 @@
       },
       /*part_1 M值修改弹窗确认*/
       dialog_sure() {
-        let data = {"value": this.verify_value, "lable": "M"}
+        let data = {"value": this.verify_value, "label": "M"}
         updateSetting(data).then(response => {
           this.dialogVisible = false
           this.verify_value = ''
@@ -671,7 +627,7 @@
       },
       /*part_1 N值修改弹窗确认*/
       dialog_sure_1() {
-        let data = {"value": this.verify_value_1, "lable": "N"}
+        let data = {"value": this.verify_value_1, "label": "N"}
         updateSetting(data).then(response => {
           this.dialogVisible_1 = false
           this.verify_value_1 = ''
@@ -692,7 +648,7 @@
       /*part_1 打开历史记录*/
       history_record(e) {
         if (e == 'M') {
-          let data = {"lable": "M"}
+          let data = {"label": "M"}
           getMNLog(data).then(response => {
             if (response.data == []) {
               this.gridData = []
@@ -702,7 +658,7 @@
           })
           this.dialogTableVisible = true
         } else if (e == 'N') {
-          let data = {"lable": "N"}
+          let data = {"label": "N"}
           this.dialogTableVisible_1 = true
           getMNLog(data).then(response => {
             if (response.data == []) {
@@ -740,8 +696,22 @@
         this.getdata_2(data)
       },
       /*查看节点状态详情分页获取数据*/
-      currentPageChange_1() {
-
+      currentPageChange_1(e) {
+        this.currentPage_1 = e
+        let data = {"page": this.currentPage_1, "pagesize": 10, "address": this.hi_re_3 , "level": this.select_value_1.toString()}
+        subordinateNodeAllCheck(data).then(response => {
+          if (response.data.dataList == []) {
+            this.tableData_3 = []
+            this.totla_1 = 0
+            this.nodeAllCheck_peoples = 0
+            this.nodeAllCheck_tue = 0
+          } else {
+            this.nodeAllCheck_peoples =response.allp
+            this.nodeAllCheck_tue =response.alln
+            this.tableData_3 = response.data.dataList
+            this.totla_1 = response.data.total
+          }
+        })
       },
       /*添加节点*/
       add_node() {
@@ -921,8 +891,67 @@
         })
       },
       /*查看下属节点详情*/
-      see_de_all() {
+      see_de_all(e) {
+        this.currentPage_1 = 1
+        this.hi_re_3 = e
+        let data = {"page": 1, "pagesize": 10, "address": e, "level": ""}
+        let data_1 ={"address":e}
+        nodeLevel(data_1).then(response=>{
+          this.select_value_1=''
+          this.node_options_1= [
+            {
+              "typeid": '',
+              "typename": "请选择节点级别"
+            },
+          ]
+          this.node_options_1=this.node_options_1.concat(response)
+          subordinateNodeAllCheck(data).then(response => {
+            if (response.data.dataList == []) {
+              this.tableData_3 = []
+              this.totla_1 = 0
+              this.nodeAllCheck_peoples = 0
+              this.nodeAllCheck_tue = 0
+            } else {
+              this.nodeAllCheck_peoples =response.allp
+              this.nodeAllCheck_tue =response.alln
+              this.tableData_3 = response.data.dataList
+              this.totla_1 = response.data.total
+            }
+          })
+        })
         this.dialog_de_all = true
+      },
+      /*part_1 节点级别匹配*/
+      node_level_matching(e){
+        let a
+        if(e==''||this.node_options_1==[]){
+          a=e
+        }else {
+          this.node_options_1.forEach((item,index,self)=>{
+            if(e==item.typeid){
+              a=item.typename
+            }
+          })
+        }
+        return a
+      },
+      /*part_1 查看节点下属全部节点数量详情切换级别*/
+      change_nodeLevel(){
+        this.currentPage_1 = 1
+        let data = {"page": 1, "pagesize": 10, "address": this.hi_re_3 , "level": this.select_value_1.toString()}
+        subordinateNodeAllCheck(data).then(response => {
+          if (response.data.dataList == []) {
+            this.tableData_3 = []
+            this.totla_1 = 0
+            this.nodeAllCheck_peoples = 0
+            this.nodeAllCheck_tue = 0
+          } else {
+            this.nodeAllCheck_peoples =response.allp
+            this.nodeAllCheck_tue =response.alln
+            this.tableData_3 = response.data.dataList
+            this.totla_1 = response.data.total
+          }
+        })
       },
     },
     created() {

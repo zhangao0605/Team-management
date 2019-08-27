@@ -212,19 +212,74 @@ export function getALLReviewBatch(e) {
     data:e
   })
 }
-/*节点信息 节点下属全部节点数量 查看详情*/
-export function subordinateNodeAllCheck() {
-  return request({
-    url:'/v1/investmentAdmin/node/subordinateNodeAllCheck',
-    method: 'get',
-    params:{}
-  })
-}
 /*节点质押金额详情*/
 export function nodePledgeAmount(e) {
-  console.log(e)
   return request({
     url:'/v1/investmentAdmin/node/nodePledgeAmount',
+    method: 'post',
+    data:e
+  })
+}
+/*节点下属全部节点数量 查看详情*/
+export function subordinateNodeAllCheck(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/subordinateNodeAllCheck',
+    method: 'post',
+    data:e
+  })
+}
+/*节点下属全部节点数量 查看详情 节点级别*/
+export function nodeLevel(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/nodeLevel',
+    method: 'post',
+    data:e
+  })
+}
+/*节点累计收益详情 查看详情*/
+export function nodeprofitCheck(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/nodeprofitCheck',
+    method: 'post',
+    data:e
+  })
+}
+/*晋级审核 查看详情*/
+export function promotionAuditCheck(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/promotionAuditCheck',
+    method: 'post',
+    data:e
+  })
+}
+/*解绑审核检索*/
+export function unbindingAudit(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/unbindingAudit',
+    method: 'post',
+    data:e
+  })
+}
+/*确认批准解帮*/
+export function approvalbind(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/approvalbind',
+    method: 'post',
+    data:e
+  })
+}
+/*全部批准解帮*/
+export function allApprovalbind(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/allApprovalbind',
+    method: 'post',
+    data:e
+  })
+}
+/*全部批准解帮*/
+export function transactionRecordScreen(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/transactionRecordScreen',
     method: 'post',
     data:e
   })

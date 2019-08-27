@@ -111,14 +111,14 @@
               label="时间"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.name}}</span>
+                <span>{{timestampToTime(scope.row.timestamp)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="收益"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.balance}}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -141,15 +141,15 @@
         :visible.sync="alert_1_3"
         append-to-body>
         <div>
-          共XX人，质押XXXXX TUE
+          共 {{nodeAllCheck_peoples==''?0:nodeAllCheck_peoples}} 人，质押 {{nodeAllCheck_tue==''?0:nodeAllCheck_tue}} TUE
         </div>
         <div>
-          <el-select style="margin-top: 30px" v-model="select_value_1" placeholder="请选择">
+          <el-select style="margin-top: 30px" v-model="select_value_1" @change="change_nodeLevel()" placeholder="请选择">
             <el-option
               v-for="item in node_options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :key="item.typeid"
+              :label="item.typename"
+              :value="item.typeid">
             </el-option>
           </el-select>
 
@@ -165,42 +165,42 @@
               label="节点加入时间"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.name}}</span>
+                <span>{{timestampToTime(scope.row.time)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="节点级别"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{node_level_matching(scope.row.nodelevel)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="节点地址"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.nodeaddress}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="节点绑定手机"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.nodephone}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="节点类型"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.nodetype}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="节点质押金额"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.nodeamount}}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -241,14 +241,15 @@
           <span><span>{{detailes.onenodenum}}</span></span>
         </el-form-item>
         <el-form-item label="节点下属全部节点数量：" :label-width="formLabelWidth_1">
-          <span><span>{{detailes.allNodeNum}}</span>  <span class="operating" @click="see_de_all_3()">查看详情</span></span>
+          <span><span>{{detailes.allNodeNum}}</span>  <span class="operating"
+                                                            @click="see_de_all_3(detailes.nodeaddress)">查看详情</span></span>
         </el-form-item>
         <el-form-item label="节点下属全部节点质押数量：" :label-width="formLabelWidth_1">
           <span><span>{{detailes.allnodepledgeamount}}</span> TUE  </span>
         </el-form-item>
         <el-form-item label="节点累计收益：" :label-width="formLabelWidth_1">
           <span><span>{{detailes.nodecumulativebenefits}}</span> TUE<span class="operating"
-                                                                          @click="see_de_all_4()">查看详情</span></span>
+                                                                          @click="see_de_all_4(detailes.nodeaddress)">查看详情</span></span>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -285,15 +286,15 @@
         :visible.sync="alert_1_8"
         append-to-body>
         <div>
-          共XX人，质押XXXXX TUE
+          共 {{nodeAllCheck_peoples_1==''?0:nodeAllCheck_peoples_1}} 人，质押 {{nodeAllCheck_tue_1==''?0:nodeAllCheck_tue_1}} TUE
         </div>
         <div>
-          <el-select style="margin-top: 30px" v-model="select_value_2" placeholder="请选择">
+          <el-select style="margin-top: 30px" v-model="select_value_2" @change="change_nodeLevel_1()" placeholder="请选择">
             <el-option
-              v-for="item in node_options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              v-for="item in node_options_1"
+              :key="item.typeid"
+              :label="item.typename"
+              :value="item.typeid">
             </el-option>
           </el-select>
 
@@ -309,42 +310,42 @@
               label="节点加入时间"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.name}}</span>
+                <span>{{timestampToTime(scope.row.time)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="节点级别"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{node_level_matching_1(scope.row.nodelevel)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="节点地址"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.nodeaddress}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="节点绑定手机"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.nodephone}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="节点类型"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.nodetype}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="节点质押金额"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.nodeamount}}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -362,28 +363,28 @@
       </el-dialog>
       <el-form>
         <el-form-item label="节点名称：" :label-width="formLabelWidth_1">
-          <span>XXXX</span>
+          <span>{{form_node_de.nodename}}</span>
         </el-form-item>
         <el-form-item label="节点状态：" :label-width="formLabelWidth_1">
-          <span>符合</span>
+          <span>{{form_node_de.njodesta}}</span>
         </el-form-item>
         <el-form-item label="节点地址：" :label-width="formLabelWidth_1">
-          <span>XXXX</span>
+          <span>{{form_node_de.nodeaddress}}</span>
         </el-form-item>
         <el-form-item label="节点绑定手机号：" :label-width="formLabelWidth_1">
-          <span>XXXXXX</span>
+          <span>{{form_node_de.bindphone}}</span>
         </el-form-item>
         <el-form-item label="节点质押金额：" :label-width="formLabelWidth_1">
-          <span><span>70000</span> TUE <span> (满足)</span></span>
+          <span>{{form_node_de.currentpledgeamount}}</span>
         </el-form-item>
         <el-form-item label="节点下属一级节点数量：" :label-width="formLabelWidth_1">
-          <span><span>10</span>  <span> (100%)</span></span>
+          <span>{{form_node_de.onenodenum}}</span>
         </el-form-item>
         <el-form-item label="节点下属全部节点数量：" :label-width="formLabelWidth_1">
-          <span><span>102</span>  <span> (满足)</span> <span class="operating" @click="part_2_see_1()">查看详情</span></span>
+          <span>{{form_node_de.allNodeNum}}<span class="operating" @click="part_2_see_1(form_node_de.nodeaddress)">查看详情</span></span>
         </el-form-item>
         <el-form-item label="节点下属全部节点质押数量：" :label-width="formLabelWidth_1">
-          <span><span>15000</span>  <span> (105%)</span></span>
+          <span>{{form_node_de.allnodepledgeamount}}</span>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -393,7 +394,7 @@
       :visible.sync="alert_1_9"
       width="30%"
     >
-      <span>批准后，该节点：XXXXX将解绑资金XXXX TUE，资金将在周期结束返回至其账户，该用户下期将降级为青铜节点/退出节点大赛。</span>
+      <span>批准后，该节点资金将在周期结束返回至其账户，该用户下期将降级为青铜节点/退出节点大赛。</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="alert_1_9_cancel()">取 消</el-button>
     <el-button type="primary" @click="alert_1_9_sure()">确 定</el-button>
@@ -476,7 +477,7 @@
             label="节点类型"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.nodetype}}</span>
+              <span>{{node_level_matching_2(scope.row.nodetype)}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -607,7 +608,7 @@
             align="center">
             <template slot-scope="scope">
               <span>{{scope.row.state==1?'符合':scope.row.state==0?'不符合':''}}</span>
-              <span class="operating_1" @click="see_details(e)">查看详情</span>
+              <span class="operating_1" @click="see_details(scope.row.address)">查看详情</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -657,7 +658,7 @@
             label="节点地址"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.name}}</span>
+              <span>{{scope.row.nodeaddress}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -665,7 +666,7 @@
             label="绑定手机号"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.name}}</span>
+              <span>{{scope.row.bindphone}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -673,7 +674,7 @@
             label="节点名称"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.name}}</span>
+              <span>{{scope.row.nodename}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -682,7 +683,7 @@
             align="center"
           >
             <template slot-scope="scope">
-              <span>{{scope.row.value}}</span>
+              <span>{{scope.row.currentpledgeamount}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -690,7 +691,7 @@
             label="节点累计收益"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.name}}</span>
+              <span>{{scope.row.nodeCumulativebenefits}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -698,7 +699,7 @@
             label="节点当前收益"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.name}}</span>
+              <span>{{scope.row.nodeCurrentrevenue}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -706,7 +707,7 @@
             label="一级节点数量"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.name}}</span>
+              <span>{{scope.row.oneNodenum}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -714,7 +715,7 @@
             label="全部节点数量"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.name}}</span>
+              <span>{{scope.row.allNodeNum}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -723,7 +724,7 @@
             align="center"
           >
             <template slot-scope="scope">
-              <span>{{scope.row.name}}</span>
+              <span>{{scope.row.allnodepledgeamount}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -732,7 +733,7 @@
             align="center"
           >
             <template slot-scope="scope">
-              <span>{{scope.row.number}}</span>
+              <span>{{scope.row.applyBindingAmount}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -741,7 +742,7 @@
             align="center"
           >
             <template slot-scope="scope">
-              <span>{{scope.row.number}}</span>
+              <span>{{scope.row.bingdingLevel}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -749,7 +750,7 @@
             label="操作"
             align="center">
             <template slot-scope="scope">
-              <span class="operating" @click="part_3_untied()">批准解绑</span>
+              <span class="operating" @click="part_3_untied(scope.row.nodeaddress)">批准解绑</span>
             </template>
           </el-table-column>
 
@@ -778,9 +779,9 @@
         <el-select style="left: 5%" v-model="select_value_3" @change="change_user_source_2()" placeholder="请选择节点类型">
           <el-option
             v-for="item in part2_options1"
-            :key="item.typeId"
-            :label="item.typeName"
-            :value="item.typeId">
+            :key="item.typeid"
+            :label="item.typename"
+            :value="item.typeid">
           </el-option>
         </el-select>
         <el-select style="left: 10%" v-model="select_value_4" @change="change_tr_type()" placeholder="请选择交易类型">
@@ -794,7 +795,7 @@
       </div>
       <div style="margin-top: 30px">
         <span>总质押额：</span>
-        <span>1500000000  </span> TUE
+        <span>{{all_mo}}  </span> TUE
       </div>
       <div class="con_table">
         <el-table
@@ -807,35 +808,35 @@
             label="交易时间"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.name}}</span>
+              <span>{{timestampToTime(scope.row.transactiontime)}}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="节点地址"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.name}}</span>
+              <span>{{scope.row.address}}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="绑定手机号"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.name}}</span>
+              <span>{{scope.row.phone}}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="节点级别"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.name}}</span>
+              <span>{{node_level_matching_2(scope.row.nodelevel)}}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="交易类别"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.name}}</span>
+              <span>{{tr_macth(scope.row.in)}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -843,7 +844,7 @@
             align="center"
           >
             <template slot-scope="scope">
-              <span>{{scope.row.value}}</span>
+              <span>{{scope.row.transactionAmount}}</span>
             </template>
           </el-table-column>
 
@@ -906,7 +907,14 @@
     allPromotionAuditExe,
     nodeTypeRecord,
     subordinateNodeAllCheck,
-    nodePledgeAmount
+    nodePledgeAmount,
+    nodeLevel,
+    nodeprofitCheck,
+    promotionAuditCheck,
+    unbindingAudit,
+    approvalbind,
+    allApprovalbind,
+    transactionRecordScreen,
   } from '../api/interface'
 
   export default {
@@ -920,21 +928,15 @@
           }],
         node_options: [
           {
-            'label': '第1批次',
-            'value': 1,
-          },
+            "typeid": '',
+            "typename": "请选择节点级别"
+          }
+        ],
+        node_options_1: [
           {
-            'label': '第2批次',
-            'value': 2,
-          },
-          {
-            'label': '第3批次',
-            'value': 3,
-          },
-          {
-            'label': '第4批次',
-            'value': 4,
-          },
+            "typeid": '',
+            "typename": "请选择节点级别"
+          }
         ],
         part4_options1: [
           {
@@ -943,11 +945,11 @@
           },
           {
             'label': '质押',
-            'value': 1,
+            'value': true,
           },
           {
             'label': '赎回',
-            'value': 2,
+            'value': false,
           },
         ],
         select_value: '',
@@ -996,237 +998,13 @@
         item_default: 'item_default',
         tableData: [],
         tableData_1: [],
-        tableData_2: [
-          {
-            "name": '大a说的',
-            "value": 11,
-            "number": '-11WED'
-          },
-          {
-            "name": '大b说的',
-            "value": 12,
-            "number": '61WED'
-          },
-          {
-            "name": '大v说的',
-            "value": 55,
-            "number": '12WED'
-          },
-          {
-            "name": '大da大说的',
-            "value": 123,
-            "number": '21WED'
-          },
-          {
-            "name": 'asf',
-            "value": -1,
-            "number": '-1WED'
-          },
-          {
-            "name": '大fsa大说的',
-            "value": 145,
-            "number": '781WED'
-          },
-
-        ],
-        tableData_3: [
-          {
-            "name": '大a说的',
-            "value": 11,
-            "number": '-11WED'
-          },
-          {
-            "name": '大b说的',
-            "value": 12,
-            "number": '61WED'
-          },
-          {
-            "name": '大v说的',
-            "value": 55,
-            "number": '12WED'
-          },
-          {
-            "name": '大da大说的',
-            "value": 123,
-            "number": '21WED'
-          },
-          {
-            "name": 'asf',
-            "value": -1,
-            "number": '-1WED'
-          },
-          {
-            "name": '大fsa大说的',
-            "value": 145,
-            "number": '781WED'
-          },
-
-        ],
-        tableData_4: [
-          {
-            "name": '大a说的',
-            "value": 11,
-            "number": '-11WED'
-          },
-          {
-            "name": '大b说的',
-            "value": 12,
-            "number": '61WED'
-          },
-          {
-            "name": '大v说的',
-            "value": 55,
-            "number": '12WED'
-          },
-          {
-            "name": '大da大说的',
-            "value": 123,
-            "number": '21WED'
-          },
-          {
-            "name": 'asf',
-            "value": -1,
-            "number": '-1WED'
-          },
-          {
-            "name": '大fsa大说的',
-            "value": 145,
-            "number": '781WED'
-          },
-
-        ],
-        tableData_5: [
-          {
-            "name": '大a说的',
-            "value": 11,
-            "number": '-11WED'
-          },
-          {
-            "name": '大b说的',
-            "value": 12,
-            "number": '61WED'
-          },
-          {
-            "name": '大v说的',
-            "value": 55,
-            "number": '12WED'
-          },
-          {
-            "name": '大da大说的',
-            "value": 123,
-            "number": '21WED'
-          },
-          {
-            "name": 'asf',
-            "value": -1,
-            "number": '-1WED'
-          },
-          {
-            "name": '大fsa大说的',
-            "value": 145,
-            "number": '781WED'
-          },
-
-        ],
-        tableData_6: [
-          {
-            "name": '大a说的',
-            "value": 11,
-            "number": '-11WED'
-          },
-          {
-            "name": '大b说的',
-            "value": 12,
-            "number": '61WED'
-          },
-          {
-            "name": '大v说的',
-            "value": 55,
-            "number": '12WED'
-          },
-          {
-            "name": '大da大说的',
-            "value": 123,
-            "number": '21WED'
-          },
-          {
-            "name": 'asf',
-            "value": -1,
-            "number": '-1WED'
-          },
-          {
-            "name": '大fsa大说的',
-            "value": 145,
-            "number": '781WED'
-          },
-
-        ],
-        tableData_7: [
-          {
-            "name": '大a说的',
-            "value": 11,
-            "number": '-11WED'
-          },
-          {
-            "name": '大b说的',
-            "value": 12,
-            "number": '61WED'
-          },
-          {
-            "name": '大v说的',
-            "value": 55,
-            "number": '12WED'
-          },
-          {
-            "name": '大da大说的',
-            "value": 123,
-            "number": '21WED'
-          },
-          {
-            "name": 'asf',
-            "value": -1,
-            "number": '-1WED'
-          },
-          {
-            "name": '大fsa大说的',
-            "value": 145,
-            "number": '781WED'
-          },
-
-        ],
-        tableData_8: [
-          {
-            "name": '大a说的',
-            "value": 11,
-            "number": '-11WED'
-          },
-          {
-            "name": '大b说的',
-            "value": 12,
-            "number": '61WED'
-          },
-          {
-            "name": '大v说的',
-            "value": 55,
-            "number": '12WED'
-          },
-          {
-            "name": '大da大说的',
-            "value": 123,
-            "number": '21WED'
-          },
-          {
-            "name": 'asf',
-            "value": -1,
-            "number": '-1WED'
-          },
-          {
-            "name": '大fsa大说的',
-            "value": 145,
-            "number": '781WED'
-          },
-
-        ],
+        tableData_2: [],
+        tableData_3: [],
+        tableData_4: [],
+        tableData_5: [],
+        tableData_6: [],
+        tableData_7: [],
+        tableData_8: [],
         tableData_9: [],
         currentPage: 1,
         pagesize: 10,
@@ -1281,8 +1059,29 @@
           "allnodepledgeamount": ""
         },
         promotionAuditExe: '',
-        hi_re:'',
-        hi_re_2:'',
+        hi_re: '',
+        hi_re_2: '',
+        hi_re_3: '',
+        hi_re_4: '',
+        hi_re_5: '',
+        nodeAllCheck_peoples: 0,
+        nodeAllCheck_tue: 0,
+        nodeAllCheck_peoples_1: 0,
+        nodeAllCheck_tue_1: 0,
+        nodelevels: [],
+        form_node_de: {
+          "bindphone": "",
+          "nodeaddress": "",
+          "nodename": "",
+          "njodesta": "",
+          "currentpledgeamount": "",
+          "onenodenum": "",
+          "allNodeNum": "",
+          "allnodepledgeamount": ""
+        },
+        part_3_phone:'',
+        part_4_phone:'',
+        all_mo:0,
       }
     },
     methods: {
@@ -1342,10 +1141,10 @@
           this.Initialization_data_2()
         }
         else if (e == 2) {
-
+          this.Initialization_data_3()
         }
         else if (e == 3) {
-
+          this.Initialization_data_4()
         }
         else if (e == 4) {
           this.Initialization_data_5()
@@ -1398,43 +1197,73 @@
       },
       /*part_1 弹窗历史记录分页查询*/
       currentPageChange_1(e) {
-        this.currentPage_1=e
+        this.currentPage_1 = e
         let data = {"page": this.currentPage_1, "pagesize": 10, "Address": this.hi_re}
         nodeTypeRecord(data).then(response => {
           if (response.data.dataList == []) {
             this.tableData_1 = []
-            this.totla_1=0
+            this.totla_1 = 0
           } else {
             this.tableData_1 = response.data.dataList
-            this.totla_1=response.data.total
+            this.totla_1 = response.data.total
           }
         })
       },
       /*part_1 弹窗质押金额分页查询*/
       currentPageChange_1_1(e) {
-        this.currentPage_1_1=e
+        this.currentPage_1_1 = e
         let data = {"page": this.currentPage_1_1, "pagesize": 10, "Addr": this.hi_re_2}
         nodePledgeAmount(data).then(response => {
           if (response.data.dataList == []) {
             this.tableData_2 = []
-            this.totla_1_1=0
+            this.totla_1_1 = 0
           } else {
             this.tableData_2 = response.data.dataList
-            this.totla_1_1=response.data.total
+            this.totla_1_1 = response.data.total
           }
         })
       },
-      /*part_1 弹窗下属节点详情分页查询*/
-      currentPageChange_1_2(e) {
-
-      },
       /*part_1 弹窗累计收益分页查询*/
+      currentPageChange_1_2(e) {
+        this.currentPage_1_2 = e
+        let data = {"page": this.currentPage_1_2, "pagesize": 10, "address": this.hi_re_4}
+        nodeprofitCheck(data).then(response => {
+          if (response.data.dataList == []) {
+            this.tableData_4 = []
+            this.totla_1_2 = 0
+          } else {
+            this.tableData_4 = response.data.dataList
+            this.totla_1_2 = response.data.total
+          }
+        })
+        this.alert_1_4 = true
+      },
+      /*part_1 弹窗下属节点详情分页查询*/
       currentPageChange_1_3(e) {
-
+        this.currentPage_1_3 = e
+        let data = {
+          "page": this.currentPage_1_3,
+          "pagesize": 10,
+          "address": this.hi_re_3,
+          "level": this.select_value_1.toString()
+        }
+        subordinateNodeAllCheck(data).then(response => {
+          if (response.data.dataList == []) {
+            this.tableData_3 = []
+            this.totla_1_3 = 0
+            this.nodeAllCheck_peoples = 0
+            this.nodeAllCheck_tue = 0
+          } else {
+            this.nodeAllCheck_peoples = response.allp
+            this.nodeAllCheck_tue = response.alln
+            this.tableData_3 = response.data.dataList
+            this.totla_1_3 = response.data.total
+          }
+        })
       },
       /*part_1 查看*/
       seedetail(e) {
-        let data = {"address": e,"page": 1,"pageSize": 10,"phone": '',"type": ''}
+        let data = {"address": e, "page": 1, "pageSize": 10, "phone": '', "type": ''}
         nodeInfo(data).then(response => {
           if (response.dataList == []) {
             this.detailes = {
@@ -1459,43 +1288,114 @@
       },
       /*part_1 查看节点类型历史纪录详情*/
       see_de_all_1(e) {
-        this.currentPage_1=1
-        this.hi_re=e
+        this.currentPage_1 = 1
+        this.hi_re = e
         let data = {"page": 1, "pagesize": 10, "Address": e}
         nodeTypeRecord(data).then(response => {
           if (response.data.dataList == []) {
             this.tableData_1 = []
-            this.totla_1=0
+            this.totla_1 = 0
           } else {
             this.tableData_1 = response.data.dataList
-            this.totla_1=response.data.total
+            this.totla_1 = response.data.total
           }
         })
         this.alert_1_1 = true
       },
       /*part_1 查看节点质押金额详情*/
       see_de_all_2(e) {
-        this.currentPage_1_1=1
-        this.hi_re_2=e
+        this.currentPage_1_1 = 1
+        this.hi_re_2 = e
         let data = {"page": 1, "pagesize": 10, "Addr": e}
         nodePledgeAmount(data).then(response => {
           if (response.data.dataList == []) {
             this.tableData_2 = []
-            this.totla_1_1=0
+            this.totla_1_1 = 0
           } else {
             this.tableData_2 = response.data.dataList
-            this.totla_1_1=response.data.total
+            this.totla_1_1 = response.data.total
           }
         })
         this.alert_1_2 = true
       },
       /*part_1 查看节点下属全部节点数量详情*/
-      see_de_all_3() {
+      see_de_all_3(e) {
+        this.currentPage_1_3 = 1
+        this.hi_re_3 = e
+        let data = {"page": 1, "pagesize": 10, "address": e, "level": ""}
+        let data_1 = {"address": e}
+        nodeLevel(data_1).then(response => {
+          this.select_value_1=''
+          this.node_options= [
+            {
+              "typeid": '',
+              "typename": "请选择节点级别"
+            }
+          ]
+          this.node_options = this.node_options.concat(response)
+          subordinateNodeAllCheck(data).then(response => {
+            if (response.data.dataList == []) {
+              this.tableData_3 = []
+              this.totla_1_3 = 0
+              this.nodeAllCheck_peoples = 0
+              this.nodeAllCheck_tue = 0
+            } else {
+              this.nodeAllCheck_peoples = response.allp
+              this.nodeAllCheck_tue = response.alln
+              this.tableData_3 = response.data.dataList
+              this.totla_1_3 = response.data.total
+            }
+          })
+        })
         this.alert_1_3 = true
       },
+      /*part_1 查看节点下属全部节点数量详情切换级别*/
+      change_nodeLevel() {
+        this.currentPage_1_3 = 1
+        let data = {"page": 1, "pagesize": 10, "address": this.hi_re_3, "level": this.select_value_1.toString()}
+        subordinateNodeAllCheck(data).then(response => {
+          if (response.data.dataList == []) {
+            this.tableData_3 = []
+            this.totla_1_3 = 0
+            this.nodeAllCheck_peoples = 0
+            this.nodeAllCheck_tue = 0
+          } else {
+            this.nodeAllCheck_peoples = response.allp
+            this.nodeAllCheck_tue = response.alln
+            this.tableData_3 = response.data.dataList
+            this.totla_1_3 = response.data.total
+          }
+        })
+      },
       /*part_1 查看节点累计收益详情*/
-      see_de_all_4() {
+      see_de_all_4(e) {
+        this.hi_re_4 = e
+        this.currentPage_1_2 = 1
+        let data = {"page": 1, "pagesize": 10, "address": e}
+        nodeprofitCheck(data).then(response => {
+          if (response.data.dataList == []) {
+            this.tableData_4 = []
+            this.totla_1_2 = 0
+          } else {
+            this.tableData_4 = response.data.dataList
+            this.totla_1_2 = response.data.total
+          }
+        })
         this.alert_1_4 = true
+      },
+      /*part_1 节点级别匹配*/
+      node_level_matching(e) {
+        let a
+        if (e == '' || this.node_options == []) {
+          a = e
+        } else {
+          this.node_options.forEach((item, index, self) => {
+            if (e == item.typeid) {
+              a = item.typename
+            }
+          })
+        }
+        return a
       },
       /*===============================================*/
       /*part_2 获取数据公共接口*/
@@ -1518,7 +1418,9 @@
       },
       /*part_2 晋级审核分页*/
       currentPageChange_5(e) {
-
+        this.currentPage_5 = e
+        let data = {"page": this.currentPage_5, "pageSize": 10}
+        this.get_data_2(data)
       },
       /*part_2 单独批准晋级*/
       approved_for_promotion(e) {
@@ -1534,6 +1436,7 @@
         let data = {"address": this.promotionAuditExe}
         promotionAuditExe(data).then(response => {
           if (response.eCode == 200) {
+            this.Initialization_data_2()
             this.$message({
               message: '批准晋级已提交！',
               type: 'success'
@@ -1560,6 +1463,7 @@
       batch_approval_sure() {
         allPromotionAuditExe().then(response => {
           if (response.eCode == 200) {
+            this.Initialization_data_2()
             this.$message({
               message: '批量批准晋级已提交！',
               type: 'success'
@@ -1575,25 +1479,168 @@
 
       },
       /*part_2 节点状态查看详情*/
-      see_details() {
+      see_details(e) {
+        let data = {"address": e}
+        promotionAuditCheck(data).then(response => {
+          if (response.dataList == []) {
+            this.form_node_de = {
+              "bindphone": "",
+              "nodeaddress": "",
+              "nodename": "",
+              "njodesta": "",
+              "currentpledgeamount": "",
+              "onenodenum": "",
+              "allNodeNum": "",
+              "allnodepledgeamount": ""
+            }
+          } else {
+            this.form_node_de=response.dataList[0]
+          }
+        })
         this.alert_1_7 = true
       },
       /*part_2 节点详细*/
-      part_2_see_1() {
+      part_2_see_1(e) {
+        this.currentPage_6= 1
+        this.hi_re_5 = e
+        let data = {"page": 1, "pagesize": 10, "address": e, "level": ""}
+        let data_1 = {"address": e}
+        nodeLevel(data_1).then(response => {
+          this.select_value_2=''
+          this.node_options_1=  [
+            {
+              "typeid": '',
+              "typename": "请选择节点级别"
+            }
+          ]
+          this.node_options_1 = this.node_options_1.concat(response)
+          subordinateNodeAllCheck(data).then(response => {
+            if (response.data.dataList == []) {
+              this.tableData_6 = []
+              this.totla_6= 0
+              this.nodeAllCheck_peoples_1 = 0
+              this.nodeAllCheck_tue_1 = 0
+            } else {
+              this.nodeAllCheck_peoples_1 = response.allp
+              this.nodeAllCheck_tue_1 = response.alln
+              this.tableData_6 = response.data.dataList
+              this.totla_6 = response.data.total
+            }
+          })
+        })
         this.alert_1_8 = true
       },
       /*part_2 节点二级弹窗分页*/
       currentPageChange_6(e) {
-
+        this.currentPage_6= e
+        let data = {"page":  this.currentPage_6, "pagesize": 10, "address": this.hi_re_5, "level": this.select_value_2.toString()}
+        subordinateNodeAllCheck(data).then(response => {
+          if (response.data.dataList == []) {
+            this.tableData_6 = []
+            this.totla_6= 0
+            this.nodeAllCheck_peoples_1 = 0
+            this.nodeAllCheck_tue_1 = 0
+          } else {
+            this.nodeAllCheck_peoples_1 = response.allp
+            this.nodeAllCheck_tue_1 = response.alln
+            this.tableData_6 = response.data.dataList
+            this.totla_6 = response.data.total
+          }
+        })
       },
-
+      /*part_2 节点级别切换*/
+      change_nodeLevel_1(){
+        this.currentPage_6= 1
+        let data = {"page": 1, "pagesize": 10, "address": this.hi_re_5, "level": this.select_value_2.toString()}
+        subordinateNodeAllCheck(data).then(response => {
+          if (response.data.dataList == []) {
+            this.tableData_6 = []
+            this.totla_6= 0
+            this.nodeAllCheck_peoples_1 = 0
+            this.nodeAllCheck_tue_1 = 0
+          } else {
+            this.nodeAllCheck_peoples_1 = response.allp
+            this.nodeAllCheck_tue_1 = response.alln
+            this.tableData_6 = response.data.dataList
+            this.totla_6 = response.data.total
+          }
+        })
+      },
+      /*part_2 节点级别匹配*/
+      node_level_matching_1(e) {
+        let a
+        if (e == '' || this.node_options_1 == []) {
+          a = e
+        } else {
+          this.node_options_1.forEach((item, index, self) => {
+            if (e == item.typeid) {
+              a = item.typename
+            }
+          })
+        }
+        return a
+      },
+      node_level_matching_2(e) {
+        let a
+        if (e == '' || this.part2_options1 == []) {
+          a = e
+        } else {
+          this.part2_options1.forEach((item, index, self) => {
+            if (e == item.typeid) {
+              a = item.typename
+            }
+          })
+        }
+        return a
+      },
       /*==================================================*/
+      /*part_3 初始化数据*/
+      get_data_3(e,q){
+        // let data={"page":1,"pagesize":10,"address":"","phone":""}
+        unbindingAudit(e).then(response=>{
+          if(response.data.dataList==[]){
+              this.tableData_7=[]
+              this.totla_7=0
+          }else {
+            this.tableData_7=response.data.dataList
+            this.totla_7=response.data.total
+            if(q==1){
+              this.part_3_phone=''
+            }
+          }
+        })
+      },
+      /*part_3 获取初始化数据*/
+      Initialization_data_3() {
+        this.currentPage_7 = 1
+        let data={"page":1,"pagesize":10,"address":"","phone":""}
+        this.get_data_3(data, 0)
+      },
       /*part_3分页查询*/
       currentPageChange_7(e) {
+        this.currentPage_7 = e
+        let data
+        if(this.part_3_phone.length==11){
+          data={"page":this.currentPage_7,"pagesize":10,"address":"","phone":this.search_2}
+        }else {
+          data={"page":this.currentPage_7,"pagesize":10,"address":this.search_2,"phone":""}
+        }
+        this.currentPage_7 = 1
+
+        this.get_data_3(data, 0)
       },
       /*part_3 查询*/
       search_ad_ph_2() {
+        this.currentPage_7 = 1
+        let data
+        if(this.search_2.length==11){
+          data={"page":1,"pagesize":10,"address":"","phone":this.search_2}
+        }else {
+          data={"page":1,"pagesize":10,"address":this.search_2,"phone":""}
+        }
+        this.currentPage_7 = 1
 
+        this.get_data_3(data, 1)
       },
       /*part_3 单个批准*/
       part_3_untied() {
@@ -1604,7 +1651,23 @@
         this.alert_1_9 = false
       },
       /*part_3 确认单个批准*/
-      alert_1_9_sure() {
+      alert_1_9_sure(e) {
+        let data={"address":e}
+        approvalbind(data).then(response=>{
+          if(response.eCode==200){
+            this.Initialization_data_3()
+            this.$message({
+              message: '已提交批准解绑！',
+              type: 'success'
+            });
+          }else {
+
+            this.$message({
+              message: '提交批准解绑失败！',
+              type: 'error'
+            });
+          }
+        })
         this.alert_1_9 = false
       },
       /*part_3 全部批准*/
@@ -1617,23 +1680,106 @@
       },
       /*part_3 确认全部批准*/
       alert_1_10_sure() {
+        allApprovalbind().then(response=>{
+          if(response.eCode==200){
+            this.Initialization_data_3()
+            this.$message({
+              message: '已提交全部批准解绑！',
+              type: 'success'
+            });
+          }else {
+            this.$message({
+              message: '提交全部批准解绑失败！',
+              type: 'error'
+            });
+          }
+        })
         this.alert_1_10 = false
       },
       /*==================================================*/
+      // transactionRecordScreen
+      // /*级别匹配*/
+      // level_matching(e){
+      //
+      // },
+      /*part_4 初始化数据*/
+      get_data_4(e,q){
+        transactionRecordScreen(e).then(response=>{
+          if(response.dataList==[]){
+            this.tableData_8=[]
+            this.totla_8=0
+            this.all_mo=0
+          }else {
+            this.tableData_8=response.dataList
+            this.totla_8=response.total
+            this.all_mo=response.allNodePledgeAmount
+            if(q==1){
+              this.part_4_phone=''
+            }
+          }
+        })
+      },
+      /*part_4 获取初始化数据*/
+      Initialization_data_4() {
+        this.currentPage_8 = 1
+        let data={"page":1,"pagesize":10,"address":"","phone":"","type":"","in":""}
+        this.get_data_4(data, 0)
+      },
+
+
       /*part_4分页查询*/
       currentPageChange_8(e) {
+        this.currentPage_8 = e
+        let data
+        if(this.search_3.length==11){
+          data={"page":this.currentPage_8,"pagesize":10,"address":"","phone":this.search_3,"type":this.select_value_3,"in":this.select_value_4.toString()}
+        }else {
+          data={"page":this.currentPage_8,"pagesize":10,"address":this.search_3,"phone":"","type":this.select_value_3,"in":this.select_value_4.toString()}
+        }
+        this.get_data_4(data, 0)
       },
       /*part_4 查询*/
       search_ad_ph_3() {
-
+        this.currentPage_8 = 1
+        let data
+        if(this.search_3.length==11){
+         data={"page":1,"pagesize":10,"address":"","phone":this.search_3,"type":"","in":""}
+        }else {
+          data={"page":1,"pagesize":10,"address":this.search_3,"phone":"","type":"","in":""}
+        }
+        this.get_data_4(data, 1)
       },
       /*part_4 改变用户来源*/
       change_user_source_2() {
-
+        this.currentPage_8 = 1
+        let data
+        if(this.search_3.length==11){
+          data={"page":1,"pagesize":10,"address":"","phone":this.search_3,"type":this.select_value_3,"in":this.select_value_4.toString()}
+        }else {
+          data={"page":1,"pagesize":10,"address":this.search_3,"phone":"","type":this.select_value_3,"in":this.select_value_4.toString()}
+        }
+        this.get_data_4(data, 0)
       },
       /*part_4 改变交易类型*/
       change_tr_type() {
-
+        this.currentPage_8 = 1
+        let data
+        if(this.search_3.length==11){
+          data={"page":1,"pagesize":10,"address":"","phone":this.search_3,"type":this.select_value_3,"in":this.select_value_4.toString()}
+        }else {
+          data={"page":1,"pagesize":10,"address":this.search_3,"phone":"","type":this.select_value_3,"in":this.select_value_4.toString()}
+        }
+        this.get_data_4(data, 0)
+      },
+      /*交易类别*/
+      tr_macth(e){
+        let a
+        if(e==true){
+          a='质押'
+        }else {
+          a='赎回'
+        }
+        return a
       },
       /*==================================================*/
       /*part_5 获取数据公共接口*/
