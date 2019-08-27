@@ -1,7 +1,9 @@
 <template>
   <div class="ns_all">
     <div class="index_table_swith">
-      <div class="table_item" @click="swich_tab(index)"  v-for="(list, index) in table_items" :class="index== isactive ? item_active :'item_default'">{{list.name}}</div>
+      <div class="table_item" @click="swich_tab(index)" v-for="(list, index) in table_items"
+           :class="index== isactive ? item_active :'item_default'">{{list.name}}
+      </div>
     </div>
     <!--修改权益值M-->
     <el-dialog
@@ -9,11 +11,12 @@
       :visible.sync="dialogVisible"
       width="30%"
     >
-      <span>M值现在为：XX</span>
+      <span>M值现在为：{{edit_value.m_value}}</span>
       <br>
       <span>修改M值后，将会影响现在及以后的奖励计算，请确认后再进行更改</span>
       <br>
-      <el-input  style="width: 70%;margin-top: 30px" v-model="verify_value" placeholder="请输入新M值"></el-input>
+      <el-input style="width: 70%;margin-top: 30px" type="number" min="0" v-model="verify_value"
+                placeholder="请输入新M值"></el-input>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialog_cancel()">取 消</el-button>
     <el-button type="primary" @click="dialog_sure()">确 定</el-button>
@@ -25,11 +28,11 @@
       :visible.sync="dialogVisible_1"
       width="30%"
     >
-      <span>N值现在为：XX</span>
+      <span>N值现在为：{{edit_value.n_value}}</span>
       <br>
       <span>修改N值后，将会影响现在及以后的奖励计算，请确认后再进行更改</span>
       <br>
-      <el-input  style="width: 70%;margin-top: 30px" v-model="verify_value_1" placeholder="请输入新N值"></el-input>
+      <el-input style="width: 70%;margin-top: 30px" v-model="verify_value_1" placeholder="请输入新N值"></el-input>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialog_cancel_1()">取 消</el-button>
     <el-button type="primary" @click="dialog_sure_1()">确 定</el-button>
@@ -38,47 +41,65 @@
     <!--历史记录M值-->
     <el-dialog width="30%" title="历史记录 M值" :visible.sync="dialogTableVisible">
       <el-table :data="gridData" :header-cell-style="this.tableHeaderColor">
-        <el-table-column property="value" align="center" label="M值" ></el-table-column>
-        <el-table-column property="time" align="center" label="修改时间"></el-table-column>
+        <el-table-column align="center" label="M值">
+          <template slot-scope="scope">
+            <span>{{scope.row.value}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="修改时间">
+          <template slot-scope="scope">
+            <span>{{timestampToTime(scope.row.timestamp)}}</span>
+          </template>
+        </el-table-column>
       </el-table>
     </el-dialog>
     <!--历史记录N值-->
     <el-dialog width="30%" title="历史记录 N值" :visible.sync="dialogTableVisible_1">
-      <el-table :data="gridData" :header-cell-style="this.tableHeaderColor">
-        <el-table-column property="value" align="center" label="N值" ></el-table-column>
-        <el-table-column property="time" align="center" label="修改时间"></el-table-column>
+      <el-table :data="gridData_1" :header-cell-style="this.tableHeaderColor">
+        <el-table-column align="center" label="N值">
+          <template slot-scope="scope">
+            <span>{{scope.row.value}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="修改时间">
+          <template slot-scope="scope">
+            <span>{{timestampToTime(scope.row.timestamp)}}</span>
+          </template>
+        </el-table-column>
       </el-table>
     </el-dialog>
     <!--添加节点-->
     <el-dialog width="35%" title="添加创世王者节点" :visible.sync="dialogFormVisible">
-      <el-dialog
-        title=""
-        :visible.sync="dialogtwo"
-        width="30%"
-        append-to-body
-      >
-        <span>您正在将地址为：XXXXXX，绑定手机号为XXXX的节点添加为创世王者节点，节点质押金额XXXXX TUE ，本次添加需要二次确认，是否确认</span>
-        <span slot="footer" class="dialog-footer">
-        <el-button  @click="dialogtwo_cancel()">取 消</el-button><el-button type="primary" @click="dialogtwo_sure()">确 定</el-button>
-       </span>
-      </el-dialog>
+      <!--<el-dialog-->
+        <!--title=""-->
+        <!--:visible.sync="dialogtwo"-->
+        <!--width="30%"-->
+        <!--append-to-body-->
+      <!--&gt;-->
+        <!--<span>您正在将地址为：XXXXXX，绑定手机号为XXXX的节点添加为创世王者节点，节点质押金额XXXXX TUE ，本次添加需要二次确认，是否确认</span>-->
+        <!--<span slot="footer" class="dialog-footer">-->
+        <!--<el-button @click="dialogtwo_cancel()">取 消</el-button><el-button type="primary"-->
+                                                                         <!--@click="dialogtwo_sure()">确 定</el-button>-->
+       <!--</span>-->
+      <!--</el-dialog>-->
       <el-form :model="form">
         <el-form-item label="节点地址：" :label-width="formLabelWidth">
           <el-input v-model="form.address" style="width: 70%" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="节点绑定手机号：" :label-width="formLabelWidth">
-          <el-input v-model="form.phone" style="width: 70%"  autocomplete="off"></el-input>
+          <el-input maxlength="11" show-word-limit v-model="form.phone" style="width: 70%" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="质押金额：" :label-width="formLabelWidth">
-          <el-input v-model="form.value" style="width: 70%"  autocomplete="off"></el-input><span style="margin-left: 5%;font-size: 16px">TUE</span>
+          <el-input min="0" type="number" v-model="form.value" style="width: 70%" autocomplete="off"></el-input>
+          <span style="margin-left: 5%;font-size: 16px">TUE</span>
         </el-form-item>
         <el-form-item label="节点所属批次：" :label-width="formLabelWidth">
-          <el-select v-model="node_select" placeholder="请选择">
+          <el-select v-model="node_select" placeholder="请选择批次">
             <el-option
               v-for="item in node_options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :key="item.batch"
+              :label="item.batchName"
+              :value="item.batch">
             </el-option>
           </el-select>
         </el-form-item>
@@ -96,21 +117,20 @@
     >
       <span>该节点不符合创世王者节点要求，强制解绑后该节点所有质押金额会返还至Thinkey主账户，需要在线下为该节点退费。是否确认强制解绑。</span>
       <span slot="footer" class="dialog-footer">
-        <el-button  @click="dialogUntied_cancel()">取 消</el-button>
+        <el-button @click="dialogUntied_cancel()">取 消</el-button>
     <el-button type="primary" @click="dialogUntied_sure()">强制解绑</el-button>
        </span>
     </el-dialog>
     <!--删除节点-->
     <el-dialog
-      title="删除创世节点"
+      title=""
       :visible.sync="dialogdelete"
       width="25%"
     >
-      <div style="font-size: 15px;margin-bottom: 10px">地址:XXXX</div>
-      <div style="font-size: 15px;margin-bottom: 10px">质押金额:XXX   TUE</div>
-      <div style="font-size: 15px;margin-bottom: 10px">所属批次：第3批</div>
+      <div>您将删除创世节点，请确认！</div>
+
       <span slot="footer" class="dialog-footer">
-        <el-button  @click="dialogdelete_cancel()">取 消</el-button>
+        <el-button @click="dialogdelete_cancel()">取 消</el-button>
     <el-button type="primary" @click="dialogdelete_sure()">确 定</el-button>
        </span>
     </el-dialog>
@@ -118,24 +138,25 @@
     <el-dialog width="35%" title="修改创世王者节点" :visible.sync="dialogedit">
       <el-form :model="form_1">
         <el-form-item label="节点名称：" :label-width="formLabelWidth">
-          <span>sadasdaskdjaskjdkjand</span>
+          <span>{{form_1.name}}</span>
         </el-form-item>
         <el-form-item label="节点地址：" :label-width="formLabelWidth">
-          <span>sadasdaskdjaskjdkjand</span>
+          <span>{{form_1.address}}</span>
         </el-form-item>
         <el-form-item label="节点绑定手机号：" :label-width="formLabelWidth">
-          <el-input v-model="form_1.phone" style="width: 70%"  autocomplete="off"></el-input>
+          <el-input maxlength="11" show-word-limit v-model="form_1.phone" style="width: 70%" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="质押金额：" :label-width="formLabelWidth">
-          <el-input v-model="form_1.value" style="width: 70%"  autocomplete="off"></el-input><span style="margin-left: 5%;font-size: 16px">TUE</span>
+          <el-input type="number" min="0" v-model="form_1.pledgeBalance" style="width: 70%" autocomplete="off"></el-input>
+          <span style="margin-left: 5%;font-size: 16px">TUE</span>
         </el-form-item>
         <el-form-item label="节点所属批次：" :label-width="formLabelWidth">
-          <el-select v-model="node_edit" placeholder="请选择">
+          <el-select v-model="form_1.batch" placeholder="请选择">
             <el-option
               v-for="item in node_options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :key="item.batch"
+              :label="item.batchName"
+              :value="item.batch">
             </el-option>
           </el-select>
         </el-form-item>
@@ -156,14 +177,14 @@
           共XX人，质押XXXXX TUE
         </div>
         <div>
-            <el-select style="margin-top: 30px" v-model="batch_of_details" placeholder="请选择">
-              <el-option
-                v-for="item in node_options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
+          <el-select style="margin-top: 30px" v-model="batch_of_details" placeholder="请选择">
+            <el-option
+              v-for="item in node_options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
 
         </div>
         <div class="con_table" style="padding-bottom: 40px">
@@ -230,28 +251,29 @@
       </el-dialog>
       <el-form>
         <el-form-item label="节点名称：" :label-width="formLabelWidth_1">
-          <span>XXXX</span>
+          <span>{{form_2.name}}</span>
         </el-form-item>
         <el-form-item label="节点状态：" :label-width="formLabelWidth_1">
-          <span>符合</span>
+          <span>{{form_2.status==0?'符合要求':form_2.status==1?'不符合要求':''}}</span>
         </el-form-item>
         <el-form-item label="节点地址：" :label-width="formLabelWidth_1">
-          <span>XXXX</span>
+          <span>{{form_2.address}}</span>
         </el-form-item>
-        <el-form-item label="节点绑定手机号：" :label-width="formLabelWidth_1">
-          <span>XXXXXX</span>
+        <el-form-item  label="节点绑定手机号：" :label-width="formLabelWidth_1">
+          <span>{{form_2.phone}}</span>
         </el-form-item>
         <el-form-item label="节点质押金额：" :label-width="formLabelWidth_1">
-          <span><span>70000</span> TUE <span> (满足)</span></span>
+          <span><span>{{form_2.pledgeBalance}}</span> TUE</span>
         </el-form-item>
         <el-form-item label="节点下属一级节点数量：" :label-width="formLabelWidth_1">
-          <span><span>10</span>  <span> (100%)</span></span>
+          <span><span>{{form_2.childrenLevelSecond}}</span></span>
         </el-form-item>
         <el-form-item label="节点下属全部节点数量：" :label-width="formLabelWidth_1">
-          <span><span>102</span>  <span> (满足)</span> <span class="operating" @click="see_de_all()">查看详情</span></span>
+          <span><span>{{form_2.childrenLevelsCount}}</span><span class="operating"
+                                                                 @click="see_de_all()">查看详情</span></span>
         </el-form-item>
         <el-form-item label="节点下属全部节点质押数量：" :label-width="formLabelWidth_1">
-          <span><span>15000</span>  <span> (105%)</span></span>
+          <span><span>{{form_2.childrenPledgeBalance}} TUE</span></span>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -282,20 +304,20 @@
             label="操作"
             align="center">
             <template slot-scope="scope">
-              <span class="operating" v-show="scope.row.isoperating" @click="edit(scope.row.recording)">修改</span>
-              <span class="operating" v-show="scope.row.isoperating" @click="history_record(scope.row.recording)">历史记录</span>
+              <span class="operating" v-show="scope.row.isShow" @click="edit(scope.row.lable,scope.row.value)">修改</span>
+              <span class="operating" v-show="scope.row.isShow" @click="history_record(scope.row.lable)">历史记录</span>
             </template>
           </el-table-column>
         </el-table>
       </div>
     </div>
     <!--创世王者设置-->
-    <div class="part_2"  v-show="part_show[1].isShow">
+    <div class="part_2" v-show="part_show[1].isShow">
       <el-button type="primary" @click="add_node()">添加节点
       </el-button>
       <div class="con_table">
         <el-table
-          :data="number_seting"
+          :data="number_seting_1"
           border
           style="width: 100%;margin-bottom: 30px;margin-top: 40px;min-height: 529px"
           :header-cell-style="this.tableHeaderColor"
@@ -311,31 +333,47 @@
             label="节点地址"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.value}}</span>
+              <span>{{scope.row.address}}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="节点绑定手机号"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.value}}</span>
+              <span>{{scope.row.phone}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="节点批次"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row.batch}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="质押金额"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row.pledgeBalance}}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="节点状态"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.value}}</span>
-              <span class="operating_1" @click="see_details(e)">查看详情</span>
+              <span>{{scope.row.status==0?'符合要求':scope.row.status==1?'不符合要求':''}}</span>
+              <span class="operating_1" v-show="scope.row.status!=2"
+                    @click="see_details(scope.row.address,scope.row.status)">查看详情</span>
             </template>
           </el-table-column>
           <el-table-column
             label="操作"
             align="center">
             <template slot-scope="scope">
-              <span class="operating" v-show="scope.row.recording==0" @click="untied()">强制解绑</span>
-              <span class="operating" v-show="!scope.row.recording==0" @click="edit_node()">修改</span>
-              <span class="operating" v-show="!scope.row.recording==0" @click="delete_node()">删除</span>
+              <span class="operating" v-show="scope.row.status==1" @click="untied(scope.row.address)">强制解绑</span>
+              <span class="operating" v-show="scope.row.status==2"
+                    @click="edit_node(scope.row.name,scope.row.address,scope.row.phone,scope.row.batch,scope.row.pledgeBalance)">修改</span>
+              <span class="operating" v-show="scope.row.status==2" @click="delete_node(scope.row.address)">删除</span>
             </template>
           </el-table-column>
         </el-table>
@@ -353,444 +391,575 @@
 </template>
 
 <script>
-    export default {
-        name: "numericalSetting",
-      data(){
-          return{
-            batch_of_details:1,
-            dialog_de_all:false,
-            formLabelWidth_1:'200px',
-            dialogseedetail:false,
-            dialogedit:false,
-            node_edit:1,
-            form:{
-              "address":'',
-              "phone":'',
-              "value":'',
-            },
-            form_1:{
-              "phone":'',
-              "value":'',
-            },
-            dialogdelete:false,
-            dialogtwo:false,
-            dialogUntied:false,
-            dialogFormVisible:false,
-            formLabelWidth: '150px',
-            dialogVisible:false,
-            verify_value:'',
-            dialogVisible_1:false,
-            verify_value_1:'',
-            dialogTableVisible:false,
-            dialogTableVisible_1:false,
-            isactive:0,
-            table_items:[
-              {"name":' 数值设置 '},
-              {"name":' 创世王者节点设置 '},
-            ],
-            part_show:[
-              {"isShow":true},
-              {"isShow":false},
-            ],
-            is_show:[
-              {"is_true":true},
-              {"is_true":false},
-            ],
-            gridData:[
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },              {
-                "time":'2019-11-3',
-                "value":80,
-              },
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },
+  import {
+    getSettingInfo,
+    updateSetting,
+    getMNLog,
+    getPersonInfoCreation,
+    checkCreationDetails,
+    insertCreationPerson,
+    updateCreationPerson,
+    unBindCreationAddress,
+    deleteCreationAddress
+  } from '../api/interface'
 
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },              {
-                "time":'2019-11-3',
-                "value":80,
-              },              {
-                "time":'2019-11-3',
-                "value":80,
-              },
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },
-              {
-                "time":'2019-11-3',
-                "value":80,
-              },
+  export default {
+    name: "numericalSetting",
+    data() {
+      return {
+        batch_of_details: 1,
+        dialog_de_all: false,
+        formLabelWidth_1: '200px',
+        dialogseedetail: false,
+        dialogedit: false,
+        node_edit: 1,
+        form: {
+          "address": '',
+          "phone": '',
+          "value": '',
+        },
+        form_1: {
+          "name": '',
+          "address": '',
+          "phone": '',
+          "pledgeBalance": '',
+          "batch": '',
+        },
+        form_2: {
+          "address": "",
+          "childrenLevelSecond": 0,
+          "childrenLevelsCount": 0,
+          "childrenPledgeBalance": "",
+          "name": "",
+          "status": "",
+          "phone": "",
+          "pledgeBalance": ""
+        },
+        dialogdelete: false,
+        dialogtwo: false,
+        dialogUntied: false,
+        dialogFormVisible: false,
+        formLabelWidth: '150px',
+        dialogVisible: false,
+        verify_value: '',
+        dialogVisible_1: false,
+        verify_value_1: '',
+        dialogTableVisible: false,
+        dialogTableVisible_1: false,
+        isactive: 0,
+        table_items: [
+          {"name": ' 数值设置 '},
+          {"name": ' 创世王者节点设置 '},
+        ],
+        part_show: [
+          {"isShow": true},
+          {"isShow": false},
+        ],
+        is_show: [
+          {"is_true": true},
+          {"is_true": false},
+        ],
+        gridData: [],
+        gridData_1: [],
+        item_active: 'item_active',
+        item_default: 'item_default',
+        number_seting: [],
+        number_seting_1: [],
+        subordinate_data: [
+          {
+            "name": '青铜节点要求TUE',
+            "value": '1000',
+            "isoperating": false,
+            "recording": 0,
+          },
+          {
+            "name": '青铜节点解绑时间',
+            "value": '7',
+            "isoperating": false,
+            "recording": 0,
+          },
+          {
+            "name": '青铜节点一级下属数量及收益',
+            "value": '5%,10%,15%,20%',
+            "isoperating": false,
+            "recording": 0,
+          },
+          {
+            "name": '王者节点要求TUE',
+            "value": '10000000',
+            "isoperating": false,
+            "recording": 0,
+          },
+          {
+            "name": '王者节点解绑时间',
+            "value": '30',
+            "isoperating": false,
+            "recording": 0,
+          },
+          {
+            "name": '王者节点收益',
+            "value": '28%',
+            "isoperating": false,
+            "recording": 0,
+          },
+          {
+            "name": '王者节点下属一级节点、总节点数量要求及质押量要求',
+            "value": '10,100,1000000',
+            "isoperating": false,
+            "recording": 0,
+          },
+          {
+            "name": '权益池M',
+            "value": '',
+            "isoperating": true,
+            "recording": 1,
+          },
+          {
+            "name": '权益池N',
+            "value": '',
+            "isoperating": true,
+            "recording": 2,
+          },
+        ],
+        node_select: 1,
+        node_options: [
+          {
+            batch: "",
+            batchName: "请选择审核批次",
+          },
+          {
+            batch: 1,
+            batchName: "第1批次",
+          },
+          {
+            batch: 2,
+            batchName: "第2批次",
+          },
+          {
+            batch: 3,
+            batchName: "第3批次",
+          },
+          {
+            batch: 4,
+            batchName: "第4批次",
+          },
+          {
+            batch: 5,
+            batchName: "第5批次",
+          },
+          {
+            batch: 6,
+            batchName: "第6批次",
+          },
+          {
+            batch: 7,
+            batchName: "第7批次",
+          },
+          {
+            batch: 8,
+            batchName: "第8批次",
+          },
+          {
+            batch: 9,
+            batchName: "第9批次",
+          },
+          {
+            batch: 10,
+            batchName: "第10批次",
+          },
 
-
-
-
-
-            ],
-            item_active:'item_active',
-            item_default:'item_default',
-            number_seting:[
-              {
-                "name":'青铜节点要求TUE',
-                "value":'1000',
-                "isoperating":false,
-                "recording":0,
-              },
-              {
-                "name":'青铜节点解绑时间',
-                "value":'7',
-                "isoperating":false,
-                "recording":0,
-              },
-              {
-                "name":'青铜节点一级下属数量及收益',
-                "value":'5%,10%,15%,20%',
-                "isoperating":false,
-                "recording":0,
-              },
-              {
-                "name":'王者节点要求TUE',
-                "value":'10000000',
-                "isoperating":false,
-                "recording":0,
-              },
-              {
-                "name":'王者节点解绑时间',
-                "value":'30',
-                "isoperating":false,
-                "recording":0,
-              },
-              {
-                "name":'王者节点收益',
-                "value":'28%',
-                "isoperating":false,
-                "recording":0,
-              },
-              {
-                "name":'王者节点下属一级节点、总节点数量要求及质押量要求',
-                "value":'10,100,1000000',
-                "isoperating":false,
-                "recording":0,
-              },
-              {
-                "name":'权益池M',
-                "value":'',
-                "isoperating":true,
-                "recording":1,
-              },
-              {
-                "name":'权益池N',
-                "value":'',
-                "isoperating":true,
-                "recording":2,
-              },
-            ],
-            subordinate_data:[
-              {
-                "name":'青铜节点要求TUE',
-                "value":'1000',
-                "isoperating":false,
-                "recording":0,
-              },
-              {
-                "name":'青铜节点解绑时间',
-                "value":'7',
-                "isoperating":false,
-                "recording":0,
-              },
-              {
-                "name":'青铜节点一级下属数量及收益',
-                "value":'5%,10%,15%,20%',
-                "isoperating":false,
-                "recording":0,
-              },
-              {
-                "name":'王者节点要求TUE',
-                "value":'10000000',
-                "isoperating":false,
-                "recording":0,
-              },
-              {
-                "name":'王者节点解绑时间',
-                "value":'30',
-                "isoperating":false,
-                "recording":0,
-              },
-              {
-                "name":'王者节点收益',
-                "value":'28%',
-                "isoperating":false,
-                "recording":0,
-              },
-              {
-                "name":'王者节点下属一级节点、总节点数量要求及质押量要求',
-                "value":'10,100,1000000',
-                "isoperating":false,
-                "recording":0,
-              },
-              {
-                "name":'权益池M',
-                "value":'',
-                "isoperating":true,
-                "recording":1,
-              },
-              {
-                "name":'权益池N',
-                "value":'',
-                "isoperating":true,
-                "recording":2,
-              },
-            ],
-            node_select:1,
-            node_options:[
-              {
-                'label':'第1批次',
-                'value':1,
-              },
-              {
-                'label':'第2批次',
-                'value':2,
-              },
-              {
-                'label':'第3批次',
-                'value':3,
-              },
-              {
-                'label':'第4批次',
-                'value':4,
-              },
-            ],
-            currentPage: 1,
-            pagesize: 10,
-            totla: 0,
-            currentPage_1: 1,
-            pagesize_1: 10,
-            totla_1: 0,
-          }
-      },
-      methods:{
-          /*part_1 table切换*/
-        swich_tab(e){
-          this.is_show.forEach((item,index,self)=>{
-            if(index==e){
-              item.is_true=true
-            }else {
-              item.is_true=false
-            }
-          })
-          this.part_show.forEach((item,index,self)=>{
-            if(index==e){
-              item.isShow=true
-            }else {
-              item.isShow=false
-            }
-          })
-          this.isactive=e
+        ],
+        currentPage: 1,
+        pagesize: 10,
+        totla: 0,
+        currentPage_1: 1,
+        pagesize_1: 10,
+        totla_1: 0,
+        edit_value: {
+          "m_value": 0,
+          "n_value": 0,
         },
-        /*part_1 修改*/
-        edit(e){
-          if(e==1){
-            this.dialogVisible=true
-          }else if(e==2){
-            this.dialogVisible_1=true
-          }else {
-
-          }
-        },
-        /*part_1 M值修改弹窗取消*/
-        dialog_cancel(){
-          this.dialogVisible=false
-          this.verify_value=''
-        },
-        /*part_1 M值修改弹窗确认*/
-        dialog_sure(){
-
-        },
-        /*part_1 N值修改弹窗取消*/
-        dialog_cancel_1(){
-          this.dialogVisible_1=false
-          this.verify_value_1=''
-        },
-        /*part_1 N值修改弹窗确认*/
-        dialog_sure_1(){
-
-        },
-        /*part_1 打开历史记录*/
-        history_record(e){
-          if(e==1){
-            this.dialogTableVisible=true
-          }else if(e==2){
-            this.dialogTableVisible_1=true
-          }else {
-
-          }
-        },
-        /*添加节点*/
-        add_node(){
-          this.dialogFormVisible=true
-        },
-        /*添加节点取消*/
-        dialogFormcancle(){
-          this.form.address=''
-          this.form.phone=''
-          this.form.value=''
-          this.dialogFormVisible=false
-        },
-        /*添加节点确认*/
-        dialogFormsure(){
-          console.log(this.form)
-          this.dialogtwo=true
-        },
-        /*添加节点二次确认,取消操作*/
-        dialogtwo_cancel(){
-          this.dialogtwo=false
-        },
-        /*添加节点二次确认,确认操作*/
-        dialogtwo_sure(){
-          this.dialogtwo=false
-          this.dialogFormVisible=false
-        },
-        /*强制解绑*/
-        untied(e){
-          this.dialogUntied=true
-        },
-        /*取消解绑*/
-        dialogUntied_cancel(){
-          this.dialogUntied=false
-        },
-        /*确认解绑*/
-        dialogUntied_sure(){
-          this.dialogUntied=false
-        },
-        /*修改节点*/
-        edit_node(){
-          this.dialogedit=true
-        },
-        /*取消修改节点*/
-        dialogeditcancle(){
-          this.dialogedit=false
-        },
-        /*确认修改节点*/
-        dialogeditsure(){
-          this.dialogedit=false
-          console.log(this.form_1)
-          this.form_1.phone=''
-          this.form_1.value=''
-          this.node_edit=1
-        },
-        /*删除节点*/
-        delete_node(){
-          this.dialogdelete=true
-        },
-        /*取消删除节点*/
-        dialogdelete_cancel(){
-          this.dialogdelete=false
-        },
-        /*确认删除节点*/
-        dialogdelete_sure(){
-          this.dialogdelete=false
-        },
-        /*查看节点状态*/
-        see_details(e){
-          this.dialogseedetail=true
-        },
-        /*查看下属节点详情*/
-        see_de_all(){
-          this.dialog_de_all=true
-        }
+        untied_address:'',
+        remove_address:'',
       }
+    },
+    methods: {
+      /*初始化公共数据*/
+      // getdata_public(){
+      //   reviewBatch().then(response=>{
+      //     this.node_options=this.node_options.concat(response.data)
+      //   })
+      // },
+      /*获取part_1 公共方法*/
+      getdata_1(e) {
+        getSettingInfo(e).then(response => {
+          if (response.data == []) {
+            this.number_seting = []
+          } else {
+            this.number_seting = response.data
+          }
+        })
+      },
+      /*获取part_1 数据*/
+      Initialization_data_1() {
+        let data = {"equityPoolM": "", "equityPoolN": ""}
+        this.getdata_1(data)
+      },
+      /*part_1 table切换*/
+      swich_tab(e) {
+        this.is_show.forEach((item, index, self) => {
+          if (index == e) {
+            item.is_true = true
+          } else {
+            item.is_true = false
+          }
+        })
+        this.part_show.forEach((item, index, self) => {
+          if (index == e) {
+            item.isShow = true
+          } else {
+            item.isShow = false
+          }
+        })
+        this.isactive = e
+        if (e == 0) {
+          this.Initialization_data_1()
+        } else if (e == 1) {
+          this.Initialization_data_2()
+        }
+      },
+      /*part_1 修改*/
+      edit(e, q) {
+        if (e == 'M') {
+          this.edit_value.m_value = q
+          this.dialogVisible = true
+        } else if (e == 'N') {
+          this.edit_value.n_value = q
+          this.dialogVisible_1 = true
+        } else {
+        }
+      },
+      /*part_1 M值修改弹窗取消*/
+      dialog_cancel() {
+        this.dialogVisible = false
+        this.verify_value = ''
+      },
+      /*part_1 M值修改弹窗确认*/
+      dialog_sure() {
+        let data = {"value": this.verify_value, "lable": "M"}
+        updateSetting(data).then(response => {
+          this.dialogVisible = false
+          this.verify_value = ''
+          if (response.eCode == 200) {
+            this.Initialization_data_1()
+            this.$message({
+              type: 'success',
+              message: '修改成功!'
+            });
+          } else {
+            this.$message({
+              type: 'error',
+              message: '修改失败!'
+            });
+          }
+        })
+      },
+      /*part_1 N值修改弹窗取消*/
+      dialog_cancel_1() {
+        this.dialogVisible_1 = false
+        this.verify_value_1 = ''
+      },
+      /*part_1 N值修改弹窗确认*/
+      dialog_sure_1() {
+        let data = {"value": this.verify_value_1, "lable": "N"}
+        updateSetting(data).then(response => {
+          this.dialogVisible_1 = false
+          this.verify_value_1 = ''
+          if (response.eCode == 200) {
+            this.Initialization_data_1()
+            this.$message({
+              type: 'success',
+              message: '修改成功!'
+            });
+          } else {
+            this.$message({
+              type: 'error',
+              message: '修改失败!'
+            });
+          }
+        })
+      },
+      /*part_1 打开历史记录*/
+      history_record(e) {
+        if (e == 'M') {
+          let data = {"lable": "M"}
+          getMNLog(data).then(response => {
+            if (response.data == []) {
+              this.gridData = []
+            } else {
+              this.gridData = response.data
+            }
+          })
+          this.dialogTableVisible = true
+        } else if (e == 'N') {
+          let data = {"lable": "N"}
+          this.dialogTableVisible_1 = true
+          getMNLog(data).then(response => {
+            if (response.data == []) {
+              this.gridData_1 = []
+            } else {
+              this.gridData_1 = response.data
+            }
+          })
+        }
+      },
+
+
+      // getPersonInfo
+      /*获取part_2 公共方法*/
+      getdata_2(e) {
+        getPersonInfoCreation(e).then(response => {
+          if (response.data.dataList == []) {
+            this.number_seting_1 = []
+          } else {
+            this.number_seting_1 = response.data.dataList
+            this.totla = response.data.total
+          }
+        })
+      },
+      /*获取part_2 数据*/
+      Initialization_data_2() {
+        this.currentPage=1
+        let data = {"status": "", "page": 1, "pageSize": 10}
+        this.getdata_2(data)
+      },
+      /*part_2 分页获取数据*/
+      currentPageChange(e) {
+        this.currentPage = e
+        let data = {"status": "", "page": this.currentPage, "pageSize": 10}
+        this.getdata_2(data)
+      },
+      /*查看节点状态详情分页获取数据*/
+      currentPageChange_1() {
+
+      },
+      /*添加节点*/
+      add_node() {
+        this.dialogFormVisible = true
+      },
+      /*添加节点取消*/
+      dialogFormcancle() {
+        this.form.address = ''
+        this.form.phone = ''
+        this.form.value = ''
+        this.dialogFormVisible = false
+      },
+      /*添加节点确认*/
+      dialogFormsure() {
+        let data = {
+          "name": "",
+          "address": this.form.address,
+          "phone": this.form.phone,
+          "pledgeBalance": this.form.value,
+          "batch": this.node_select
+        }
+        insertCreationPerson(data).then(response => {
+          if (response.eCode == 200) {
+            this.node_select=1
+            this.form = {
+              "address": '',
+              "phone": '',
+              "value": '',
+            },
+              this.$message({
+                type: 'success',
+                message: '节点添加成功'
+              });
+            this.Initialization_data_2()
+            this.dialogFormVisible = false
+          } else {
+            this.$message({
+              type: 'error',
+              message: '节点添加失败'
+            });
+            this.node_select=1
+            this.form = {
+              "address": '',
+              "phone": '',
+              "value": '',
+            }
+            this.dialogFormVisible = false
+          }
+        })
+      },
+      // /*添加节点二次确认,取消操作*/
+      // dialogtwo_cancel() {
+      //   this.dialogtwo = false
+      // },
+      // /*添加节点二次确认,确认操作*/
+      // dialogtwo_sure() {
+      //   this.dialogtwo = false
+      //   this.dialogFormVisible = false
+      // },
+      /*强制解绑*/
+      untied(e) {
+        this.untied_address=e
+        this.dialogUntied = true
+      },
+      /*取消解绑*/
+      dialogUntied_cancel() {
+        this.dialogUntied = false
+      },
+      /*确认解绑*/
+      dialogUntied_sure() {
+        let data={"address":this.untied_address}
+        unBindCreationAddress(data).then(response => {
+          if (response.eCode == 200) {
+            this.$message({
+              type: 'success',
+              message: '节点强制解绑成功'
+            });
+            this.Initialization_data_2()
+            this.dialogUntied = false
+          } else {
+            this.$message({
+              type: 'error',
+              message: '节点强制解绑失败'
+            });
+            this.dialogUntied = false
+          }
+        })
+      },
+      /*修改节点*/
+      edit_node(name, address, phone, batch, pledgeBalance) {
+        this.form_1 = {
+          "name": name,
+          "address": address,
+          "phone": phone,
+          "pledgeBalance": pledgeBalance,
+          "batch": batch,
+        }
+        this.dialogedit = true
+      },
+      /*取消修改节点*/
+      dialogeditcancle() {
+        this.dialogedit = false
+      },
+      /*确认修改节点*/
+      dialogeditsure() {
+        let data={"phone":this.form_1.phone,"pledgeBalance":this.form_1.pledgeBalance,"batch":this.form_1.batch}
+        updateCreationPerson(data).then(response => {
+          if (response.eCode == 200) {
+            this.node_select=1
+            this.form_1 = {
+              "name": '',
+              "address": '',
+              "phone": '',
+              "pledgeBalance": '',
+              "batch": '',
+            }
+              this.$message({
+                type: 'success',
+                message: '节点修改成功'
+              });
+            this.Initialization_data_2()
+            this.dialogedit = false
+          } else {
+            this.$message({
+              type: 'error',
+              message: '节点添加失败'
+            });
+            this.node_select=1
+            this.form_1 = {
+              "name": '',
+              "address": '',
+              "phone": '',
+              "pledgeBalance": '',
+              "batch": '',
+            }
+            this.dialogedit = false
+          }
+        })
+      },
+      /*删除节点*/
+      delete_node(e) {
+        this.remove_address=e
+        this.dialogdelete = true
+      },
+      /*取消删除节点*/
+      dialogdelete_cancel() {
+        this.dialogdelete = false
+      },
+      /*确认删除节点*/
+      dialogdelete_sure() {
+        let data={"address":this.remove_address}
+        deleteCreationAddress(data).then(response => {
+          if (response.eCode == 200) {
+            this.$message({
+              type: 'success',
+              message: '节点删除成功'
+            });
+            this.Initialization_data_2()
+            this.dialogdelete = false
+          } else {
+            this.$message({
+              type: 'error',
+              message: '节点删除失败'
+            });
+            this.dialogdelete = false
+          }
+        })
+
+      },
+      /*查看节点状态详情*/
+      see_details(e, q) {
+        let data = {"address": e}
+        checkCreationDetails(data).then(response => {
+          this.form_2 = response.data
+          this.form_2.status = q
+          this.dialogseedetail = true
+        })
+      },
+      /*查看下属节点详情*/
+      see_de_all() {
+        this.dialog_de_all = true
+      },
+    },
+    created() {
+      // this.getdata_public()
+      this.Initialization_data_1()
     }
+  }
 </script>
 
 <style scoped>
-  .ns_all{
+  .ns_all {
     width: 100%;
   }
-  .item_active{
-    color: #800080 ;
+
+  .item_active {
+    color: #800080;
     /*border-bottom: 2px solid #800080 ;*/
     /*padding-bottom: 5px;*/
   }
-  .item_default{
+
+  .item_default {
     color: #000000;
   }
-  .table_item{
-    margin-bottom:30px;
+
+  .table_item {
+    margin-bottom: 30px;
     font-size: 17px;
     user-select: none;
     cursor: pointer;
   }
-  .index_table_swith{
+
+  .index_table_swith {
     width: 20%;
     display: flex;
     justify-content: space-between;
   }
+
   .el-pagination {
     position: relative;
     float: right;
@@ -798,19 +967,21 @@
     margin-top: 30px;
     margin-bottom: 50px;
   }
-  .operating{
+
+  .operating {
     cursor: pointer;
-    color:#800080  ;
+    color: #800080;
     padding: 0 5px;
     margin: 0 10px;
     font-size: 15px;
   }
-  .operating_1{
+
+  .operating_1 {
     cursor: pointer;
     float: right;
     position: relative;
-    right: 20%;
-    color:#800080  ;
+    right: 5%;
+    color: #800080;
     padding: 0 5px;
     /*margin: 0 10px;*/
   }

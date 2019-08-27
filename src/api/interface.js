@@ -66,7 +66,8 @@ export function nodeInfo(e) {
     method: 'post',
     data:e
   })
-}/*节点大赛信息 节点类型*/
+}
+/*节点大赛信息 节点类型*/
 export function nodeType(e) {
   return request({
     url:'/v1/investmentAdmin/node/nodeType',
@@ -74,4 +75,157 @@ export function nodeType(e) {
     data:e
   })
 }
+/*节点大赛数值设置*/
+export function getSettingInfo(e) {
+  return request({
+    url:'/v1/investmentAdmin/info/getSettingInfo',
+    method: 'post',
+    data:e
+  })
+}
+/* 修改MN值*/
+export function updateSetting(e) {
+  return request({
+    url:'/v1/investmentAdmin/info/updateSetting',
+    method: 'post',
+    data:e
+  })
+}
+/* 获取MN值历史记录*/
+export function getMNLog(e) {
+  return request({
+    url:'/v1/investmentAdmin/info/getMNLog',
+    method: 'post',
+    data:e
+  })
+}
+/* 获取节点信息单个节点详情*/
+export function odeInfoCheck(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/odeInfoCheck',
+    method: 'post',
+    data:e
+  })
+}
+/* 获取权益池*/
+export function equitypool(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/equitypool',
+    method: 'post',
+    data:e
+  })
+}
+/*获取创世节点设置*/
+export function getPersonInfoCreation(e) {
+  return request({
+    url:'/v1/investmentAdmin/info/getPersonInfoCreation',
+    method: 'post',
+    data:e
+  })
+}
+/*获取创世节查看详细*/
+export function checkCreationDetails(e) {
+  return request({
+    url:'/v1/investmentAdmin/info/checkCreationDetails',
+    method: 'get',
+    params:e
+  })
+}
+/*添加节点*/
+export function insertCreationPerson(e) {
+  return request({
+    url:'/v1/investmentAdmin/info/insertCreationPerson',
+    method: 'post',
+    data:e
+  })
+}
+/*修改节点*/
+export function updateCreationPerson(e) {
+  return request({
+    url:'/v1/investmentAdmin/info/updateCreationPerson',
+    method: 'post',
+    data:e
+  })
+}
 
+/*强制解绑*/
+export function unBindCreationAddress(e) {
+  return request({
+    url:'/v1/investmentAdmin/info/unBindCreationAddress',
+    method: 'get',
+    params:e
+  })
+}
+/*删除节点*/
+export function deleteCreationAddress(e) {
+  return request({
+    url:'/v1/investmentAdmin/info/deleteCreationAddress',
+    method: 'get',
+    params:e
+  })
+}
+/*批量审核*/
+export function auditWithdrawalRecord(e) {
+  return request({
+    url:'/v1/investmentAdmin/info/auditWithdrawalRecord',
+    method: 'get',
+    params:e
+  })
+}
+/*晋级审核*/
+export function promotionAudit(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/promotionAudit',
+    method: 'post',
+    data:e
+  })
+}
+/*单个批准晋级*/
+export function promotionAuditExe(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/promotionAuditExe',
+    method: 'post',
+    data:e
+  })
+}
+/*批量批准晋级*/
+export function allPromotionAuditExe(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/allPromotionAuditExe',
+    method: 'post',
+    data:e
+  })
+}
+/*节点类型历史记录*/
+export function nodeTypeRecord(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/nodeTypeRecord',
+    method: 'post',
+    data:e
+  })
+}
+/*审批批次详情*/
+export function getALLReviewBatch(e) {
+  return request({
+    url:'/v1/investmentAdmin/info/getALLReviewBatch',
+    method: 'post',
+    data:e
+  })
+}
+/*节点信息 节点下属全部节点数量 查看详情*/
+export function subordinateNodeAllCheck() {
+  return request({
+    url:'/v1/investmentAdmin/node/subordinateNodeAllCheck',
+    method: 'get',
+    params:{}
+  })
+}
+/*节点质押金额详情*/
+export function nodePledgeAmount(e) {
+  console.log(e)
+  return request({
+    url:'/v1/investmentAdmin/node/nodePledgeAmount',
+    method: 'post',
+    data:e
+  })
+}

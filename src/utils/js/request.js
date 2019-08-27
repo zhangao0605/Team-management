@@ -8,6 +8,7 @@ const service = axios.create({
   // baseURL: 'http://' + window.location.host,
   // baseURL: 'http://192.168.1.108:8600',
   baseURL: 'http://192.168.1.106:8600',
+  // baseURL: 'https://publicchain.thinkey.xyz',
   // baseURL: 'http://dahan.thinkey.xyz',
   // withCredentials: true, // 跨域请求时发送 cookies
   timeout: 30000 // 请求超时时间
