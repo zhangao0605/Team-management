@@ -257,11 +257,13 @@
       <div class="con_search">
         <div class="con_search_div">
           <span class="el-icon-search us_search2_1_input_icon"></span>
-          <el-input style="text-indent: 30px" v-model="search_more_vlue"
+          <div class="input_fath">
+          <el-input  v-model="search_more_vlue"
                     placeholder="请输入用户手机号/用户地址进行检索">
           </el-input>
+          </div>
         </div>
-        <el-button type="primary" class="con_search_submit" @click="search_more()">搜索
+        <el-button type="primary" style="position: relative;left: -3%" class="con_search_submit" @click="search_more()">搜索
         </el-button>
         <el-select style="margin-left: 5%" v-model="select_value1" @change="pa_search_4_1()" placeholder="请选择提现交易所">
           <el-option
@@ -366,11 +368,13 @@
       <div class="con_search">
         <div class="con_search_div">
           <span class="el-icon-search us_search2_1_input_icon"></span>
-          <el-input style="text-indent: 30px" v-model="search_more_vlue_1"
+          <div class="input_fath">
+          <el-input v-model="search_more_vlue_1"
                     placeholder="请输入用户手机号/用户地址进行检索">
           </el-input>
+          </div>
         </div>
-        <el-button type="primary" class="con_search_submit" @click="search_more_1()">搜索
+        <el-button type="primary"  style="position: relative;left: -3%" class="con_search_submit" @click="search_more_1()">搜索
         </el-button>
         <el-select style="margin-left: 5%" v-model="select_value1_1" @change="pa_search_5_1()" placeholder="请选择提现交易所">
           <el-option
@@ -481,16 +485,19 @@
     </div>
     <!--已退款-->
     <div class="part_6" v-show="part_show[5].is_true">
-      <div class="con_search" style="width: 70%;">
+      <div class="con_search" >
         <div class="con_search_div">
           <span class="el-icon-search us_search2_1_input_icon"></span>
-          <el-input style="text-indent: 30px" v-model="search_more_vlue_2"
+          <div class="input_fath">
+          <el-input  v-model="search_more_vlue_2"
                     placeholder="请输入用户手机号/用户地址/提现地址进行检索">
           </el-input>
+          </div>
         </div>
-        <el-button type="primary" class="con_search_submit" style="margin-left: -20%" @click="search_more_2()">搜索
+        <el-button type="primary"   style="position: relative;left: -18.4%" class="con_search_submit" @click="search_more_2()">搜索
         </el-button>
-        <el-select style="left: -20%;position: relative" v-model="select_value1_2" @change="pa6_select()" placeholder="请选择提现交易所">
+        <el-select style="left: -25.7%;position: relative" v-model="select_value1_2" @change="pa6_select()"
+                   placeholder="请选择提现交易所">
           <el-option
             v-for="item_5 in options"
             :key="item_5.typeId"
@@ -584,7 +591,13 @@
 </template>
 
 <script>
-  import {getWithdrawalRecord, getExchangeType, reviewBatch, auditWithdrawalRecord,getALLReviewBatch} from '../api/interface'
+  import {
+    getWithdrawalRecord,
+    getExchangeType,
+    reviewBatch,
+    auditWithdrawalRecord,
+    getALLReviewBatch
+  } from '../api/interface'
 
   export default {
     name: "withdrawalsRecord",
@@ -670,7 +683,7 @@
         totla_5: 0,
         part_4_recording: '',
         part_5_recording: '',
-        part_6_recording:'',
+        part_6_recording: '',
       }
     },
     methods: {
@@ -701,7 +714,7 @@
       /*part_3 获取公共数据*/
       get_data_3(e) {
         getALLReviewBatch(e).then(response => {
-          if (response.data.dataList == []||response.data.dataList ==null) {
+          if (response.data.dataList == [] || response.data.dataList == null) {
             this.tableData_3 = []
             this.totla_2 = 0
           } else {
@@ -778,9 +791,9 @@
           a = '成功'
         } else if (e == 0) {
           a = '失败'
-        } else if(e==-1) {
+        } else if (e == -1) {
           a = '未验证'
-        }else {
+        } else {
           a = '退款'
         }
         return a
@@ -891,7 +904,7 @@
       /*part_3 初始化数据*/
       Initialization_data_3() {
         this.currentPage_2 = 1
-        let data={"page":1,"pageSize":10}
+        let data = {"page": 1, "pageSize": 10}
         this.get_data_3(data)
       },
       /*table切换*/
@@ -961,7 +974,7 @@
       /*part_3 分页切换*/
       currentPageChange_2(e) {
         this.currentPage_2 = e
-        let data={"page":this.currentPage_2,"pageSize":10}
+        let data = {"page": this.currentPage_2, "pageSize": 10}
         this.get_data_3(data)
       },
       /*part_4 分页切换*/
@@ -1265,7 +1278,7 @@
         }
       },
       /*part6 选择交易所*/
-      pa6_select(){
+      pa6_select() {
         let data
         if (this.part_6_recording.length == 11) {
           data = {
@@ -1274,7 +1287,7 @@
             "exchangeType": this.select_value1_2,
             "page": 1,
             "pagesize": 10,
-            "reviewBatch":"",
+            "reviewBatch": "",
             "status": "2"
           }
         } else {
@@ -1284,7 +1297,7 @@
             "exchangeType": this.select_value1_2,
             "page": 1,
             "pagesize": 10,
-            "reviewBatch":"",
+            "reviewBatch": "",
             "status": "2"
           }
         }
@@ -1298,7 +1311,12 @@
     }
   }
 </script>
-
+<style>
+  .wr_all .con_search_div input {
+    outline: none;
+    border: none;
+  }
+</style>
 <style scoped>
   .el-pagination {
     position: relative;
@@ -1337,22 +1355,20 @@
 
   .con_search {
     position: relative;
-    left: -30px;
-    /*width: 40%;*/
+    width: 70%;
     display: flex;
-    width: 80%;
     margin-top: 20px;
     justify-content: space-between;
   }
-
   .con_search_div {
     display: flex;
-    width: 35%;
+    width:35%;
+    background-color: #ffffff;
   }
 
   .us_search2_1_input_icon {
-    position: absolute;
-    margin-left: 46px;
+    position: relative;
+    left: 26px;
     margin-top: 12px;
     z-index: 1;
   }
@@ -1367,5 +1383,10 @@
     padding: 0 5px;
     margin: 0 10px;
     font-size: 15px;
+  }
+  .input_fath {
+    width: 80%;
+    position: relative;
+    left: 30px;
   }
 </style>

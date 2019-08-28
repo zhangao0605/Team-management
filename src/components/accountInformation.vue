@@ -417,13 +417,15 @@
       <div class="con_search" style="width: 60%">
         <div class="con_search_div">
           <span class="el-icon-search us_search2_1_input_icon"></span>
-          <el-input style="text-indent: 30px" v-model="search_1"
-                    placeholder=" 请输入绑定手机号/节点地址进行检索">
+          <div class="input_fath">
+          <el-input  v-model="search_1"
+                    placeholder="请输入绑定手机号/节点地址进行检索">
           </el-input>
+          </div>
         </div>
-        <el-button type="primary" class="con_search_submit" style="margin-left: -8%" @click="search_ad_ph_1()">搜索
+        <el-button type="primary" class="con_search_submit" style="position: relative;left: -13%" @click="search_ad_ph_1()">搜索
         </el-button>
-        <el-select style="left: -12%;position: relative" v-model="select_value" @change="change_user_source_1()"
+        <el-select style="left: -19.8%;position: relative" v-model="select_value" @change="change_user_source_1()"
                    placeholder="请选择节点类型">
           <el-option
             v-for="item in part2_options1"
@@ -636,11 +638,13 @@
       <div class="con_search" style="width: 60%">
         <div class="con_search_div">
           <span class="el-icon-search us_search2_1_input_icon"></span>
-          <el-input style="text-indent: 30px" v-model="search_2"
+          <div class="input_fath">
+          <el-input  v-model="search_2"
                     placeholder="请输入绑定手机号/节点地址进行检索">
           </el-input>
+          </div>
         </div>
-        <el-button type="primary" class="con_search_submit" style="    position: relative;left: -49.5%;"
+        <el-button type="primary" class="con_search_submit" style="    position: relative;left: -50.2%;"
                    @click="search_ad_ph_2()">搜索
         </el-button>
       </div>
@@ -770,11 +774,13 @@
       <div class="con_search" style="width: 60%">
         <div class="con_search_div">
           <span class="el-icon-search us_search2_1_input_icon"></span>
-          <el-input style="text-indent: 30px" v-model="search_3"
-                    placeholder=" 请输入绑定手机号/节点地址进行检索">
+          <div class="input_fath">
+          <el-input  v-model="search_3"
+                    placeholder="请输入绑定手机号/节点地址进行检索">
           </el-input>
+          </div>
         </div>
-        <el-button type="primary" class="con_search_submit" style="margin-left: 10%" @click="search_ad_ph_3()">搜索
+        <el-button type="primary" class="con_search_submit" style="position: relative;left: -0.7%" @click="search_ad_ph_3()">搜索
         </el-button>
         <el-select style="left: 5%" v-model="select_value_3" @change="change_user_source_2()" placeholder="请选择节点类型">
           <el-option
@@ -1153,6 +1159,7 @@
       },
       /*part_1 查询*/
       search_ad_ph_1() {
+        this.currentPage=1
         this.select_value = ''
         if (this.search_1.length == 11) {
           let data = {"phone": this.search_1, "address": "", "type": "", "page": 1, "pageSize": 10}
@@ -1625,12 +1632,11 @@
         }else {
           data={"page":this.currentPage_7,"pagesize":10,"address":this.search_2,"phone":""}
         }
-        this.currentPage_7 = 1
-
         this.get_data_3(data, 0)
       },
       /*part_3 查询*/
       search_ad_ph_2() {
+        console.log('22')
         this.currentPage_7 = 1
         let data
         if(this.search_2.length==11){
@@ -1638,7 +1644,6 @@
         }else {
           data={"page":1,"pagesize":10,"address":this.search_2,"phone":""}
         }
-        this.currentPage_7 = 1
 
         this.get_data_3(data, 1)
       },
@@ -1725,8 +1730,6 @@
         let data={"page":1,"pagesize":10,"address":"","phone":"","type":"","in":""}
         this.get_data_4(data, 0)
       },
-
-
       /*part_4分页查询*/
       currentPageChange_8(e) {
         this.currentPage_8 = e
@@ -1740,6 +1743,8 @@
       },
       /*part_4 查询*/
       search_ad_ph_3() {
+        this.select_value_3=''
+        this.select_value_4=''
         this.currentPage_8 = 1
         let data
         if(this.search_3.length==11){
@@ -1815,7 +1820,12 @@
 
   }
 </script>
-
+<style>
+  .af_all .con_search_div input {
+    outline: none;
+    border: none;
+  }
+</style>
 <style scoped>
   .af_all {
     width: 100%;
@@ -1854,22 +1864,20 @@
 
   .con_search {
     position: relative;
-    left: -30px;
-    /*width: 40%;*/
+    width: 70%;
     display: flex;
-    width: 80%;
     margin-top: 20px;
     justify-content: space-between;
   }
-
   .con_search_div {
     display: flex;
-    width: 35%;
+    width:35%;
+    background-color: #ffffff;
   }
 
   .us_search2_1_input_icon {
-    position: absolute;
-    margin-left: 46px;
+    position: relative;
+    left: 26px;
     margin-top: 12px;
     z-index: 1;
   }
@@ -1894,5 +1902,10 @@
     color: #800080;
     padding: 0 5px;
     /*margin: 0 10px;*/
+  }
+  .input_fath {
+    width: 80%;
+    position: relative;
+    left: 30px;
   }
 </style>
