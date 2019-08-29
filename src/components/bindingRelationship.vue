@@ -143,6 +143,7 @@
 
 
   .con_search_div {
+    border-radius: 3px;
     display: flex;
     width: 70%;
     background-color: #ffffff;

@@ -78,7 +78,7 @@
               label="金额"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.balance}}</span>
+                <span>{{scope.row.balance==''?0:scope.row.balance}} TUE</span>
               </template>
             </el-table-column>
           </el-table>
@@ -118,7 +118,7 @@
               label="收益"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.balance}}</span>
+                <span>{{scope.row.balance==''?0:scope.row.balance}} TUE</span>
               </template>
             </el-table-column>
           </el-table>
@@ -200,7 +200,7 @@
               label="节点质押金额"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.nodeamount}}</span>
+                <span>{{scope.row.nodeamount==''?0:scope.row.nodeamount}} TUE</span>
               </template>
             </el-table-column>
           </el-table>
@@ -231,7 +231,7 @@
           <span>{{detailes.bindphone}}</span>
         </el-form-item>
         <el-form-item label="节点质押金额：" :label-width="formLabelWidth_1">
-          <span><span>{{detailes.currentpledgeamount}}</span> TUE <span class="operating"
+          <span><span>{{detailes.currentpledgeamount==''?0:detailes.currentpledgeamount}}</span> TUE <span class="operating"
                                                                         @click="see_de_all_2(detailes.nodeaddress)">查看详情</span></span>
         </el-form-item>
         <el-form-item label="节点分红比例：" :label-width="formLabelWidth_1">
@@ -489,7 +489,7 @@
             sortable
           >
             <template slot-scope="scope">
-              <span>{{scope.row.currentpledgeamount}} <span> TUE</span></span>
+              <span>{{scope.row.currentpledgeamount==''?0:scope.row.currentpledgeamount}} <span> TUE</span></span>
             </template>
           </el-table-column>
           <el-table-column
@@ -547,7 +547,7 @@
             align="center"
             sortable>
             <template slot-scope="scope">
-              <span>{{scope.row.currentwed}} <span> WED</span></span>
+              <span>{{scope.row.currentwed==''?0:scope.row.currentwed}} <span> WED</span></span>
             </template>
           </el-table-column>
           <el-table-column
@@ -687,7 +687,7 @@
             align="center"
           >
             <template slot-scope="scope">
-              <span>{{scope.row.currentpledgeamount}}</span>
+              <span>{{scope.row.currentpledgeamount==''?0:scope.row.currentpledgeamount}} TUE</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -695,7 +695,7 @@
             label="节点累计收益"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.nodeCumulativebenefits}}</span>
+              <span>{{scope.row.nodeCumulativebenefits==''?0:scope.row.nodeCumulativebenefits}} TUE</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -703,7 +703,7 @@
             label="节点当前收益"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.nodeCurrentrevenue}}</span>
+              <span>{{scope.row.nodeCurrentrevenue==''?0:scope.row.nodeCurrentrevenue}} WED/h</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -728,7 +728,7 @@
             align="center"
           >
             <template slot-scope="scope">
-              <span>{{scope.row.allnodepledgeamount}}</span>
+              <span>{{scope.row.allnodepledgeamount==''?0:scope.row.allnodepledgeamount}} TUE</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -737,7 +737,7 @@
             align="center"
           >
             <template slot-scope="scope">
-              <span>{{scope.row.applyBindingAmount}}</span>
+              <span>{{scope.row.applyBindingAmount==''?0:scope.row.applyBindingAmount}} TUE</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -1121,6 +1121,7 @@
       /*part_1 初始化*/
       Initialization_data_1() {
         this.currentPage = 1
+        this.select_value = ''
         let data = {"phone": "", "address": "", "type": "", "page": 1, "pageSize": 10}
         this.get_data_1(data, 0)
       },
@@ -1636,7 +1637,6 @@
       },
       /*part_3 查询*/
       search_ad_ph_2() {
-        console.log('22')
         this.currentPage_7 = 1
         let data
         if(this.search_2.length==11){
@@ -1727,6 +1727,8 @@
       /*part_4 获取初始化数据*/
       Initialization_data_4() {
         this.currentPage_8 = 1
+        this.select_value_3=''
+        this.select_value_4=''
         let data={"page":1,"pagesize":10,"address":"","phone":"","type":"","in":""}
         this.get_data_4(data, 0)
       },
@@ -1790,7 +1792,6 @@
       /*part_5 获取数据公共接口*/
       get_data_5(e) {
         equitypool(e).then(response => {
-          console.log(response)
           if (response.datalist == []) {
             this.tableData_9 = []
             this.totla_9 = 0

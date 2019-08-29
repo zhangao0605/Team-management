@@ -259,7 +259,7 @@
           <span class="el-icon-search us_search2_1_input_icon"></span>
           <div class="input_fath">
           <el-input  v-model="search_more_vlue"
-                    placeholder="请输入用户手机号/用户地址进行检索">
+                    placeholder="请输入用户手机号/用户地址/提现地址进行检索">
           </el-input>
           </div>
         </div>
@@ -370,7 +370,7 @@
           <span class="el-icon-search us_search2_1_input_icon"></span>
           <div class="input_fath">
           <el-input v-model="search_more_vlue_1"
-                    placeholder="请输入用户手机号/用户地址进行检索">
+                    placeholder="请输入用户手机号/用户地址/提现地址进行检索">
           </el-input>
           </div>
         </div>
@@ -987,7 +987,7 @@
             "exchangeType": this.select_value1,
             "page": this.currentPage_3,
             "pagesize": 10,
-            "reviewBatch": this.select_value2,
+            "reviewBatch": this.select_value2.toString(),
             "status": '1'
           }
         } else {
@@ -997,7 +997,7 @@
             "exchangeType": this.select_value1,
             "page": this.currentPage_3,
             "pagesize": 10,
-            "reviewBatch": this.select_value2,
+            "reviewBatch": this.select_value2.toString(),
             "status": '1'
           }
         }
@@ -1014,7 +1014,7 @@
             "exchangeType": this.select_value1_1,
             "page": this.currentPage_4,
             "pagesize": 10,
-            "reviewBatch": this.select_value2_1,
+            "reviewBatch": this.select_value2_1.toString(),
             "status": "0"
           }
         } else {
@@ -1024,7 +1024,7 @@
             "exchangeType": this.select_value1_1,
             "page": this.currentPage_4,
             "pagesize": 10,
-            "reviewBatch": this.select_value2_1,
+            "reviewBatch": this.select_value2_1.toString(),
             "status": "0"
           }
         }
@@ -1091,7 +1091,7 @@
             "exchangeType": this.select_value1,
             "page": 1,
             "pagesize": 10,
-            "reviewBatch": this.select_value2,
+            "reviewBatch": this.select_value2.toString(),
             "status": "1"
           }
         } else {
@@ -1101,7 +1101,7 @@
             "exchangeType": this.select_value1,
             "page": 1,
             "pagesize": 10,
-            "reviewBatch": this.select_value2,
+            "reviewBatch": this.select_value2.toString(),
             "status": "1"
           }
         }
@@ -1117,7 +1117,7 @@
             "exchangeType": this.select_value1,
             "page": 1,
             "pagesize": 10,
-            "reviewBatch": this.select_value2,
+            "reviewBatch": this.select_value2.toString(),
             "status": "1"
           }
         } else {
@@ -1127,7 +1127,7 @@
             "exchangeType": this.select_value1,
             "page": 1,
             "pagesize": 10,
-            "reviewBatch": this.select_value2,
+            "reviewBatch": this.select_value2.toString(),
             "status": "1"
           }
         }
@@ -1143,7 +1143,7 @@
             "exchangeType": this.select_value1_1,
             "page": 1,
             "pagesize": 10,
-            "reviewBatch": this.select_value2_1,
+            "reviewBatch": this.select_value2_1.toString(),
             "status": "0"
           }
         } else {
@@ -1153,7 +1153,7 @@
             "exchangeType": this.select_value1_1,
             "page": 1,
             "pagesize": 10,
-            "reviewBatch": this.select_value2_1,
+            "reviewBatch": this.select_value2_1.toString(),
             "status": "0"
           }
         }
@@ -1169,7 +1169,7 @@
             "exchangeType": this.select_value1_1,
             "page": 1,
             "pagesize": 10,
-            "reviewBatch": this.select_value2_1,
+            "reviewBatch": this.select_value2_1.toString(),
             "status": "0"
           }
         } else {
@@ -1179,7 +1179,7 @@
             "exchangeType": this.select_value1_1,
             "page": 1,
             "pagesize": 10,
-            "reviewBatch": this.select_value2_1,
+            "reviewBatch": this.select_value2_1.toString(),
             "status": "0"
           }
         }
@@ -1226,7 +1226,6 @@
       dialog_sure_1() {
         this.dialogVisible_1 = false
         this.dialogVisible_3 = true
-        console.log(this.verify_phone_number_1)
       },
       /*part_5 批量审核弹窗取消按钮*/
       dialog_cancel_3() {
@@ -1362,6 +1361,7 @@
   }
   .con_search_div {
     display: flex;
+    border-radius: 3px;
     width:35%;
     background-color: #ffffff;
   }

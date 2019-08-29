@@ -731,7 +731,7 @@
           "address": this.form.address,
           "phone": this.form.phone,
           "pledgeBalance": this.form.value,
-          "batch": this.node_select
+          "batch": this.node_select.toString()
         }
         insertCreationPerson(data).then(response => {
           if (response.eCode == 200) {
@@ -807,7 +807,7 @@
           "address": address,
           "phone": phone,
           "pledgeBalance": pledgeBalance,
-          "batch": batch,
+          "batch": batch.toString(),
         }
         this.dialogedit = true
       },
@@ -817,7 +817,7 @@
       },
       /*确认修改节点*/
       dialogeditsure() {
-        let data={"phone":this.form_1.phone,"pledgeBalance":this.form_1.pledgeBalance,"batch":this.form_1.batch}
+        let data={"phone":this.form_1.phone,"pledgeBalance":this.form_1.pledgeBalance,"batch":this.form_1.batch.toString()}
         updateCreationPerson(data).then(response => {
           if (response.eCode == 200) {
             this.node_select=1

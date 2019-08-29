@@ -306,24 +306,8 @@
           {"name": ' 未到账 '},
         ],
         tableData: [],
-        tableData_1: [
-          {
-            "groupNo": '1111',
-            "address": '1111',
-            "phone": '1111',
-            "bourseAddress": '1111',
-            "groupName": '1111',
-          }
-        ],
-        tableData_2: [
-          {
-            "groupNo": '1111',
-            "address": '1111',
-            "phone": '1111',
-            "bourseAddress": '1111',
-            "groupName": '1111',
-          }
-        ],
+        tableData_1: [],
+        tableData_2: [],
         search: '',
         search_1: '',
         search_2: '',
@@ -625,7 +609,6 @@
       },
       /*part_2 改变用户来源*/
       change_user_source_1() {
-        console.log('111')
         let data = {
           "phone": this.save_search_value_1,
           "address": "",
@@ -763,6 +746,7 @@
   }
 
   .con_search_div {
+    border-radius: 3px;
     display: flex;
     width: 40%;
     background-color: #ffffff;
