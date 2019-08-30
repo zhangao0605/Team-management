@@ -284,3 +284,11 @@ export function transactionRecordScreen(e) {
     data:e
   })
 }
+/*提现退款*/
+export function withdrawalRefund(e) {
+  return request({
+    url:'/v1/investmentAdmin/info/withdrawalRefund',
+    method: 'get',
+    params:e
+  })
+}

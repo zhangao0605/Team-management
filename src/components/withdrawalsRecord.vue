@@ -52,7 +52,7 @@
       :visible.sync="dialogVisible_2"
       width="30%"
     >
-      <span>退款后，该笔提现请求会被取消，用户会在钱包中收到返还的转账金额XXXX TUR，请与用户确认后再进行退款操作</span>
+      <span>退款后，该笔提现请求会被取消，用户会在钱包中收到返还的转账金额，请与用户确认后再进行退款操作</span>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialog_cancel_2()">取 消</el-button>
     <el-button type="primary" @click="dialog_sure_2()">确 定</el-button>
@@ -258,12 +258,13 @@
         <div class="con_search_div">
           <span class="el-icon-search us_search2_1_input_icon"></span>
           <div class="input_fath">
-          <el-input  v-model="search_more_vlue"
-                    placeholder="请输入用户手机号/用户地址/提现地址进行检索">
-          </el-input>
+            <el-input v-model="search_more_vlue"
+                      placeholder="请输入用户手机号/用户地址/提现地址进行检索">
+            </el-input>
           </div>
         </div>
-        <el-button type="primary" style="position: relative;left: -3%" class="con_search_submit" @click="search_more()">搜索
+        <el-button type="primary" style="position: relative;left: -3%" class="con_search_submit" @click="search_more()">
+          搜索
         </el-button>
         <el-select style="margin-left: 5%" v-model="select_value1" @change="pa_search_4_1()" placeholder="请选择提现交易所">
           <el-option
@@ -369,12 +370,13 @@
         <div class="con_search_div">
           <span class="el-icon-search us_search2_1_input_icon"></span>
           <div class="input_fath">
-          <el-input v-model="search_more_vlue_1"
-                    placeholder="请输入用户手机号/用户地址/提现地址进行检索">
-          </el-input>
+            <el-input v-model="search_more_vlue_1"
+                      placeholder="请输入用户手机号/用户地址/提现地址进行检索">
+            </el-input>
           </div>
         </div>
-        <el-button type="primary"  style="position: relative;left: -3%" class="con_search_submit" @click="search_more_1()">搜索
+        <el-button type="primary" style="position: relative;left: -3%" class="con_search_submit"
+                   @click="search_more_1()">搜索
         </el-button>
         <el-select style="margin-left: 5%" v-model="select_value1_1" @change="pa_search_5_1()" placeholder="请选择提现交易所">
           <el-option
@@ -466,10 +468,10 @@
           <el-table-column
             label="操作"
             align="center"
-            width="200">
+            >
             <template slot-scope="scope">
-              <span class="operating" @click="change_address()">修改地址</span>
-              <span class="operating" @click="refund()">退款</span>
+              <!--<span class="operating" @click="change_address()">修改地址</span>-->
+              <span class="operating" @click="refund(scope.row.hash)">退款</span>
             </template>
           </el-table-column>
         </el-table>
@@ -485,16 +487,17 @@
     </div>
     <!--已退款-->
     <div class="part_6" v-show="part_show[5].is_true">
-      <div class="con_search" >
+      <div class="con_search">
         <div class="con_search_div">
           <span class="el-icon-search us_search2_1_input_icon"></span>
           <div class="input_fath">
-          <el-input  v-model="search_more_vlue_2"
-                    placeholder="请输入用户手机号/用户地址/提现地址进行检索">
-          </el-input>
+            <el-input v-model="search_more_vlue_2"
+                      placeholder="请输入用户手机号/用户地址/提现地址进行检索">
+            </el-input>
           </div>
         </div>
-        <el-button type="primary"   style="position: relative;left: -18.4%" class="con_search_submit" @click="search_more_2()">搜索
+        <el-button type="primary" style="position: relative;left: -18.4%" class="con_search_submit"
+                   @click="search_more_2()">搜索
         </el-button>
         <el-select style="left: -25.7%;position: relative" v-model="select_value1_2" @change="pa6_select()"
                    placeholder="请选择提现交易所">
@@ -596,7 +599,8 @@
     getExchangeType,
     reviewBatch,
     auditWithdrawalRecord,
-    getALLReviewBatch
+    getALLReviewBatch,
+    withdrawalRefund
   } from '../api/interface'
 
   export default {
@@ -684,6 +688,7 @@
         part_4_recording: '',
         part_5_recording: '',
         part_6_recording: '',
+        refund_value:''
       }
     },
     methods: {
@@ -1237,7 +1242,8 @@
         /*二次确认发送请求*/
       },
       /*part5 提现失败退款*/
-      refund() {
+      refund(e) {
+        this.refund_value=e
         this.dialogVisible_2 = true
       },
       /*part_5 退款弹窗取消按钮*/
@@ -1246,6 +1252,20 @@
       },
       /*part_5 退款弹窗确认按钮*/
       dialog_sure_2() {
+        let data={"hash":this.refund_value}
+        withdrawalRefund(data).then(response => {
+          if(response.eCode==200){
+            this.$message({
+              message: '退款操作已提交！',
+              type: 'success'
+            });
+          }else {
+            this.$message({
+              message: '退款操作提交失败！',
+              type: 'error'
+            });
+          }
+        })
         this.dialogVisible_2 = false
         /*发送退款请求成功后关闭弹窗*/
       },
@@ -1359,10 +1379,11 @@
     margin-top: 20px;
     justify-content: space-between;
   }
+
   .con_search_div {
     display: flex;
     border-radius: 3px;
-    width:35%;
+    width: 35%;
     background-color: #ffffff;
   }
 
@@ -1384,6 +1405,7 @@
     margin: 0 10px;
     font-size: 15px;
   }
+
   .input_fath {
     width: 80%;
     position: relative;

@@ -260,7 +260,7 @@
             label="操作"
             align="center">
             <template slot-scope="scope">
-              <span class="operating" @click="retry(scope.row.Id)">重试</span>
+              <span class="operating" @click="retry(scope.row.hash)">重试</span>
             </template>
           </el-table-column>
         </el-table>
@@ -651,12 +651,30 @@
       },
       /*part_3重试*/
       retry(e) {
-        let data = {"id": e}
-        reTryPlay().then(response => {
-          this.$message({
-            message: '已进行重试操作',
-            type: 'success'
-          });
+        let data = {"hash": e}
+        reTryPlay(data).then(response => {
+          if(response.eCode==200){
+            this.$message({
+              message: '已进行重试操作',
+              type: 'success'
+            });
+            let data = {
+              "phone": this.save_search_value_2,
+              "address": "",
+              "exchangeType": this.select_value_1,
+              "backgroundPlay": "",
+              "status": "0",
+              "page": this.currentPage_2,
+              "pageSize": 10
+            }
+            this.getdata(data, 2)
+          }else {
+            this.$message({
+              message: '进行重试操作失败！',
+              type: 'error'
+            });
+          }
+
         })
 
       },

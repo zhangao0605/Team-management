@@ -780,17 +780,17 @@
           </el-input>
           </div>
         </div>
-        <el-button type="primary" class="con_search_submit" style="position: relative;left: -0.7%" @click="search_ad_ph_3()">搜索
+        <el-button type="primary" class="con_search_submit" style="position: relative;left: -13%" @click="search_ad_ph_3()">搜索
         </el-button>
-        <el-select style="left: 5%" v-model="select_value_3" @change="change_user_source_2()" placeholder="请选择节点类型">
-          <el-option
-            v-for="item in part2_options1"
-            :key="item.typeid"
-            :label="item.typename"
-            :value="item.typeid">
-          </el-option>
-        </el-select>
-        <el-select style="left: 10%" v-model="select_value_4" @change="change_tr_type()" placeholder="请选择交易类型">
+        <!--<el-select style="left: 5%" v-model="select_value_3" @change="change_user_source_2()" placeholder="请选择节点类型">-->
+          <!--<el-option-->
+            <!--v-for="item in part2_options1"-->
+            <!--:key="item.typeid"-->
+            <!--:label="item.typename"-->
+            <!--:value="item.typeid">-->
+          <!--</el-option>-->
+        <!--</el-select>-->
+        <el-select style="left: -20%" v-model="select_value_4" @change="change_tr_type()" placeholder="请选择交易类型">
           <el-option
             v-for="item in part4_options1"
             :key="item.value"
@@ -831,13 +831,13 @@
               <span>{{scope.row.phone}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="节点级别"
-            align="center">
-            <template slot-scope="scope">
-              <span>{{node_level_matching_2(scope.row.nodelevel)}}</span>
-            </template>
-          </el-table-column>
+          <!--<el-table-column-->
+            <!--label="节点级别"-->
+            <!--align="center">-->
+            <!--<template slot-scope="scope">-->
+              <!--<span>{{node_level_matching_2(scope.row.nodelevel)}}</span>-->
+            <!--</template>-->
+          <!--</el-table-column>-->
           <el-table-column
             label="交易类别"
             align="center">

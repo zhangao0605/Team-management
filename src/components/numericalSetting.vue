@@ -471,10 +471,6 @@
         node_select: 1,
         node_options: [
           {
-            batch: "",
-            batchName: "请选择审核批次",
-          },
-          {
             batch: 1,
             batchName: "第1批次",
           },
@@ -731,7 +727,7 @@
           "address": this.form.address,
           "phone": this.form.phone,
           "pledgeBalance": this.form.value,
-          "batch": this.node_select.toString()
+          "batch": this.node_select
         }
         insertCreationPerson(data).then(response => {
           if (response.eCode == 200) {
