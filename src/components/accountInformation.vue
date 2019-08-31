@@ -801,7 +801,7 @@
       </div>
       <div style="margin-top: 30px">
         <span>总质押额：</span>
-        <span>{{all_mo}}  </span> TUE
+        <span>{{all_mo==''?0:all_mo}}  </span> TUE
       </div>
       <div class="con_table">
         <el-table
@@ -1781,11 +1781,17 @@
       /*交易类别*/
       tr_macth(e){
         let a
-        if(e==true){
-          a='质押'
+        if(e==''||e==undefined){
+          a=''
         }else {
-          a='赎回'
+          if(e==true){
+            a='质押'
+          }else {
+            a='赎回'
+          }
         }
+
+
         return a
       },
       /*==================================================*/
@@ -1878,7 +1884,7 @@
 
   .us_search2_1_input_icon {
     position: relative;
-    left: 26px;
+    left: 14px;
     margin-top: 12px;
     z-index: 1;
   }
@@ -1907,6 +1913,6 @@
   .input_fath {
     width: 80%;
     position: relative;
-    left: 30px;
+    left: 3%;
   }
 </style>

@@ -584,9 +584,11 @@
       edit(e, q) {
         if (e == 'M') {
           this.edit_value.m_value = q
+          this.verify_value = q
           this.dialogVisible = true
         } else if (e == 'N') {
           this.edit_value.n_value = q
+          this.verify_value_1 = q
           this.dialogVisible_1 = true
         } else {
         }

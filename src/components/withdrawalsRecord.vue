@@ -148,7 +148,7 @@
             label="提现时间"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.groupNo}}</span>
+              <span>{{timestampToTime(scope.row.timestamp)}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -176,7 +176,7 @@
             label="提现地址"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.groupName}}</span>
+              <span>{{scope.row.wDAddress}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -496,7 +496,7 @@
             </el-input>
           </div>
         </div>
-        <el-button type="primary" style="position: relative;left: -18.4%" class="con_search_submit"
+        <el-button type="primary" style="position: relative;left:-15.4%" class="con_search_submit"
                    @click="search_more_2()">搜索
         </el-button>
         <el-select style="left: -25.7%;position: relative" v-model="select_value1_2" @change="pa6_select()"
@@ -1389,7 +1389,7 @@
 
   .us_search2_1_input_icon {
     position: relative;
-    left: 26px;
+    left: 14px;
     margin-top: 12px;
     z-index: 1;
   }
@@ -1409,6 +1409,6 @@
   .input_fath {
     width: 80%;
     position: relative;
-    left: 30px;
+    left: 3%;
   }
 </style>

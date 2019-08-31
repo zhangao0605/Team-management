@@ -284,9 +284,6 @@
   };
 </script>
 <style>
-  .con_search_div input {
-    text-indent: 30px;
-  }
 </style>
 <style scoped>
   .el-pagination {

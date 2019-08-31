@@ -80,38 +80,50 @@
         currentPage: 1,
         pagesize: 10,
         totla: 0,
+        search_value:''
       }
     },
     methods: {
       /*检索*/
       search_address() {
+        this.currentPage=1
         let data
         if (this.search.length == 11) {
           data = {"phone": this.search, "address": "", "page": 1, "pageSize": 10}
         } else {
           data = {"phone": "", "address": this.search, "page": 1, "pageSize": 10}
         }
-        this.getdata(data)
+        this.getdata(data,1)
       },
       /*分页*/
       currentPageChange(e) {
-
+        this.currentPage=e
+        let data
+        if (this.search.length == 11) {
+          data = {"phone": this.search_value, "address": "", "page": this.currentPage, "pageSize": 10}
+        } else {
+          data = {"phone": "", "address": this.search_value, "page": this.currentPage, "pageSize": 10}
+        }
+        this.getdata(data,0)
       },
       /*获取数据公共方法*/
-      getdata(e) {
+      getdata(e,q) {
         getPersonInfo(e).then(response => {
           if (response.data.dataList == []) {
             this.tableData = []
           } else {
             this.tableData = response.data.dataList
             this.totla = response.data.total
+            if(q==1){
+              this.search_value= this.search
+            }
           }
         })
       },
       /*获取数据*/
       initialization_data() {
         let data = {"phone": "", "address": "", "page": 1, "pageSize": 10}
-        this.getdata(data)
+        this.getdata(data,0)
       }
     },
     created() {
@@ -159,7 +171,7 @@
 
   .us_search2_1_input_icon {
     position: relative;
-   left: 26px;
+   left: 16px;
     margin-top: 12px;
     z-index: 1;
   }
@@ -167,6 +179,6 @@
   .input_fath {
     width: 80%;
     position: relative;
-    left: 30px;
+    left: 3%;
   }
 </style>
