@@ -713,6 +713,11 @@
       },
       /*添加节点*/
       add_node() {
+        this.form = {
+          "address": '',
+          "phone": '',
+          "value": 0,
+        }
         this.dialogFormVisible = true
       },
       /*添加节点取消*/
@@ -724,41 +729,53 @@
       },
       /*添加节点确认*/
       dialogFormsure() {
-        let data = {
-          "name": "",
-          "address": this.form.address,
-          "phone": this.form.phone,
-          "pledgeBalance": this.form.value,
-          "batch": this.node_select
-        }
-        insertCreationPerson(data).then(response => {
-          if (response.eCode == 200) {
-            this.node_select=1
-            this.form = {
-              "address": '',
-              "phone": '',
-              "value": '',
-            },
-              this.$message({
-                type: 'success',
-                message: '节点添加成功'
-              });
-            this.Initialization_data_2()
-            this.dialogFormVisible = false
-          } else {
-            this.$message({
-              type: 'error',
-              message: '节点添加失败'
-            });
-            this.node_select=1
-            this.form = {
-              "address": '',
-              "phone": '',
-              "value": '',
-            }
-            this.dialogFormVisible = false
+        if(this.form.address==''){
+          this.$message({
+            type: 'error',
+            message: '添加创世王者节点节点地址不能为空！'
+          });
+        }else if(this.form.phone=='') {
+          this.$message({
+            type: 'error',
+            message: '添加创世王者节点节点绑定手机号不能为空'
+          });
+        }else {
+          let data = {
+            "name": "",
+            "address": this.form.address,
+            "phone": this.form.phone,
+            "pledgeBalance": this.form.value.toString(),
+            "batch": this.node_select
           }
-        })
+          insertCreationPerson(data).then(response => {
+            if (response.eCode == 200) {
+              this.node_select=1
+              this.form = {
+                "address": '',
+                "phone": '',
+                "value": '',
+              },
+                this.$message({
+                  type: 'success',
+                  message: '节点添加成功'
+                });
+              this.Initialization_data_2()
+              this.dialogFormVisible = false
+            } else if(response.eCode == 10000){
+              this.$message({
+                type: 'error',
+                message:response.eMsg
+              });
+            } else {
+              this.$message({
+                type: 'error',
+                message: '节点添加失败'
+              });
+            }
+          })
+        }
+
+
       },
       // /*添加节点二次确认,取消操作*/
       // dialogtwo_cancel() {
