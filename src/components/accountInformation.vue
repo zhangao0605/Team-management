@@ -801,7 +801,7 @@
       </div>
       <div style="margin-top: 30px">
         <span>总质押额：</span>
-        <span>{{all_mo==''?0:all_mo}}  </span> TUE
+        <span>{{scientificCounting(all_mo==''?0:all_mo)}}  </span> TUE
       </div>
       <div class="con_table">
         <el-table
@@ -821,7 +821,7 @@
             label="节点地址"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.address}}</span>
+              <span>{{scope.row.transactionaddress}}</span>
             </template>
           </el-table-column>
           <el-table-column
