@@ -37,21 +37,21 @@
           label="用户钱数"
           align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.balance}}</span>
+            <span>{{scientificCounting(scope.row.balance)}}</span>
           </template>
         </el-table-column>
         <el-table-column
           label="锁定钱数"
           align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.pledgeBalance}}</span>
+            <span>{{scientificCounting(scope.row.pledgeBalance)}}</span>
           </template>
         </el-table-column>
         <el-table-column
           label="可流通代币数"
           align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.token}}</span>
+            <span>{{scientificCounting(scope.row.token)}}</span>
           </template>
         </el-table-column>
 

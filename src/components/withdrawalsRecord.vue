@@ -106,7 +106,7 @@
             label="提现数量"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.balance}}</span>
+              <span>{{scientificCounting(scope.row.balance)}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -120,7 +120,7 @@
             label="提现状态"
             align="center">
             <template slot-scope="scope">
-              <span>{{match_status(scope.row.status)}}</span>
+              <span>{{tradingStatus(scope.row.status)}}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -183,7 +183,7 @@
             label="提现数量"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.balance}}</span>
+              <span>{{scientificCounting(scope.row.balance)}}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -329,7 +329,7 @@
             label="提现数量"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.balance}}</span>
+              <span>{{scientificCounting(scope.row.balance)}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -350,7 +350,7 @@
             label="提现状态"
             align="center">
             <template slot-scope="scope">
-              <span>{{match_status(scope.row.status)}}</span>
+              <span>{{tradingStatus(scope.row.status)}}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -441,7 +441,7 @@
             label="提现数量"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.balance}}</span>
+              <span>{{scientificCounting(scope.row.balance)}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -462,13 +462,13 @@
             label="提现状态"
             align="center">
             <template slot-scope="scope">
-              <span>{{match_status(scope.row.status)}}</span>
+              <span>{{tradingStatus(scope.row.status)}}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="操作"
             align="center"
-            >
+          >
             <template slot-scope="scope">
               <!--<span class="operating" @click="change_address()">修改地址</span>-->
               <span class="operating" @click="refund(scope.row.hash)">退款</span>
@@ -555,7 +555,7 @@
             label="提现数量"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.balance}}</span>
+              <span>{{scientificCounting(scope.row.balance)}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -576,7 +576,7 @@
             label="提现状态"
             align="center">
             <template slot-scope="scope">
-              <span>{{match_status(scope.row.status)}}</span>
+              <span>{{tradingStatus(scope.row.status)}}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -688,7 +688,7 @@
         part_4_recording: '',
         part_5_recording: '',
         part_6_recording: '',
-        refund_value:''
+        refund_value: ''
       }
     },
     methods: {
@@ -855,7 +855,7 @@
           "page": 1,
           "pagesize": 10,
           "reviewBatch": "",
-          "status": "1"
+          "status": "102"
         }
         this.get_data_4(data, 0)
       },
@@ -872,7 +872,7 @@
           "page": 1,
           "pagesize": 10,
           "reviewBatch": "",
-          "status": "0"
+          "status": "103"
         }
         this.get_data_5(data, 0)
       },
@@ -902,7 +902,7 @@
           "page": 1,
           "pagesize": 10,
           "reviewBatch": "",
-          "status": "-1"
+          "status": "1"
         }
         this.get_data_2(data)
       },
@@ -972,7 +972,7 @@
           "page": this.currentPage_1,
           "pagesize": 10,
           "reviewBatch": "",
-          "status": "-1"
+          "status": "1"
         }
         this.get_data_2(data)
       },
@@ -993,7 +993,7 @@
             "page": this.currentPage_3,
             "pagesize": 10,
             "reviewBatch": this.select_value2.toString(),
-            "status": '1'
+            "status": '102'
           }
         } else {
           let data = {
@@ -1003,7 +1003,7 @@
             "page": this.currentPage_3,
             "pagesize": 10,
             "reviewBatch": this.select_value2.toString(),
-            "status": '1'
+            "status": '102'
           }
         }
         this.get_data_4(data, 0)
@@ -1020,7 +1020,7 @@
             "page": this.currentPage_4,
             "pagesize": 10,
             "reviewBatch": this.select_value2_1.toString(),
-            "status": "0"
+            "status": "103"
           }
         } else {
           data = {
@@ -1030,13 +1030,36 @@
             "page": this.currentPage_4,
             "pagesize": 10,
             "reviewBatch": this.select_value2_1.toString(),
-            "status": "0"
+            "status": "103"
           }
         }
         this.get_data_5(data, 0)
       },
       /*part_6 分页切换*/
       currentPageChange_5(e) {
+        let data
+        if (this.part_6_recording.length == 11) {
+          data = {
+            "phone": this.part_6_recording,
+            "address": "",
+            "exchangeType": this.select_value1_2,
+            "page": this.currentPage_5,
+            "pagesize": 10,
+            "reviewBatch": "",
+            "status": "2"
+          }
+        } else {
+          data = {
+            "phone": '',
+            "address": this.part_6_recording,
+            "exchangeType": this.select_value1_2,
+            "page": this.currentPage_5,
+            "pagesize": 10,
+            "reviewBatch": "",
+            "status": "2"
+          }
+        }
+        this.get_data_6(data, 0)
       },
       /*part_2 批量审核*/
       batch_review() {
@@ -1070,7 +1093,7 @@
             "page": 1,
             "pagesize": 10,
             "reviewBatch": "",
-            "status": "1"
+            "status": "102"
           }
           this.get_data_4(data, 1)
         } else {
@@ -1081,7 +1104,7 @@
             "page": 1,
             "pagesize": 10,
             "reviewBatch": "",
-            "status": "1"
+            "status": "102"
           }
           this.get_data_4(data, 1)
         }
@@ -1097,7 +1120,7 @@
             "page": 1,
             "pagesize": 10,
             "reviewBatch": this.select_value2.toString(),
-            "status": "1"
+            "status": "102"
           }
         } else {
           data = {
@@ -1107,7 +1130,7 @@
             "page": 1,
             "pagesize": 10,
             "reviewBatch": this.select_value2.toString(),
-            "status": "1"
+            "status": "102"
           }
         }
         this.get_data_4(data, 0)
@@ -1123,7 +1146,7 @@
             "page": 1,
             "pagesize": 10,
             "reviewBatch": this.select_value2.toString(),
-            "status": "1"
+            "status": "102"
           }
         } else {
           data = {
@@ -1133,7 +1156,7 @@
             "page": 1,
             "pagesize": 10,
             "reviewBatch": this.select_value2.toString(),
-            "status": "1"
+            "status": "102"
           }
         }
         this.get_data_4(data, 0)
@@ -1149,7 +1172,7 @@
             "page": 1,
             "pagesize": 10,
             "reviewBatch": this.select_value2_1.toString(),
-            "status": "0"
+            "status": "103"
           }
         } else {
           data = {
@@ -1159,7 +1182,7 @@
             "page": 1,
             "pagesize": 10,
             "reviewBatch": this.select_value2_1.toString(),
-            "status": "0"
+            "status": "103"
           }
         }
         this.get_data_5(data, 0)
@@ -1175,7 +1198,7 @@
             "page": 1,
             "pagesize": 10,
             "reviewBatch": this.select_value2_1.toString(),
-            "status": "0"
+            "status": "103"
           }
         } else {
           data = {
@@ -1185,7 +1208,7 @@
             "page": 1,
             "pagesize": 10,
             "reviewBatch": this.select_value2_1.toString(),
-            "status": "0"
+            "status": "103"
           }
         }
         this.get_data_5(data, 0)
@@ -1202,7 +1225,7 @@
             "page": 1,
             "pagesize": 10,
             "reviewBatch": "",
-            "status": "0"
+            "status": "103"
           }
           this.get_data_5(data, 1)
         } else {
@@ -1213,7 +1236,7 @@
             "page": 1,
             "pagesize": 10,
             "reviewBatch": "",
-            "status": "0"
+            "status": "103"
           }
           this.get_data_5(data, 1)
         }
@@ -1243,7 +1266,7 @@
       },
       /*part5 提现失败退款*/
       refund(e) {
-        this.refund_value=e
+        this.refund_value = e
         this.dialogVisible_2 = true
       },
       /*part_5 退款弹窗取消按钮*/
@@ -1252,14 +1275,15 @@
       },
       /*part_5 退款弹窗确认按钮*/
       dialog_sure_2() {
-        let data={"hash":this.refund_value}
+        let data = {"hash": this.refund_value}
         withdrawalRefund(data).then(response => {
-          if(response.eCode==200){
+          if (response.eCode == 200) {
             this.$message({
               message: '退款操作已提交！',
               type: 'success'
             });
-          }else {
+            this.Initialization_data_5()
+          } else {
             this.$message({
               message: '退款操作提交失败！',
               type: 'error'
@@ -1321,6 +1345,24 @@
           }
         }
         this.get_data_6(data, 0)
+      },
+      /*匹配交易状态*/
+      tradingStatus(e) {
+        let a
+        if(e==-1){
+          a='等待链内完成'
+        }else if(e==0){
+          a='链内转账失败'
+        }else if(e==1){
+          a='未审核'
+        }else if(e==2){
+          a='退款'
+        }else if(e==102){
+          a='成功'
+        }else if(e==103){
+          a='失败'
+        }
+        return a
       }
     },
     created() {

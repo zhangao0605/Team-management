@@ -822,7 +822,7 @@
           "address": address,
           "phone": phone,
           "pledgeBalance": pledgeBalance,
-          "batch": batch.toString(),
+          "batch": batch,
         }
         this.dialogedit = true
       },
@@ -832,7 +832,7 @@
       },
       /*确认修改节点*/
       dialogeditsure() {
-        let data={"phone":this.form_1.phone,"pledgeBalance":this.form_1.pledgeBalance,"batch":this.form_1.batch.toString()}
+        let data={"phone":this.form_1.phone,"pledgeBalance":this.form_1.pledgeBalance,"batch":this.form_1.batch.toString(),"address":this.form_1.address}
         updateCreationPerson(data).then(response => {
           if (response.eCode == 200) {
             this.node_select=1

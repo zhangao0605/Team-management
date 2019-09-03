@@ -200,7 +200,7 @@
               label="节点质押金额"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.nodeamount==''?0:scope.row.nodeamount}} TUE</span>
+                <span>{{scientificCounting(scope.row.nodeamount==''?0:scope.row.nodeamount)}} TUE</span>
               </template>
             </el-table-column>
           </el-table>
@@ -345,7 +345,7 @@
               label="节点质押金额"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.nodeamount}}</span>
+                <span>{{scientificCounting(scope.row.nodeamount)}}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -375,7 +375,7 @@
           <span>{{form_node_de.bindphone}}</span>
         </el-form-item>
         <el-form-item label="节点质押金额：" :label-width="formLabelWidth_1">
-          <span>{{form_node_de.currentpledgeamount}}</span>
+          <span>{{scientificCounting(Number(form_node_de.currentpledgeamount))}}</span>
         </el-form-item>
         <el-form-item label="节点下属一级节点数量：" :label-width="formLabelWidth_1">
           <span>{{form_node_de.onenodenum}}</span>
@@ -384,7 +384,7 @@
           <span>{{form_node_de.allNodeNum}}<span class="operating" @click="part_2_see_1(form_node_de.nodeaddress)">查看详情</span></span>
         </el-form-item>
         <el-form-item label="节点下属全部节点质押数量：" :label-width="formLabelWidth_1">
-          <span>{{form_node_de.allnodepledgeamount}}</span>
+          <span>{{scientificCounting(form_node_de.allnodepledgeamount)}}</span>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -489,7 +489,7 @@
             sortable
           >
             <template slot-scope="scope">
-              <span>{{scope.row.currentpledgeamount==''?0:scope.row.currentpledgeamount}} <span> TUE</span></span>
+              <span>{{scientificCounting(scope.row.currentpledgeamount==''?0:scope.row.currentpledgeamount)}} <span> TUE</span></span>
             </template>
           </el-table-column>
           <el-table-column
@@ -505,7 +505,7 @@
             label="节点累计收益"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.nodecumulativebenefits==''?0:scope.row.nodecumulativebenefits}}<span> TUE</span></span>
+              <span>{{scientificCounting(scope.row.nodecumulativebenefits==''?0:scope.row.nodecumulativebenefits)}}<span> TUE</span></span>
             </template>
           </el-table-column>
           <el-table-column
@@ -513,7 +513,7 @@
             label="节点当前收益"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.nodecurrentrevenue==''?0:scope.row.nodecurrentrevenue}} <span> WED/h</span></span>
+              <span>{{scientificCounting(scope.row.nodecurrentrevenue==''?0:scope.row.nodecurrentrevenue)}} <span> WED/h</span></span>
             </template>
           </el-table-column>
           <el-table-column
@@ -538,7 +538,7 @@
             align="center"
           >
             <template slot-scope="scope">
-              <span>{{scope.row.allnodepledgeamount==''?0:scope.row.allnodepledgeamount}} <span> TUE</span></span>
+              <span>{{scientificCounting(scope.row.allnodepledgeamount==''?0:scope.row.allnodepledgeamount)}} <span> TUE</span></span>
             </template>
           </el-table-column>
           <el-table-column
@@ -547,7 +547,7 @@
             align="center"
             sortable>
             <template slot-scope="scope">
-              <span>{{scope.row.currentwed==''?0:scope.row.currentwed}} <span> WED</span></span>
+              <span>{{scientificCounting(scope.row.currentwed==''?0:scope.row.currentwed)}} <span> WED</span></span>
             </template>
           </el-table-column>
           <el-table-column
@@ -687,7 +687,7 @@
             align="center"
           >
             <template slot-scope="scope">
-              <span>{{scope.row.currentpledgeamount==''?0:scope.row.currentpledgeamount}} TUE</span>
+              <span>{{scientificCounting(scope.row.currentpledgeamount==''?0:scope.row.currentpledgeamount)}} TUE</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -695,7 +695,7 @@
             label="节点累计收益"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.nodeCumulativebenefits==''?0:scope.row.nodeCumulativebenefits}} TUE</span>
+              <span>{{scientificCounting(scope.row.nodeCumulativebenefits==''?0:scope.row.nodeCumulativebenefits)}} TUE</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -703,7 +703,7 @@
             label="节点当前收益"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.nodeCurrentrevenue==''?0:scope.row.nodeCurrentrevenue}} WED/h</span>
+              <span>{{scientificCounting(scope.row.nodeCurrentrevenue==''?0:scope.row.nodeCurrentrevenue)}} WED/h</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -728,7 +728,7 @@
             align="center"
           >
             <template slot-scope="scope">
-              <span>{{scope.row.allnodepledgeamount==''?0:scope.row.allnodepledgeamount}} TUE</span>
+              <span>{{scientificCounting(scope.row.allnodepledgeamount==''?0:scope.row.allnodepledgeamount)}} TUE</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -737,7 +737,7 @@
             align="center"
           >
             <template slot-scope="scope">
-              <span>{{scope.row.applyBindingAmount==''?0:scope.row.applyBindingAmount}} TUE</span>
+              <span>{{scientificCounting(scope.row.applyBindingAmount==''?0:scope.row.applyBindingAmount)}} TUE</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -850,7 +850,7 @@
             align="center"
           >
             <template slot-scope="scope">
-              <span>{{scope.row.transactionAmount}}</span>
+              <span>{{scientificCounting(scope.row.transactionAmount==''?0:scope.row.transactionAmount)}}</span>
             </template>
           </el-table-column>
 
@@ -1120,6 +1120,7 @@
       },
       /*part_1 初始化*/
       Initialization_data_1() {
+        this.search_1=''
         this.currentPage = 1
         this.select_value = ''
         let data = {"phone": "", "address": "", "type": "", "page": 1, "pageSize": 10}
