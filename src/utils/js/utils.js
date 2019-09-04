@@ -1,6 +1,7 @@
 import moment from 'moment'
 import CryptoJS from "crypto-js"
-
+import BigNumber from "bignumber.js"
+// let BigNumber = require('bignumber.js');
 export default {
   install(Vue, opt) {
     Vue.prototype.tableHeaderColor = function ({row, column, rowIndex, columnIndex}) {
@@ -26,13 +27,26 @@ export default {
       // let originalText = bytes.toString(CryptoJS.enc.Utf8);
       // console.log(originalText);
     }
+    // /*金额转换*/
+    // Vue.prototype.scientificCounting = function (e) {
+    //   let num = 0
+    //   if (e == 0 || e == '' || e == null || e == undefined|| e == NaN) {
+    //     num = 0
+    //   } else {
+    //     num = (e / 1e18)
+    //   }
+    //   return num
+    // }
     /*金额转换*/
     Vue.prototype.scientificCounting = function (e) {
       let num = 0
       if (e == 0 || e == '' || e == null || e == undefined|| e == NaN) {
         num = 0
       } else {
-        num = (e / 1e18)
+        num =new BigNumber(`${e}`).div("1e+18").toString(10);
+        // if(num.indexOf('.') !== -1 && num.split('.')[1].length > 6){
+        //   num = parseFloat(num).toFixed(6)
+        // }
       }
       return num
     }

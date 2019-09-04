@@ -3,7 +3,6 @@ import {Message, MessageBox} from 'element-ui'
 import store from '../../store'
 import {getToken} from '@/utils/js/token'
 
-// 创建axios实例
 const service = axios.create({
   // baseURL: 'http://' + window.location.host,
   // baseURL: 'http://chaintest.thinkey.xyz',
@@ -12,8 +11,6 @@ const service = axios.create({
   // withCredentials: true, // 跨域请求时发送 cookies
   timeout: 30000 // 请求超时时间
 })
-
-// // request拦截器
 service.interceptors.request.use(
   config => {
     let token = 'Bearer ' + getToken()

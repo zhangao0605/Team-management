@@ -141,7 +141,7 @@
         :visible.sync="alert_1_3"
         append-to-body>
         <div>
-          共 {{nodeAllCheck_peoples==''?0:nodeAllCheck_peoples}} 人，质押 {{nodeAllCheck_tue==''?0:nodeAllCheck_tue}} TUE
+          共 {{nodeAllCheck_peoples==''?0:nodeAllCheck_peoples}} 人，质押 {{scientificCounting(nodeAllCheck_tue==''?0:nodeAllCheck_tue)}} TUE
         </div>
         <div>
           <el-select style="margin-top: 30px" v-model="select_value_1" @change="change_nodeLevel()" placeholder="请选择">
@@ -231,7 +231,7 @@
           <span>{{detailes.bindphone}}</span>
         </el-form-item>
         <el-form-item label="节点质押金额：" :label-width="formLabelWidth_1">
-          <span><span>{{detailes.currentpledgeamount==''?0:detailes.currentpledgeamount}}</span> TUE <span class="operating"
+          <span><span>{{scientificCounting(detailes.currentpledgeamount==''?0:detailes.currentpledgeamount)}}</span> TUE <span class="operating"
                                                                         @click="see_de_all_2(detailes.nodeaddress)">查看详情</span></span>
         </el-form-item>
         <el-form-item label="节点分红比例：" :label-width="formLabelWidth_1">
@@ -245,10 +245,10 @@
                                                             @click="see_de_all_3(detailes.nodeaddress)">查看详情</span></span>
         </el-form-item>
         <el-form-item label="节点下属全部节点质押数量：" :label-width="formLabelWidth_1">
-          <span><span>{{detailes.allnodepledgeamount}}</span> TUE  </span>
+          <span><span>{{scientificCounting(detailes.allnodepledgeamount==''?0:detailes.allnodepledgeamount)}}</span> TUE  </span>
         </el-form-item>
         <el-form-item label="节点累计收益：" :label-width="formLabelWidth_1">
-          <span><span>{{detailes.nodecumulativebenefits}}</span> TUE<span class="operating"
+          <span><span>{{scientificCounting(detailes.nodecumulativebenefits==''?0:detailes.nodecumulativebenefits)}}</span> TUE<span class="operating"
                                                                           @click="see_de_all_4(detailes.nodeaddress)">查看详情</span></span>
         </el-form-item>
       </el-form>
@@ -286,7 +286,7 @@
         :visible.sync="alert_1_8"
         append-to-body>
         <div>
-          共 {{nodeAllCheck_peoples_1==''?0:nodeAllCheck_peoples_1}} 人，质押 {{nodeAllCheck_tue_1==''?0:nodeAllCheck_tue_1}} TUE
+          共 {{nodeAllCheck_peoples_1==''?0:nodeAllCheck_peoples_1}} 人，质押 {{scientificCounting(nodeAllCheck_tue_1==''?0:nodeAllCheck_tue_1)}} TUE
         </div>
         <div>
           <el-select style="margin-top: 30px" v-model="select_value_2" @change="change_nodeLevel_1()" placeholder="请选择">
@@ -885,7 +885,7 @@
             label="权益池金额"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.tvp}} TUE</span>
+              <span>{{scientificCounting(scope.row.tvp)}} TUE</span>
             </template>
           </el-table-column>
         </el-table>
@@ -1123,7 +1123,7 @@
         this.search_1=''
         this.currentPage = 1
         this.select_value = ''
-        let data = {"phone": "", "address": "", "type": "", "page": 1, "pageSize": 10}
+        let data = {"phone": "", "address": "", "type": "", "page": 1, "pagesize": 10}
         this.get_data_1(data, 0)
       },
       /*table切换*/
@@ -1164,10 +1164,10 @@
         this.currentPage=1
         this.select_value = ''
         if (this.search_1.length == 11) {
-          let data = {"phone": this.search_1, "address": "", "type": "", "page": 1, "pageSize": 10}
+          let data = {"phone": this.search_1, "address": "", "type": "", "page": 1, "pagesize": 10}
           this.get_data_1(data, 1)
         } else {
-          let data = {"phone": "", "address": this.search_1, "type": "", "page": 1, "pageSize": 10}
+          let data = {"phone": "", "address": this.search_1, "type": "", "page": 1, "pagesize": 10}
           this.get_data_1(data, 1)
         }
       },
@@ -1175,9 +1175,9 @@
       change_user_source_1() {
         let data
         if (this.part_1_recording.length == 11) {
-          data = {"phone": this.part_1_recording, "address": "", "type": this.select_value, "page": 1, "pageSize": 10}
+          data = {"phone": this.part_1_recording, "address": "", "type": this.select_value, "page": 1, "pagesize": 10}
         } else {
-          data = {"phone": "", "address": this.part_1_recording, "type": this.select_value, "page": 1, "pageSize": 10}
+          data = {"phone": "", "address": this.part_1_recording, "type": this.select_value, "page": 1, "pagesize": 10}
         }
         this.get_data_1(data, 0)
       },
@@ -1191,7 +1191,7 @@
             "address": "",
             "type": this.select_value,
             "page": this.currentPage,
-            "pageSize": 10
+            "pagesize": 10
           }
         } else {
           data = {
@@ -1199,7 +1199,7 @@
             "address": this.part_1_recording,
             "type": this.select_value,
             "page": this.currentPage,
-            "pageSize": 10
+            "pagesize": 10
           }
         }
         this.get_data_1(data, 0)
