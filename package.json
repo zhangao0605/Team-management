@@ -20,6 +20,7 @@
     "node-sass": "^4.12.0",
     "nprogress": "^0.2.0",
     "sass-loader": "^7.2.0",
+    "true-case-path": "^2.2.1",
     "vue": "^2.5.2",
     "vue-i18n": "^8.11.2",
     "vue-router": "^3.0.1",
