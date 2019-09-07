@@ -57,8 +57,8 @@ export const constantRouterMap = [
   },
   /*参考*/
   {
-    path: '/111',
-    name: '111',
+    path: '/serviceMonitoring',
+    name: 'serviceMonitoring',
     component: () => import('../views/home/home'),
     hidden: true,
   },

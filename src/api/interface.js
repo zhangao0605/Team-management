@@ -10,6 +10,14 @@ export function login(username, password) {
     }
   })
 }
+/*注销登录*/
+export function logout() {
+  return request({
+    url:'/v1/investmentAdmin/user/loginout ',
+    method: 'get',
+    params:{}
+  })
+}
 
 /*获取表格信息*/
 export function getPersonInfo(e) {
@@ -292,3 +300,12 @@ export function withdrawalRefund(e) {
     params:e
   })
 }
+/*服务监控*/
+export function getSystemHealthInfo(e) {
+  return request({
+    url:'/v1/investmentAdmin/info/getSystemHealthInfo',
+    method: 'post',
+    data:e
+  })
+}
+

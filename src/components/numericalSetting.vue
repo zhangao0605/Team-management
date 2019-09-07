@@ -668,7 +668,6 @@
         }
       },
 
-
       // getPersonInfo
       /*获取part_2 公共方法*/
       getdata_2(e) {
@@ -832,7 +831,7 @@
       },
       /*确认修改节点*/
       dialogeditsure() {
-        let data={"phone":this.form_1.phone,"pledgeBalance":this.form_1.pledgeBalance,"batch":this.form_1.batch.toString(),"address":this.form_1.address}
+        let data={"phone":this.form_1.phone,"pledgeBalance":this.form_1.pledgeBalance,"batch":this.form_1.batch,"address":this.form_1.address}
         updateCreationPerson(data).then(response => {
           if (response.eCode == 200) {
             this.node_select=1
