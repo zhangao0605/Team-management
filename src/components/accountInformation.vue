@@ -885,7 +885,7 @@
             label="权益池金额"
             align="center">
             <template slot-scope="scope">
-              <span>{{scientificCounting(scope.row.tvp)}} TUE</span>
+              <span>{{scientificCounting(scope.row.tvp)}} USDT</span>
             </template>
           </el-table-column>
         </el-table>
