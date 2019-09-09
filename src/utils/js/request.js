@@ -2,10 +2,10 @@ import axios from 'axios'
 import {Message, MessageBox} from 'element-ui'
 import store from '../../store'
 import {getToken} from '@/utils/js/token'
-
+// baseURL: 'http://invest.thinkey.org/',
 const service = axios.create({
-  // baseURL: document.location.protocol+ window.location.search,
-  baseURL: 'http://invest.thinkey.org/',
+  baseURL: document.location.protocol+ window.location.search,
+  // baseURL: 'http://invest.thinkey.org/',
   // baseURL: 'http://192.168.1.108:8600',
   // baseURL: 'http://192.168.1.106:8600',
   // withCredentials: true, // 跨域请求时发送 cookies
