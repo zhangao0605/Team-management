@@ -308,4 +308,44 @@ export function getSystemHealthInfo(e) {
     data:e
   })
 }
+/*充值提现相关今日记录*/
+export function getAcceptAndRedeemLogNew() {
+  return request({
+    url:'/v1/investmentAdmin/info/getAcceptAndRedeemLogNew',
+    method: 'get',
+    params:{}
+  })
+}
+/*充值提现相关历史记录*/
+export function getAcceptAndRedeemLog(e) {
+  return request({
+    url:'/v1/investmentAdmin/info/getAcceptAndRedeemLog',
+    method: 'post',
+    data:e
+  })
+}
+/*充值提现相关历史记录*/
+export function nodeReport(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/nodeReport',
+    method: 'post',
+    data:e
+  })
+}
+/*充值提现相关历史记录*/
+export function getEarningsLog(e) {
+  return request({
+    url:'/v1/investmentAdmin/info/getEarningsLog',
+    method: 'post',
+    data:e
+  })
+}
+/*充值提现相关历史记录*/
+export function getNowSettlement(e) {
+  return request({
+    url:'/v1/investmentAdmin/info/getNowSettlement',
+    method: 'get',
+    params:{}
+  })
+}
 

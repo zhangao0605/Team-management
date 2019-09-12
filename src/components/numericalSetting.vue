@@ -38,6 +38,38 @@
     <el-button type="primary" @click="dialog_sure_1()">确 定</el-button>
        </span>
     </el-dialog>
+    <!--修改权益值KN-->
+    <el-dialog
+      title=""
+      :visible.sync="dialogVisible_2"
+      width="30%"
+    >
+      <span>KN值现在为：{{edit_value.kn_value}}</span>
+      <br>
+      <span>修改KN值后，将会影响现在及以后的奖励计算，请确认后再进行更改</span>
+      <br>
+      <el-input style="width: 70%;margin-top: 30px" v-model="verify_value_2" placeholder="请输入新KN值"></el-input>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialog_cancel_2()">取 消</el-button>
+    <el-button type="primary" @click="dialog_sure_2()">确 定</el-button>
+       </span>
+    </el-dialog>
+    <!--修改权益值ON-->
+    <el-dialog
+      title=""
+      :visible.sync="dialogVisible_3"
+      width="30%"
+    >
+      <span>ON值现在为：{{edit_value.on_value}}</span>
+      <br>
+      <span>修改ON值后，将会影响现在及以后的奖励计算，请确认后再进行更改</span>
+      <br>
+      <el-input style="width: 70%;margin-top: 30px" v-model="verify_value_3" placeholder="请输入新ON值"></el-input>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialog_cancel_3()">取 消</el-button>
+    <el-button type="primary" @click="dialog_sure_3()">确 定</el-button>
+       </span>
+    </el-dialog>
     <!--历史记录M值-->
     <el-dialog width="30%" title="历史记录 M值" :visible.sync="dialogTableVisible">
       <el-table :data="gridData" :header-cell-style="this.tableHeaderColor">
@@ -57,6 +89,36 @@
     <el-dialog width="30%" title="历史记录 N值" :visible.sync="dialogTableVisible_1">
       <el-table :data="gridData_1" :header-cell-style="this.tableHeaderColor">
         <el-table-column align="center" label="N值">
+          <template slot-scope="scope">
+            <span>{{scope.row.value}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="修改时间">
+          <template slot-scope="scope">
+            <span>{{timestampToTime(scope.row.timestamp)}}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
+    <!--历史记录kN值-->
+    <el-dialog width="30%" title="历史记录 KN值" :visible.sync="dialogTableVisible_2">
+      <el-table :data="gridData_2" :header-cell-style="this.tableHeaderColor">
+        <el-table-column align="center" label="KN值">
+          <template slot-scope="scope">
+            <span>{{scope.row.value}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="修改时间">
+          <template slot-scope="scope">
+            <span>{{timestampToTime(scope.row.timestamp)}}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
+    <!--历史记录ON值-->
+    <el-dialog width="30%" title="历史记录 ON值" :visible.sync="dialogTableVisible_3">
+      <el-table :data="gridData_3" :header-cell-style="this.tableHeaderColor">
+        <el-table-column align="center" label="ON值">
           <template slot-scope="scope">
             <span>{{scope.row.value}}</span>
           </template>
@@ -354,7 +416,7 @@
             label="质押金额"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.pledgeBalance}}</span>
+              <span>{{scientificCounting(scope.row.pledgeBalance)}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -445,9 +507,15 @@
         dialogVisible: false,
         verify_value: '',
         dialogVisible_1: false,
+        dialogVisible_2: false,
+        dialogVisible_3: false,
         verify_value_1: '',
+        verify_value_2: '',
+        verify_value_3: '',
         dialogTableVisible: false,
         dialogTableVisible_1: false,
+        dialogTableVisible_2: false,
+        dialogTableVisible_3: false,
         isactive: 0,
         table_items: [
           {"name": ' 数值设置 '},
@@ -463,6 +531,8 @@
         ],
         gridData: [],
         gridData_1: [],
+        gridData_2: [],
+        gridData_3: [],
         item_active: 'item_active',
         item_default: 'item_default',
         number_seting: [],
@@ -527,6 +597,8 @@
         edit_value: {
           "m_value": 0,
           "n_value": 0,
+          "kn_value": 0,
+          "on_value": 0,
         },
         untied_address:'',
         remove_address:'',
@@ -590,7 +662,14 @@
           this.edit_value.n_value = q
           this.verify_value_1 = q
           this.dialogVisible_1 = true
-        } else {
+        } else if(e == 'KN') {
+          this.edit_value.kn_value = q
+          this.verify_value_2 = q
+          this.dialogVisible_2 = true
+        }else if(e == 'ON'){
+          this.edit_value.on_value = q
+          this.verify_value_3 = q
+          this.dialogVisible_3 = true
         }
       },
       /*part_1 M值修改弹窗取消*/
@@ -618,6 +697,60 @@
           }
         })
       },
+
+      /*part_1  KN值修改弹窗取消*/
+      dialog_cancel_2() {
+        this.dialogVisible_2 = false
+        this.verify_value_2 = ''
+      },
+      /*part_1 KN值修改弹窗确认*/
+      dialog_sure_2() {
+        let data = {"value": this.verify_value_2, "label": "KN"}
+        updateSetting(data).then(response => {
+          this.dialogVisible_2 = false
+          this.verify_value_2 = ''
+          if (response.eCode == 200) {
+            this.Initialization_data_1()
+            this.$message({
+              type: 'success',
+              message: '修改成功!'
+            });
+          } else {
+            this.$message({
+              type: 'error',
+              message: '修改失败!'
+            });
+          }
+        })
+      },
+
+      /*part_1  ON值修改弹窗取消*/
+      dialog_cancel_3() {
+        this.dialogVisible_3 = false
+        this.verify_value_3 = ''
+      },
+      /*part_1 ON值修改弹窗确认*/
+      dialog_sure_3() {
+        let data = {"value": this.verify_value_3, "label": "ON"}
+        updateSetting(data).then(response => {
+          this.dialogVisible_3 = false
+          this.verify_value_3 = ''
+          if (response.eCode == 200) {
+            this.Initialization_data_1()
+            this.$message({
+              type: 'success',
+              message: '修改成功!'
+            });
+          } else {
+            this.$message({
+              type: 'error',
+              message: '修改失败!'
+            });
+          }
+        })
+      },
+
+
       /*part_1 N值修改弹窗取消*/
       dialog_cancel_1() {
         this.dialogVisible_1 = false
@@ -665,9 +798,29 @@
               this.gridData_1 = response.data
             }
           })
+        } else if (e == 'KN') {
+          let data = {"label": "KN"}
+          this.dialogTableVisible_2 = true
+          getMNLog(data).then(response => {
+            if (response.data == []) {
+              this.gridData_2 = []
+            } else {
+              this.gridData_2 = response.data
+            }
+          })
+        }
+        else if (e == 'ON') {
+          let data = {"label": "ON"}
+          this.dialogTableVisible_3 = true
+          getMNLog(data).then(response => {
+            if (response.data == []) {
+              this.gridData_3 = []
+            } else {
+              this.gridData_3 = response.data
+            }
+          })
         }
       },
-
       // getPersonInfo
       /*获取part_2 公共方法*/
       getdata_2(e) {

@@ -141,7 +141,8 @@
         :visible.sync="alert_1_3"
         append-to-body>
         <div>
-          共 {{nodeAllCheck_peoples==''?0:nodeAllCheck_peoples}} 人，质押 {{scientificCounting(nodeAllCheck_tue==''?0:nodeAllCheck_tue)}} TUE
+          共 {{nodeAllCheck_peoples==''?0:nodeAllCheck_peoples}} 人，质押
+          {{scientificCounting(nodeAllCheck_tue==''?0:nodeAllCheck_tue)}} TUE
         </div>
         <div>
           <el-select style="margin-top: 30px" v-model="select_value_1" @change="change_nodeLevel()" placeholder="请选择">
@@ -231,8 +232,9 @@
           <span>{{detailes.bindphone}}</span>
         </el-form-item>
         <el-form-item label="节点质押金额：" :label-width="formLabelWidth_1">
-          <span><span>{{scientificCounting(detailes.currentpledgeamount==''?0:detailes.currentpledgeamount)}}</span> TUE <span class="operating"
-                                                                        @click="see_de_all_2(detailes.nodeaddress)">查看详情</span></span>
+          <span><span>{{scientificCounting(detailes.currentpledgeamount==''?0:detailes.currentpledgeamount)}}</span> TUE <span
+            class="operating"
+            @click="see_de_all_2(detailes.nodeaddress)">查看详情</span></span>
         </el-form-item>
         <el-form-item label="节点分红比例：" :label-width="formLabelWidth_1">
           <span><span>{{detailes.nodedividendratio}}</span>  </span>
@@ -248,8 +250,9 @@
           <span><span>{{scientificCounting(detailes.allnodepledgeamount==''?0:detailes.allnodepledgeamount)}}</span> TUE  </span>
         </el-form-item>
         <el-form-item label="节点累计收益：" :label-width="formLabelWidth_1">
-          <span><span>{{scientificCounting(detailes.nodecumulativebenefits==''?0:detailes.nodecumulativebenefits)}}</span> TUE<span class="operating"
-                                                                          @click="see_de_all_4(detailes.nodeaddress)">查看详情</span></span>
+          <span><span>{{scientificCounting(detailes.nodecumulativebenefits==''?0:detailes.nodecumulativebenefits)}}</span> TUE<span
+            class="operating"
+            @click="see_de_all_4(detailes.nodeaddress)">查看详情</span></span>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -286,7 +289,8 @@
         :visible.sync="alert_1_8"
         append-to-body>
         <div>
-          共 {{nodeAllCheck_peoples_1==''?0:nodeAllCheck_peoples_1}} 人，质押 {{scientificCounting(nodeAllCheck_tue_1==''?0:nodeAllCheck_tue_1)}} TUE
+          共 {{nodeAllCheck_peoples_1==''?0:nodeAllCheck_peoples_1}} 人，质押
+          {{scientificCounting(nodeAllCheck_tue_1==''?0:nodeAllCheck_tue_1)}} TUE
         </div>
         <div>
           <el-select style="margin-top: 30px" v-model="select_value_2" @change="change_nodeLevel_1()" placeholder="请选择">
@@ -381,7 +385,8 @@
           <span>{{form_node_de.onenodenum}}</span>
         </el-form-item>
         <el-form-item label="节点下属全部节点数量：" :label-width="formLabelWidth_1">
-          <span>{{form_node_de.allNodeNum}}<span class="operating" @click="part_2_see_1(form_node_de.nodeaddress)">查看详情</span></span>
+          <span>{{form_node_de.allNodeNum}}<span class="operating"
+                                                 @click="part_2_see_1(form_node_de.nodeaddress)">查看详情</span></span>
         </el-form-item>
         <el-form-item label="节点下属全部节点质押数量：" :label-width="formLabelWidth_1">
           <span>{{scientificCounting(form_node_de.allnodepledgeamount)}}</span>
@@ -412,18 +417,72 @@
     <el-button type="primary" @click="alert_1_10_sure()">确 定</el-button>
        </span>
     </el-dialog>
+    <!--part_5 单个数据查看详细-->
+    <el-dialog
+      :title="details_name"
+      :visible.sync="historical_details"
+      width="40%"
+    >
+      <div class="block">
+        <el-date-picker
+          value-format="timestamp"
+          v-model="picker_value1"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :picker-options="pickerOptions"
+          @change="chooseTimeRange"
+          format="yyyy-MM-dd"
+        >
+        </el-date-picker>
+        <div class="con_table">
+          <el-table
+            :data="data_record_4"
+            border
+            style="width: 100%;margin-bottom: 30px;margin-top: 40px;"
+            :header-cell-style="this.tableHeaderColor">
+            <el-table-column
+              label="时间"
+              align="center">
+              <template slot-scope="scope">
+                <span @click="get_historical_details()">{{timestampToTime(scope.row.timestamp)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="数值"
+              align="center">
+              <template slot-scope="scope">
+                <span @click="get_historical_details()">{{scope.row.value}}</span>
+              </template>
+            </el-table-column>
+
+          </el-table>
+          <el-pagination
+            background
+            @current-change="change_currentPage_record_1"
+            :current-page="currentPage_record_1"
+            :page-size="pagesize_record_1"
+            layout="total,prev, pager, next"
+            :total="totla_record_1">
+          </el-pagination>
+        </div>
+      </div>
+
+    </el-dialog>
     <!--节点信息-->
     <div class="part_1" v-show="part_show[0].isShow">
       <div class="con_search" style="width: 60%">
         <div class="con_search_div">
           <span class="el-icon-search us_search2_1_input_icon"></span>
           <div class="input_fath">
-          <el-input  v-model="search_1"
-                    placeholder="请输入绑定手机号/节点地址进行检索">
-          </el-input>
+            <el-input v-model="search_1"
+                      placeholder="请输入绑定手机号/节点地址进行检索">
+            </el-input>
           </div>
         </div>
-        <el-button type="primary" class="con_search_submit" style="position: relative;left: -13%" @click="search_ad_ph_1()">搜索
+        <el-button type="primary" class="con_search_submit" style="position: relative;left: -13%"
+                   @click="search_ad_ph_1()">搜索
         </el-button>
         <el-select style="left: -19.8%;position: relative" v-model="select_value" @change="change_user_source_1()"
                    placeholder="请选择节点类型">
@@ -639,9 +698,9 @@
         <div class="con_search_div">
           <span class="el-icon-search us_search2_1_input_icon"></span>
           <div class="input_fath">
-          <el-input  v-model="search_2"
-                    placeholder="请输入绑定手机号/节点地址进行检索">
-          </el-input>
+            <el-input v-model="search_2"
+                      placeholder="请输入绑定手机号/节点地址进行检索">
+            </el-input>
           </div>
         </div>
         <el-button type="primary" class="con_search_submit" style="    position: relative;left: -50.2%;"
@@ -775,20 +834,21 @@
         <div class="con_search_div">
           <span class="el-icon-search us_search2_1_input_icon"></span>
           <div class="input_fath">
-          <el-input  v-model="search_3"
-                    placeholder="请输入绑定手机号/节点地址进行检索">
-          </el-input>
+            <el-input v-model="search_3"
+                      placeholder="请输入绑定手机号/节点地址进行检索">
+            </el-input>
           </div>
         </div>
-        <el-button type="primary" class="con_search_submit" style="position: relative;left: -13%" @click="search_ad_ph_3()">搜索
+        <el-button type="primary" class="con_search_submit" style="position: relative;left: -13%"
+                   @click="search_ad_ph_3()">搜索
         </el-button>
         <!--<el-select style="left: 5%" v-model="select_value_3" @change="change_user_source_2()" placeholder="请选择节点类型">-->
-          <!--<el-option-->
-            <!--v-for="item in part2_options1"-->
-            <!--:key="item.typeid"-->
-            <!--:label="item.typename"-->
-            <!--:value="item.typeid">-->
-          <!--</el-option>-->
+        <!--<el-option-->
+        <!--v-for="item in part2_options1"-->
+        <!--:key="item.typeid"-->
+        <!--:label="item.typename"-->
+        <!--:value="item.typeid">-->
+        <!--</el-option>-->
         <!--</el-select>-->
         <el-select style="left: -20%" v-model="select_value_4" @change="change_tr_type()" placeholder="请选择交易类型">
           <el-option
@@ -832,11 +892,11 @@
             </template>
           </el-table-column>
           <!--<el-table-column-->
-            <!--label="节点级别"-->
-            <!--align="center">-->
-            <!--<template slot-scope="scope">-->
-              <!--<span>{{node_level_matching_2(scope.row.nodelevel)}}</span>-->
-            <!--</template>-->
+          <!--label="节点级别"-->
+          <!--align="center">-->
+          <!--<template slot-scope="scope">-->
+          <!--<span>{{node_level_matching_2(scope.row.nodelevel)}}</span>-->
+          <!--</template>-->
           <!--</el-table-column>-->
           <el-table-column
             label="交易类别"
@@ -866,37 +926,178 @@
       </div>
     </div>
     <!--权益池金额记录-->
+    <div>
+      <!--<div class="con_table">-->
+      <!--<el-table-->
+      <!--:data="tableData_9"-->
+      <!--border-->
+      <!--style="width: 100%;margin-bottom: 30px;margin-top: 40px;min-height: 529px"-->
+      <!--:header-cell-style="this.tableHeaderColor"-->
+      <!--&gt;-->
+      <!--<el-table-column-->
+      <!--label="记录时间"-->
+      <!--align="center">-->
+      <!--<template slot-scope="scope">-->
+      <!--<span>{{timestampToTime(scope.row.time)}}</span>-->
+      <!--</template>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+      <!--label="权益池金额"-->
+      <!--align="center">-->
+      <!--<template slot-scope="scope">-->
+      <!--<span>{{scientificCounting(scope.row.tvp)}} USDT</span>-->
+      <!--</template>-->
+      <!--</el-table-column>-->
+      <!--</el-table>-->
+      <!--<el-pagination-->
+      <!--background-->
+      <!--@current-change="currentPageChange_9"-->
+      <!--:current-page="currentPage_9"-->
+      <!--:page-size="pagesize_9"-->
+      <!--layout="total,prev, pager, next"-->
+      <!--:total="totla_9">-->
+      <!--</el-pagination>-->
+      <!--</div>-->
+    </div>
+    <!--节点大赛数据记录-->
     <div class="part_4" v-show="part_show[4].isShow">
+      <div class="part_4_time">
+        时间：{{timestampToTime(time_hi_1)}}
+      </div>
       <div class="con_table">
         <el-table
-          :data="tableData_9"
+          :data="data_record_1"
           border
-          style="width: 100%;margin-bottom: 30px;margin-top: 40px;min-height: 529px"
-          :header-cell-style="this.tableHeaderColor"
-        >
+          style="width: 40%;margin-bottom: 30px;margin-top: 40px;height: 108px"
+          :header-cell-style="this.tableHeaderColor">
           <el-table-column
-            label="记录时间"
+            label="当日充值量"
             align="center">
             <template slot-scope="scope">
-              <span>{{timestampToTime(scope.row.time)}}</span>
+              <span class="select_active" @click="get_historical_details(0,0,99)">{{scope.row.acceptRecord}}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="权益池金额"
+            label="当日提现量"
             align="center">
             <template slot-scope="scope">
-              <span>{{scientificCounting(scope.row.tvp)}} USDT</span>
+              <span class="select_active" @click="get_historical_details(0,1,99)">{{scope.row.redeemRecord}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="累计充值量"
+            align="center">
+            <template slot-scope="scope">
+              <span class="select_active" @click="get_historical_details(0,2,99)">{{scope.row.acceptRecordSum}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="累计提现量"
+            align="center">
+            <template slot-scope="scope">
+              <span class="select_active" @click="get_historical_details(0,3,99)">{{scope.row.redeemRecordSum}}</span>
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination
-          background
-          @current-change="currentPageChange_9"
-          :current-page="currentPage_9"
-          :page-size="pagesize_9"
-          layout="total,prev, pager, next"
-          :total="totla_9">
-        </el-pagination>
+      </div>
+      <div class="part_4_time">
+        结算时间：{{timestampToTime(time_hi_2)}}
+      </div>
+      <div class="con_table">
+        <el-table
+          :data="data_record_2"
+          border
+          style="width: 60%;margin-bottom: 30px;margin-top: 40px;"
+          :header-cell-style="this.tableHeaderColor">
+          <el-table-column
+            label="当前币价"
+            align="center">
+            <template slot-scope="scope">
+              <span class="select_active" @click="get_historical_details(1,0,99)">$ {{scope.row.price}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="结算币价"
+            align="center">
+            <template slot-scope="scope">
+              <span class="select_active" @click="get_historical_details(1,1,99)">$ {{scope.row.settlementPrice}} USDT</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="UV"
+            align="center">
+            <template slot-scope="scope">
+              <span class="select_active" @click="get_historical_details(1,2,99)">{{scientificCounting(scope.row.uv)}} USDT</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="PVT"
+            align="center">
+            <template slot-scope="scope">
+              <span class="select_active" @click="get_historical_details(1,3,99)">{{scientificCounting(scope.row.tvp)}} USDT</span>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class="con_table">
+        <el-table
+          :data="data_record_3"
+          border
+          style="width: 100%;margin-bottom: 30px;margin-top: 40px;"
+          :header-cell-style="this.tableHeaderColor">
+          <el-table-column
+            label=""
+            align="center">
+            <template slot-scope="scope">
+              <span>{{identity_type(scope.row.identity)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="数量"
+            align="center">
+            <template slot-scope="scope">
+              <span class="select_active" @click="get_historical_details(2,0,scope.row.identity)">{{scope.row.num}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="质押总额（TUE）"
+            align="center">
+            <template slot-scope="scope">
+              <span  class="select_active" @click="get_historical_details(2,1,scope.row.identity)">{{scientificCounting(scope.row.totalamountpledge)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="上期WED数量"
+            align="center">
+            <template slot-scope="scope">
+              <span class="select_active"
+                @click="get_historical_details(2,2,scope.row.identity)">{{scientificCounting(scope.row.lastwednum)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="N值"
+            align="center">
+            <template slot-scope="scope">
+              <span class="select_active" @click="get_historical_details(2,3,scope.row.identity)">{{scope.row.nvalue}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="当期派息USDT数量"
+            align="center">
+            <template slot-scope="scope">
+              <span
+                class="select_active" @click="get_historical_details(2,4,scope.row.identity)">{{scientificCounting(scope.row.usdtnum)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="当期TUE结算数量"
+            align="center">
+            <template slot-scope="scope">
+              <span
+                class="select_active"  @click="get_historical_details(2,5,scope.row.identity)">{{scientificCounting(scope.row.curtue)}}</span>
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
     </div>
   </div>
@@ -906,8 +1107,6 @@
   import {
     nodeInfo,
     nodeType,
-    odeInfoCheck,
-    equitypool,
     promotionAudit,
     promotionAuditExe,
     allPromotionAuditExe,
@@ -921,12 +1120,31 @@
     approvalbind,
     allApprovalbind,
     transactionRecordScreen,
+    getAcceptAndRedeemLogNew,
+    getAcceptAndRedeemLog,
+    nodeReport,
+    getEarningsLog,
+    getNowSettlement,
   } from '../api/interface'
 
   export default {
     name: "accountInformation",
     data() {
       return {
+        time_hi_1: '',
+        time_hi_2: '',
+        pickerOptions: {
+          disabledDate(time) {
+            return time.getTime() > Date.now();
+          }
+        },
+        picker_value1: '',
+        details_name: "",
+        historical_details: false,
+        data_record_1: [],
+        data_record_2: [],
+        data_record_3: [],
+        data_record_4: [],
         part2_options1: [
           {
             "typeid": "",
@@ -1051,6 +1269,9 @@
         currentPage_1_3: 1,
         pagesize_1_3: 10,
         totla_1_3: 0,
+        currentPage_record_1: 1,
+        pagesize_record_1: 10,
+        totla_record_1: 0,
         part_1_recording: '',
         detailes: {
           "bindphone": "",
@@ -1085,9 +1306,38 @@
           "allNodeNum": "",
           "allnodepledgeamount": ""
         },
-        part_3_phone:'',
-        part_4_phone:'',
-        all_mo:0,
+        part_3_phone: '',
+        part_4_phone: '',
+        all_mo: 0,
+        hist_list: [
+          {"name": '当日充值量', "value": 'acceptRecord'},
+          {"name": '当日提现量', "value": 'redeemRecord'},
+          {"name": '累计充值量', "value": 'acceptRecordSum'},
+          {"name": '累计提现量', "value": 'redeemRecordSum'},
+        ],
+        hist_list_2: [
+          {"name": '当前币价', "value": 'price'},
+          {"name": '结算币价', "value": 'settlementPrice'},
+          {"name": 'UV', "value": 'uv'},
+          {"name": 'PVT', "value": 'tvp'},
+        ],
+        hist_list_3: [
+          {"name": '数量 ', "value": 'num'},
+          {"name": '质押金额 ', "value": 'pledgebalance'},
+          {"name": '上期WED数量', "value": 'wed'},
+          {"name": 'N值', "value": 'n'},
+          {"name": '当期派息USDT数量 ', "value": 'usdt'},
+          {"name": '当期TUE结算数量', "value": 'balance'},
+        ],
+        record_field_1: '',
+        identity_value: 0,
+        record_list: {
+          "table": 0,
+          "value": 0,
+          "type": 0,
+        },
+        pick_data: null
+
       }
     },
     methods: {
@@ -1120,7 +1370,7 @@
       },
       /*part_1 初始化*/
       Initialization_data_1() {
-        this.search_1=''
+        this.search_1 = ''
         this.currentPage = 1
         this.select_value = ''
         let data = {"phone": "", "address": "", "type": "", "page": 1, "pagesize": 10}
@@ -1161,7 +1411,7 @@
       },
       /*part_1 查询*/
       search_ad_ph_1() {
-        this.currentPage=1
+        this.currentPage = 1
         this.select_value = ''
         if (this.search_1.length == 11) {
           let data = {"phone": this.search_1, "address": "", "type": "", "page": 1, "pagesize": 10}
@@ -1174,6 +1424,7 @@
       /*part_1 改变节点类型*/
       change_user_source_1() {
         let data
+        this.currentPage = 1
         if (this.part_1_recording.length == 11) {
           data = {"phone": this.part_1_recording, "address": "", "type": this.select_value, "page": 1, "pagesize": 10}
         } else {
@@ -1334,8 +1585,8 @@
         let data = {"page": 1, "pagesize": 10, "address": e, "level": ""}
         let data_1 = {"address": e}
         nodeLevel(data_1).then(response => {
-          this.select_value_1=''
-          this.node_options= [
+          this.select_value_1 = ''
+          this.node_options = [
             {
               "typeid": '',
               "typename": "请选择节点级别"
@@ -1503,20 +1754,20 @@
               "allnodepledgeamount": ""
             }
           } else {
-            this.form_node_de=response.dataList[0]
+            this.form_node_de = response.dataList[0]
           }
         })
         this.alert_1_7 = true
       },
       /*part_2 节点详细*/
       part_2_see_1(e) {
-        this.currentPage_6= 1
+        this.currentPage_6 = 1
         this.hi_re_5 = e
         let data = {"page": 1, "pagesize": 10, "address": e, "level": ""}
         let data_1 = {"address": e}
         nodeLevel(data_1).then(response => {
-          this.select_value_2=''
-          this.node_options_1=  [
+          this.select_value_2 = ''
+          this.node_options_1 = [
             {
               "typeid": '',
               "typename": "请选择节点级别"
@@ -1526,7 +1777,7 @@
           subordinateNodeAllCheck(data).then(response => {
             if (response.data.dataList == []) {
               this.tableData_6 = []
-              this.totla_6= 0
+              this.totla_6 = 0
               this.nodeAllCheck_peoples_1 = 0
               this.nodeAllCheck_tue_1 = 0
             } else {
@@ -1541,12 +1792,17 @@
       },
       /*part_2 节点二级弹窗分页*/
       currentPageChange_6(e) {
-        this.currentPage_6= e
-        let data = {"page":  this.currentPage_6, "pagesize": 10, "address": this.hi_re_5, "level": this.select_value_2.toString()}
+        this.currentPage_6 = e
+        let data = {
+          "page": this.currentPage_6,
+          "pagesize": 10,
+          "address": this.hi_re_5,
+          "level": this.select_value_2.toString()
+        }
         subordinateNodeAllCheck(data).then(response => {
           if (response.data.dataList == []) {
             this.tableData_6 = []
-            this.totla_6= 0
+            this.totla_6 = 0
             this.nodeAllCheck_peoples_1 = 0
             this.nodeAllCheck_tue_1 = 0
           } else {
@@ -1558,13 +1814,13 @@
         })
       },
       /*part_2 节点级别切换*/
-      change_nodeLevel_1(){
-        this.currentPage_6= 1
+      change_nodeLevel_1() {
+        this.currentPage_6 = 1
         let data = {"page": 1, "pagesize": 10, "address": this.hi_re_5, "level": this.select_value_2.toString()}
         subordinateNodeAllCheck(data).then(response => {
           if (response.data.dataList == []) {
             this.tableData_6 = []
-            this.totla_6= 0
+            this.totla_6 = 0
             this.nodeAllCheck_peoples_1 = 0
             this.nodeAllCheck_tue_1 = 0
           } else {
@@ -1604,17 +1860,17 @@
       },
       /*==================================================*/
       /*part_3 初始化数据*/
-      get_data_3(e,q){
+      get_data_3(e, q) {
         // let data={"page":1,"pagesize":10,"address":"","phone":""}
-        unbindingAudit(e).then(response=>{
-          if(response.data.dataList==[]){
-              this.tableData_7=[]
-              this.totla_7=0
-          }else {
-            this.tableData_7=response.data.dataList
-            this.totla_7=response.data.total
-            if(q==1){
-              this.part_3_phone=''
+        unbindingAudit(e).then(response => {
+          if (response.data.dataList == []) {
+            this.tableData_7 = []
+            this.totla_7 = 0
+          } else {
+            this.tableData_7 = response.data.dataList
+            this.totla_7 = response.data.total
+            if (q == 1) {
+              this.part_3_phone = ''
             }
           }
         })
@@ -1622,17 +1878,17 @@
       /*part_3 获取初始化数据*/
       Initialization_data_3() {
         this.currentPage_7 = 1
-        let data={"page":1,"pagesize":10,"address":"","phone":""}
+        let data = {"page": 1, "pagesize": 10, "address": "", "phone": ""}
         this.get_data_3(data, 0)
       },
       /*part_3分页查询*/
       currentPageChange_7(e) {
         this.currentPage_7 = e
         let data
-        if(this.part_3_phone.length==11){
-          data={"page":this.currentPage_7,"pagesize":10,"address":"","phone":this.search_2}
-        }else {
-          data={"page":this.currentPage_7,"pagesize":10,"address":this.search_2,"phone":""}
+        if (this.part_3_phone.length == 11) {
+          data = {"page": this.currentPage_7, "pagesize": 10, "address": "", "phone": this.search_2}
+        } else {
+          data = {"page": this.currentPage_7, "pagesize": 10, "address": this.search_2, "phone": ""}
         }
         this.get_data_3(data, 0)
       },
@@ -1640,10 +1896,10 @@
       search_ad_ph_2() {
         this.currentPage_7 = 1
         let data
-        if(this.search_2.length==11){
-          data={"page":1,"pagesize":10,"address":"","phone":this.search_2}
-        }else {
-          data={"page":1,"pagesize":10,"address":this.search_2,"phone":""}
+        if (this.search_2.length == 11) {
+          data = {"page": 1, "pagesize": 10, "address": "", "phone": this.search_2}
+        } else {
+          data = {"page": 1, "pagesize": 10, "address": this.search_2, "phone": ""}
         }
 
         this.get_data_3(data, 1)
@@ -1658,15 +1914,15 @@
       },
       /*part_3 确认单个批准*/
       alert_1_9_sure(e) {
-        let data={"address":e}
-        approvalbind(data).then(response=>{
-          if(response.eCode==200){
+        let data = {"address": e}
+        approvalbind(data).then(response => {
+          if (response.eCode == 200) {
             this.Initialization_data_3()
             this.$message({
               message: '已提交批准解绑！',
               type: 'success'
             });
-          }else {
+          } else {
 
             this.$message({
               message: '提交批准解绑失败！',
@@ -1686,14 +1942,14 @@
       },
       /*part_3 确认全部批准*/
       alert_1_10_sure() {
-        allApprovalbind().then(response=>{
-          if(response.eCode==200){
+        allApprovalbind().then(response => {
+          if (response.eCode == 200) {
             this.Initialization_data_3()
             this.$message({
               message: '已提交全部批准解绑！',
               type: 'success'
             });
-          }else {
+          } else {
             this.$message({
               message: '提交全部批准解绑失败！',
               type: 'error'
@@ -1709,18 +1965,18 @@
       //
       // },
       /*part_4 初始化数据*/
-      get_data_4(e,q){
-        transactionRecordScreen(e).then(response=>{
-          if(response.dataList==[]){
-            this.tableData_8=[]
-            this.totla_8=0
-            this.all_mo=0
-          }else {
-            this.tableData_8=response.dataList
-            this.totla_8=response.total
-            this.all_mo=response.allNodePledgeAmount
-            if(q==1){
-              this.part_4_phone=''
+      get_data_4(e, q) {
+        transactionRecordScreen(e).then(response => {
+          if (response.dataList == []) {
+            this.tableData_8 = []
+            this.totla_8 = 0
+            this.all_mo = 0
+          } else {
+            this.tableData_8 = response.dataList
+            this.totla_8 = response.total
+            this.all_mo = response.allNodePledgeAmount
+            if (q == 1) {
+              this.part_4_phone = ''
             }
           }
         })
@@ -1728,32 +1984,46 @@
       /*part_4 获取初始化数据*/
       Initialization_data_4() {
         this.currentPage_8 = 1
-        this.select_value_3=''
-        this.select_value_4=''
-        let data={"page":1,"pagesize":10,"address":"","phone":"","type":"","in":""}
+        this.select_value_3 = ''
+        this.select_value_4 = ''
+        let data = {"page": 1, "pagesize": 10, "address": "", "phone": "", "type": "", "in": ""}
         this.get_data_4(data, 0)
       },
       /*part_4分页查询*/
       currentPageChange_8(e) {
         this.currentPage_8 = e
         let data
-        if(this.search_3.length==11){
-          data={"page":this.currentPage_8,"pagesize":10,"address":"","phone":this.search_3,"type":this.select_value_3,"in":this.select_value_4.toString()}
-        }else {
-          data={"page":this.currentPage_8,"pagesize":10,"address":this.search_3,"phone":"","type":this.select_value_3,"in":this.select_value_4.toString()}
+        if (this.search_3.length == 11) {
+          data = {
+            "page": this.currentPage_8,
+            "pagesize": 10,
+            "address": "",
+            "phone": this.search_3,
+            "type": this.select_value_3,
+            "in": this.select_value_4.toString()
+          }
+        } else {
+          data = {
+            "page": this.currentPage_8,
+            "pagesize": 10,
+            "address": this.search_3,
+            "phone": "",
+            "type": this.select_value_3,
+            "in": this.select_value_4.toString()
+          }
         }
         this.get_data_4(data, 0)
       },
       /*part_4 查询*/
       search_ad_ph_3() {
-        this.select_value_3=''
-        this.select_value_4=''
+        this.select_value_3 = ''
+        this.select_value_4 = ''
         this.currentPage_8 = 1
         let data
-        if(this.search_3.length==11){
-         data={"page":1,"pagesize":10,"address":"","phone":this.search_3,"type":"","in":""}
-        }else {
-          data={"page":1,"pagesize":10,"address":this.search_3,"phone":"","type":"","in":""}
+        if (this.search_3.length == 11) {
+          data = {"page": 1, "pagesize": 10, "address": "", "phone": this.search_3, "type": "", "in": ""}
+        } else {
+          data = {"page": 1, "pagesize": 10, "address": this.search_3, "phone": "", "type": "", "in": ""}
         }
         this.get_data_4(data, 1)
       },
@@ -1761,10 +2031,24 @@
       change_user_source_2() {
         this.currentPage_8 = 1
         let data
-        if(this.search_3.length==11){
-          data={"page":1,"pagesize":10,"address":"","phone":this.search_3,"type":this.select_value_3,"in":this.select_value_4.toString()}
-        }else {
-          data={"page":1,"pagesize":10,"address":this.search_3,"phone":"","type":this.select_value_3,"in":this.select_value_4.toString()}
+        if (this.search_3.length == 11) {
+          data = {
+            "page": 1,
+            "pagesize": 10,
+            "address": "",
+            "phone": this.search_3,
+            "type": this.select_value_3,
+            "in": this.select_value_4.toString()
+          }
+        } else {
+          data = {
+            "page": 1,
+            "pagesize": 10,
+            "address": this.search_3,
+            "phone": "",
+            "type": this.select_value_3,
+            "in": this.select_value_4.toString()
+          }
         }
         this.get_data_4(data, 0)
       },
@@ -1772,53 +2056,274 @@
       change_tr_type() {
         this.currentPage_8 = 1
         let data
-        if(this.search_3.length==11){
-          data={"page":1,"pagesize":10,"address":"","phone":this.search_3,"type":this.select_value_3,"in":this.select_value_4.toString()}
-        }else {
-          data={"page":1,"pagesize":10,"address":this.search_3,"phone":"","type":this.select_value_3,"in":this.select_value_4.toString()}
+        if (this.search_3.length == 11) {
+          data = {
+            "page": 1,
+            "pagesize": 10,
+            "address": "",
+            "phone": this.search_3,
+            "type": this.select_value_3,
+            "in": this.select_value_4.toString()
+          }
+        } else {
+          data = {
+            "page": 1,
+            "pagesize": 10,
+            "address": this.search_3,
+            "phone": "",
+            "type": this.select_value_3,
+            "in": this.select_value_4.toString()
+          }
         }
         this.get_data_4(data, 0)
       },
       /*交易类别*/
-      tr_macth(e){
+      tr_macth(e) {
         let a
-        if(e==''||e==undefined){
-          a=''
-        }else {
-          if(e==true){
-            a='质押'
-          }else {
-            a='赎回'
+        if (e == '' || e == undefined) {
+          a = ''
+        } else {
+          if (e == true) {
+            a = '质押'
+          } else {
+            a = '赎回'
           }
         }
 
 
         return a
       },
-      /*==================================================*/
-      /*part_5 获取数据公共接口*/
-      get_data_5(e) {
-        equitypool(e).then(response => {
-          if (response.datalist == []) {
-            this.tableData_9 = []
-            this.totla_9 = 0
+      /*===================================================*/
+      /*根据identity判断节点类型*/
+      identity_type(e) {
+        let a = ''
+        if (e == -1) {
+          a = '总计'
+        } else if (e == 0) {
+          a = '创世王者节点'
+        } else if (e == 1) {
+          a = '王者节点'
+        } else if (e == 2) {
+          a = '青铜节点'
+        }
+        return a
+      },
+      /*part5 列表初始化*/
+      Initialization_data_5() {
+        getAcceptAndRedeemLogNew().then(response => {
+          if (response.eCode == 200) {
+            this.data_record_1 = response.data
+            this.time_hi_1 = this.data_record_1[0].timestamp
           } else {
-            this.tableData_9 = response.datalist
-            this.totla_9 = response.total
+            this.data_record_1 = []
+          }
+        })
+        nodeReport().then(response => {
+          if (response.eCode == 200) {
+            this.data_record_3 = response.data.dataList
+
+          } else {
+            this.data_record_3 = []
+          }
+        })
+        getNowSettlement().then(response => {
+          if (response.eCode == 200) {
+            this.time_hi_2 = this.data_record_1[0].timestamp
+            this.data_record_2 = response.data
+          } else {
+            this.data_record_2 = []
           }
         })
       },
-      /*part_5 初始化*/
-      Initialization_data_5() {
-        this.currentPage_9 = 1
-        let data = {"page": 1, "pageSize": 10}
-        this.get_data_5(data)
+      /*充值提现相关查看历史记录*/
+      get_historical_details(table, value, type) {
+        this.pick_data = null
+        this.currentPage_record_1 = 1
+        this.record_list.table = table
+        this.record_list.value = value
+        this.record_list.type = type
+        if (table == 0) {
+          this.details_name = this.hist_list[value].name + '历史记录'
+          this.record_field_1 = this.hist_list[value].value
+          let data = {"page": 1, "pageSize": 10, "startTime": 0, "endTime": 0, "columnName": this.record_field_1}
+          getAcceptAndRedeemLog(data).then(response => {
+            this.picker_value1 = ''
+            this.historical_details = true
+            if (response.data.dataList == []) {
+              this.data_record_4 = []
+              this.totla_record_1 = 0
+            } else {
+              response.data.dataList.forEach((item, index, self) => {
+                item.value = this.scientificCounting(item.value)
+              })
+              this.data_record_4 = response.data.dataList
+              this.totla_record_1 = response.data.total
+            }
+          })
+        } else if (table == 1) {
+          this.details_name = this.hist_list_2[value].name + '历史记录'
+          this.record_field_1 = this.hist_list_2[value].value
+          let data = {
+            "page": 1,
+            "pageSize": 10,
+            "startTime": 0,
+            "endTime": 0,
+            "columnName": this.record_field_1,
+            "identity": ''
+          }
+          getEarningsLog(data).then(response => {
+            this.picker_value1 = ''
+            this.historical_details = true
+            if (response.data.dataList == []) {
+              this.data_record_4 = []
+              this.totla_record_1 = 0
+            } else {
+              if (value == 2 || value == 3) {
+                response.data.dataList.forEach((item, index, self) => {
+                  item.value = this.scientificCounting(item.value)
+                })
+              }
+              this.data_record_4 = response.data.dataList
+              this.totla_record_1 = response.data.total
+            }
+          })
+        } else {
+          this.identity_value = type
+          let type_name = this.identity_type(type)
+          this.details_name = this.hist_list_3[value].name + '（' + type_name + '）' + '历史记录'
+          this.record_field_1 = this.hist_list_3[value].value
+          let data = {
+            "page": 1,
+            "pageSize": 10,
+            "startTime": 0,
+            "endTime": 0,
+            "columnName": this.record_field_1,
+            "identity": this.identity_value
+          }
+          getEarningsLog(data).then(response => {
+            this.picker_value1 = ''
+            this.historical_details = true
+            if (response.data.dataList == []) {
+              this.data_record_4 = []
+              this.totla_record_1 = 0
+            } else {
+              if (value == 1 || value == 2 || value == 4 || value == 5) {
+                response.data.dataList.forEach((item, index, self) => {
+                  item.value = this.scientificCounting(item.value)
+                })
+              }
+              this.data_record_4 = response.data.dataList
+              this.totla_record_1 = response.data.total
+            }
+          })
+        }
+
       },
-      /*part_5分页查询*/
-      currentPageChange_9(e) {
-        this.currentPage_9 = e
-        let data = {"page": this.currentPage_9, "pageSize": 10}
-        this.get_data_5(data)
+      change_historical_details(starttime, endtime, currpage) {
+        if(currpage==1){
+          this.currentPage_record_1=1
+        }
+        let table = this.record_list.table
+        let value = this.record_list.value
+        let type = this.record_list.type
+        if (table == 0) {
+          this.details_name = this.hist_list[value].name + '历史记录'
+          this.record_field_1 = this.hist_list[value].value
+          let data = {
+            "page": currpage,
+            "pageSize": 10,
+            "startTime": starttime,
+            "endTime": endtime,
+            "columnName": this.record_field_1
+          }
+          getAcceptAndRedeemLog(data).then(response => {
+            this.historical_details = true
+            if (response.data.dataList == []) {
+              this.data_record_4 = []
+              this.totla_record_1 = 0
+            } else {
+              response.data.dataList.forEach((item, index, self) => {
+                item.value = this.scientificCounting(item.value)
+              })
+              this.data_record_4 = response.data.dataList
+              this.totla_record_1 = response.data.total
+            }
+          })
+        } else if (table == 1) {
+          this.details_name = this.hist_list_2[value].name + '历史记录'
+          this.record_field_1 = this.hist_list_2[value].value
+          let data = {
+            "page": currpage,
+            "pageSize": 10,
+            "startTime": starttime,
+            "endTime": endtime,
+            "columnName": this.record_field_1,
+            "identity": ''
+          }
+          getEarningsLog(data).then(response => {
+            this.historical_details = true
+            if (response.data.dataList == []) {
+              this.data_record_4 = []
+              this.totla_record_1 = 0
+            } else {
+              if (value == 2 || value == 3) {
+                response.data.dataList.forEach((item, index, self) => {
+                  item.value = this.scientificCounting(item.value)
+                })
+              }
+              this.data_record_4 = response.data.dataList
+              this.totla_record_1 = response.data.total
+            }
+          })
+        } else {
+          this.identity_value = type
+          let type_name = this.identity_type(type)
+          this.details_name = this.hist_list_3[value].name + '（' + type_name + '）' + '历史记录'
+          this.record_field_1 = this.hist_list_3[value].value
+          let data = {
+            "page": currpage,
+            "pageSize": 10,
+            "startTime": starttime,
+            "endTime": endtime,
+            "columnName": this.record_field_1,
+            "identity": this.identity_value
+          }
+          getEarningsLog(data).then(response => {
+            this.historical_details = true
+            if (response.data.dataList == []) {
+              this.data_record_4 = []
+              this.totla_record_1 = 0
+            } else {
+              if (value == 1 || value == 2 || value == 4 || value == 5) {
+                response.data.dataList.forEach((item, index, self) => {
+                  item.value = this.scientificCounting(item.value)
+                })
+              }
+              this.data_record_4 = response.data.dataList
+              this.totla_record_1 = response.data.total
+            }
+          })
+        }
+
+      },
+      /*part5 分页查询*/
+      change_currentPage_record_1(e) {
+        this.currentPage_record_1=e
+        if (this.pick_data == null) {
+          this.change_historical_details(0, 0,this.currentPage_record_1)
+        } else {
+          this.change_historical_details(this.pick_data[0], this.pick_data[1], this.currentPage_record_1)
+        }
+      },
+      /*选择相关时间*/
+      chooseTimeRange(e) {
+        this.pick_data = e
+        if (this.pick_data == null) {
+          this.change_historical_details(0, 0, 1)
+        } else {
+          this.change_historical_details(this.pick_data[0], this.pick_data[1], 1)
+        }
+
       },
     },
     created() {
@@ -1866,7 +2371,7 @@
     position: relative;
     float: right;
     margin-right: 3%;
-    margin-top: 30px;
+    /*margin-top: 30px;*/
     margin-bottom: 50px;
   }
 
@@ -1877,9 +2382,10 @@
     margin-top: 20px;
     justify-content: space-between;
   }
+
   .con_search_div {
     display: flex;
-    width:35%;
+    width: 35%;
     background-color: #ffffff;
   }
 
@@ -1911,9 +2417,20 @@
     padding: 0 5px;
     /*margin: 0 10px;*/
   }
+
   .input_fath {
     width: 80%;
     position: relative;
     left: 3%;
+  }
+
+  .block {
+    padding-bottom: 30px;
+  }
+  .select_active {
+    color: #800080;
+    cursor: pointer;
+    /*border-bottom: 2px solid #800080 ;*/
+    /*padding-bottom: 5px;*/
   }
 </style>
