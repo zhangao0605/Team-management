@@ -910,7 +910,7 @@
             align="center"
           >
             <template slot-scope="scope">
-              <span>{{scientificCounting(scope.row.transactionAmount==''?0:scope.row.transactionAmount)}}</span>
+              <span>{{scientificCounting(scope.row.transactionAmount==''?0:scope.row.transactionAmount)}} TUE</span>
             </template>
           </el-table-column>
 

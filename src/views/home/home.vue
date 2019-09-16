@@ -142,7 +142,7 @@
     },
     created() {
       this.initialization_data()
-      this.updata_all()
+      // this.updata_all()
     }
   };
 </script>

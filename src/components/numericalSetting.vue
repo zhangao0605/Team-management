@@ -236,7 +236,7 @@
         :visible.sync="dialog_de_all"
         append-to-body>
         <div>
-          共 {{nodeAllCheck_peoples==''?0:nodeAllCheck_peoples}} 人，质押 {{nodeAllCheck_tue==''?0:nodeAllCheck_tue}} TUE
+          共 {{nodeAllCheck_peoples==''?0:nodeAllCheck_peoples}} 人，质押 {{scientificCounting(nodeAllCheck_tue==''?0:nodeAllCheck_tue)}} TUE
         </div>
         <div>
           <el-select style="margin-top: 30px" v-model="select_value_1" @change="change_nodeLevel()" placeholder="请选择">
@@ -295,7 +295,7 @@
               label="节点质押金额"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.nodeamount}}</span>
+                <span>{{scientificCounting(scope.row.nodeamount )}} TUE</span>
               </template>
             </el-table-column>
           </el-table>
@@ -325,7 +325,7 @@
           <span>{{form_2.phone}}</span>
         </el-form-item>
         <el-form-item label="节点质押金额：" :label-width="formLabelWidth_1">
-          <span><span>{{form_2.pledgeBalance}}</span> TUE</span>
+          <span><span>{{scientificCounting(form_2.pledgeBalance)}}</span> TUE</span>
         </el-form-item>
         <el-form-item label="节点下属一级节点数量：" :label-width="formLabelWidth_1">
           <span><span>{{form_2.childrenLevelSecond}}</span></span>
@@ -335,7 +335,7 @@
                                                                  @click="see_de_all(form_2.address)">查看详情</span></span>
         </el-form-item>
         <el-form-item label="节点下属全部节点质押数量：" :label-width="formLabelWidth_1">
-          <span><span>{{form_2.childrenPledgeBalance}} TUE</span></span>
+          <span><span>{{scientificCounting(form_2.childrenPledgeBalance)}} TUE</span></span>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -416,7 +416,7 @@
             label="质押金额"
             align="center">
             <template slot-scope="scope">
-              <span>{{scientificCounting(scope.row.pledgeBalance)}}</span>
+              <span>{{scientificCounting(scope.row.pledgeBalance)}} TUE</span>
             </template>
           </el-table-column>
           <el-table-column
