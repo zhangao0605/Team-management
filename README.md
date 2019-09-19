@@ -1,8 +1,5 @@
 # Team-management
 
-
-## Build Setup
-
 ``` bash
 # install dependencies
 npm install
