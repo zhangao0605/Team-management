@@ -564,7 +564,7 @@
             label="节点累计收益"
             align="center">
             <template slot-scope="scope">
-              <span>{{scientificCounting(scope.row.nodecumulativebenefits==''?0:scope.row.nodecumulativebenefits)}}<span> TUE</span></span>
+              <span>{{scientificCounting(scope.row.nodecumulativebenefits==''?0:scope.row.nodecumulativebenefits)}}<span> USDT</span></span>
             </template>
           </el-table-column>
           <el-table-column

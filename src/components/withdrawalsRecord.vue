@@ -471,7 +471,7 @@
           >
             <template slot-scope="scope">
               <!--<span class="operating" @click="change_address()">修改地址</span>-->
-              <span class="operating" @click="refund(scope.row.hash)">退款</span>
+              <span class="operating" @click="refund(scope.row.hash,scope.row.Id)">退款</span>
             </template>
           </el-table-column>
         </el-table>
@@ -688,7 +688,8 @@
         part_4_recording: '',
         part_5_recording: '',
         part_6_recording: '',
-        refund_value: ''
+        refund_value: '',
+        refund_value_id: ''
       }
     },
     methods: {
@@ -1265,8 +1266,9 @@
         /*二次确认发送请求*/
       },
       /*part5 提现失败退款*/
-      refund(e) {
+      refund(e,q) {
         this.refund_value = e
+        this.refund_value_id = q
         this.dialogVisible_2 = true
       },
       /*part_5 退款弹窗取消按钮*/
@@ -1275,7 +1277,7 @@
       },
       /*part_5 退款弹窗确认按钮*/
       dialog_sure_2() {
-        let data = {"hash": this.refund_value}
+        let data = {"hash": this.refund_value,"id":this.refund_value_id}
         withdrawalRefund(data).then(response => {
           if (response.eCode == 200) {
             this.$message({

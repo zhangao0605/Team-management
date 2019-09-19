@@ -260,7 +260,7 @@
             label="操作"
             align="center">
             <template slot-scope="scope">
-              <span class="operating" @click="retry(scope.row.hash)">重试</span>
+              <span class="operating" @click="retry(scope.row.hash,scope.row.Id)">重试</span>
             </template>
           </el-table-column>
         </el-table>
@@ -650,8 +650,8 @@
         this.getdata(data, 2)
       },
       /*part_3重试*/
-      retry(e) {
-        let data = {"hash": e}
+      retry(e,q) {
+        let data = {"hash": e,'id':q}
         reTryPlay(data).then(response => {
           if(response.eCode==200){
             this.$message({
