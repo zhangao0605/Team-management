@@ -377,7 +377,7 @@
         totla_2: 0,
         select_value: '',
         select_value_1: '',
-
+        repeat_click:'',
 
       }
     },
@@ -651,31 +651,39 @@
       },
       /*part_3重试*/
       retry(e,q) {
-        let data = {"hash": e,'id':q}
-        reTryPlay(data).then(response => {
-          if(response.eCode==200){
-            this.$message({
-              message: '已进行重试操作',
-              type: 'success'
-            });
-            let data = {
-              "phone": this.save_search_value_2,
-              "address": "",
-              "exchangeType": this.select_value_1,
-              "backgroundPlay": "",
-              "status": "0",
-              "page": this.currentPage_2,
-              "pageSize": 10
+        if(this.repeat_click==''){
+          this.repeat_click=q
+          let data = {"hash": e,'id':q}
+          reTryPlay(data).then(response => {
+            if(response.eCode==200){
+              this.repeat_click=''
+              this.$message({
+                message: '已进行重试操作',
+                type: 'success'
+              });
+              let data = {
+                "phone": this.save_search_value_2,
+                "address": "",
+                "exchangeType": this.select_value_1,
+                "backgroundPlay": "",
+                "status": "0",
+                "page": this.currentPage_2,
+                "pageSize": 10
+              }
+              this.getdata(data, 2)
+            }else {
+              this.repeat_click=''
+              this.$message({
+                message: '进行重试操作失败！',
+                type: 'error'
+              });
             }
-            this.getdata(data, 2)
-          }else {
-            this.$message({
-              message: '进行重试操作失败！',
-              type: 'error'
-            });
-          }
 
-        })
+          })
+        }else {
+
+        }
+
 
       },
       // /*part_3后台打款*/

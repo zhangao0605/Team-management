@@ -176,6 +176,14 @@ export function deleteCreationAddress(e) {
 export function auditWithdrawalRecord(e) {
   return request({
     url:'/v1/investmentAdmin/info/auditWithdrawalRecord',
+    method: 'post',
+    data:e
+  })
+}
+/*加入暂不审核*/
+export function withholdAudit(e) {
+  return request({
+    url:'/v1/investmentAdmin/info/withholdAudit',
     method: 'get',
     params:e
   })
