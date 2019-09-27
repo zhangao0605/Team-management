@@ -1296,6 +1296,7 @@
         nodeAllCheck_peoples_1: 0,
         nodeAllCheck_tue_1: 0,
         nodelevels: [],
+        approvalbind_value:'',
         form_node_de: {
           "bindphone": "",
           "nodeaddress": "",
@@ -1905,16 +1906,18 @@
         this.get_data_3(data, 1)
       },
       /*part_3 单个批准*/
-      part_3_untied() {
+      part_3_untied(e) {
+        this.approvalbind_value=e
         this.alert_1_9 = true
       },
       /*part_3 取消单个批准*/
       alert_1_9_cancel() {
+        this.approvalbind_value=''
         this.alert_1_9 = false
       },
       /*part_3 确认单个批准*/
-      alert_1_9_sure(e) {
-        let data = {"address": e}
+      alert_1_9_sure() {
+        let data = {"address": this.approvalbind_value}
         approvalbind(data).then(response => {
           if (response.eCode == 200) {
             this.Initialization_data_3()
@@ -2321,7 +2324,7 @@
         if (this.pick_data == null) {
           this.change_historical_details(0, 0, 1)
         } else {
-          this.change_historical_details(this.pick_data[0], this.pick_data[1], 1)
+          this.change_historical_details(this.pick_data[0]/1000, this.pick_data[1]/1000, 1)
         }
 
       },

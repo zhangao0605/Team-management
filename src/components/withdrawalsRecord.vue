@@ -1385,8 +1385,8 @@
           this.get_data_4(data, 1)
         } else {
           let data = {
-            "phone": this.search_more_vlue,
-            "address": "",
+            "phone": "",
+            "address": this.search_more_vlue,
             "exchangeType": "",
             "page": 1,
             "pagesize": 10,
@@ -1517,8 +1517,8 @@
           this.get_data_5(data, 1)
         } else {
           let data = {
-            "phone": this.search_more_vlue_1,
-            "address": "",
+            "phone": "",
+            "address": this.search_more_vlue_1,
             "exchangeType": "",
             "page": 1,
             "pagesize": 10,
@@ -1597,8 +1597,8 @@
           this.get_data_6(data, 1)
         } else {
           let data = {
-            "phone": this.search_more_vlue_2,
-            "address": "",
+            "phone":"",
+            "address":  this.search_more_vlue_2,
             "exchangeType": "",
             "page": 1,
             "pagesize": 10,
