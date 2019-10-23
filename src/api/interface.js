@@ -356,4 +356,12 @@ export function getNowSettlement(e) {
     params:{}
   })
 }
+/*批量审核查询额度*/
+export function getRedeemRecordCeiling(e) {
+  return request({
+    url:'/v1/investmentAdmin/info/getRedeemRecordCeiling',
+    method: 'post',
+    data:e
+  })
+}
 

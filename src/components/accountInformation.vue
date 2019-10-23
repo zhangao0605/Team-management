@@ -1097,6 +1097,22 @@
                 class="select_active"  @click="get_historical_details(2,5,scope.row.identity)">{{scientificCounting(scope.row.curtue)}}</span>
             </template>
           </el-table-column>
+          <el-table-column
+            label="总计USDT"
+            align="center">
+            <template slot-scope="scope">
+              <span
+                class="select_active"  @click="get_historical_details(2,6,scope.row.identity)">{{scientificCounting(scope.row.totalusdt)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="总计TUE"
+            align="center">
+            <template slot-scope="scope">
+              <span
+                class="select_active"  @click="get_historical_details(2,7,scope.row.identity)">{{scientificCounting(scope.row.totaltue)}}</span>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
     </div>
@@ -1329,6 +1345,8 @@
           {"name": 'N值', "value": 'n'},
           {"name": '当期派息USDT数量 ', "value": 'usdt'},
           {"name": '当期TUE结算数量', "value": 'balance'},
+          {"name": '总计USDT', "value": 'totalusdt'},
+          {"name": '总计TUE', "value": 'totaltue'},
         ],
         record_field_1: '',
         identity_value: 0,
@@ -2108,6 +2126,8 @@
           a = '王者节点'
         } else if (e == 2) {
           a = '青铜节点'
+        } else if (e == 4) {
+          a = '白银节点'
         }
         return a
       },

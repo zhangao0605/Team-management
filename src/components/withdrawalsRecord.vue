@@ -58,6 +58,25 @@
     <el-button type="primary" @click="dialog_sure_2()">确 定</el-button>
        </span>
     </el-dialog>
+
+
+    <!--提现审核提醒框-->
+    <el-dialog
+      title=""
+      :visible.sync="dialogVisible_4"
+      width="30%"
+    >
+      <span>您提交的提现审核里有交易会使得虎符地址<br>
+        <span style="margin-top: 10px;display: inline-block" v-for="item in res_list ">{{item.wDAddress}}</span><br>
+        <span style="margin-top: 10px;display: inline-block">达到当日提现限额，是否继续?</span>
+      </span>
+      <br>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialog_cancel_4()">暂不审批</el-button>
+    <el-button type="primary" @click="dialog_sure_4()">仍要审批</el-button>
+       </span>
+    </el-dialog>
+
     <!--全部-->
     <div class="part_1" v-show="part_show[0].is_true">
       <div class="con_table">
@@ -213,6 +232,13 @@
             align="center">
             <template slot-scope="scope">
               <span class="item_active_click" @click="join_without_review(scope.row.Id)">加入暂不审核</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="审核原因"
+            align="center">
+            <template slot-scope="scope">
+              <span >{{scope.row.note}}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -713,6 +739,7 @@
     auditWithdrawalRecord,
     getALLReviewBatch,
     withdrawalRefund,
+    getRedeemRecordCeiling,
     withholdAudit
   } from '../api/interface'
 
@@ -727,6 +754,7 @@
         dialogVisible_1: false,
         dialogVisible_2: false,
         dialogVisible_3: false,
+        dialogVisible_4: false,
         isactive: 0,
         item_active: 'item_active',
         item_default: 'item_default',
@@ -813,7 +841,8 @@
         part_6_recording: '',
         part_7_recording: '',
         refund_value: '',
-        refund_value_id: ''
+        refund_value_id: '',
+        res_list:[],
       }
     },
     methods: {
@@ -1255,7 +1284,7 @@
       /*part_2 批量审核*/
       batch_review() {
 
-        console.log(this.multipleSelection)
+        // console.log(this.multipleSelection)
         if (this.multipleSelection.length == 0) {
           this.$message({
             type: 'error',
@@ -1283,6 +1312,51 @@
 
         })
         let data = {"ids": ids_str}
+        this.res_list=[]
+        getRedeemRecordCeiling(data).then(response => {
+          // console.log('1111')
+          if (response.data.length == 0) {
+            auditWithdrawalRecord(data).then(response => {
+              // console.log('2222222')
+              this.search_more_vlue_3=''
+              if (response.eCode == 200) {
+                this.$message({
+                  type: 'success',
+                  message: '批量审核已提交！'
+                });
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: response.eMsg
+                });
+              }
+              this.dialogVisible = false
+              this.Initialization_data_2()
+            })
+          } else {
+            this.res_list=response.data
+            this.dialogVisible_4 = true
+            this.dialogVisible = false
+          }
+        })
+
+      },
+      /*批量审核取消提现*/
+      dialog_cancel_4() {
+        this.dialogVisible_4 = false
+      },
+      /*批量审核继续提现*/
+      dialog_sure_4() {
+        let ids_str = ''
+        this.multipleSelection.forEach((item, index, self) => {
+          if (self.length - 1 == index) {
+            ids_str += item.Id
+          } else {
+            ids_str += item.Id + ','
+          }
+
+        })
+        let data = {"ids": ids_str}
         auditWithdrawalRecord(data).then(response => {
           this.search_more_vlue_3=''
           if (response.eCode == 200) {
@@ -1296,7 +1370,7 @@
               message: response.eMsg
             });
           }
-          this.dialogVisible = false
+          this.dialogVisible_4 = false
           this.Initialization_data_2()
         })
       },
@@ -1597,8 +1671,8 @@
           this.get_data_6(data, 1)
         } else {
           let data = {
-            "phone":"",
-            "address":  this.search_more_vlue_2,
+            "phone": "",
+            "address": this.search_more_vlue_2,
             "exchangeType": "",
             "page": 1,
             "pagesize": 10,
