@@ -364,4 +364,54 @@ export function getRedeemRecordCeiling(e) {
     data:e
   })
 }
+/*获取ios and历史*/
+export function updatesettings(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/updatesettings',
+    method: 'post',
+    data:e
+  })
+}
+/*新增更新ios and历史*/
+export function newupdate(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/newupdate',
+    method: 'post',
+    data:e
+  })
+}
+/*提现规则*/
+export function withdrawalrules(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/withdrawalrules',
+    method: 'post',
+    data:e
+  })
+}
+
+/*提现配置修改*/
+export function withdrawalsconfigure(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/withdrawalsconfigure',
+    method: 'post',
+    data:e
+  })
+}
+
+/*邀请链接域名展现*/
+export function invitelink(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/invitelink',
+    method: 'post',
+    data:e
+  })
+}
+/*邀请链接提现查看历史*/
+export function viewinghistory(e) {
+  return request({
+    url:'/v1/investmentAdmin/node/viewinghistory',
+    method: 'post',
+    data:e
+  })
+}
 

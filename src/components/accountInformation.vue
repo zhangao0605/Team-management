@@ -968,7 +968,7 @@
         <el-table
           :data="data_record_1"
           border
-          style="width: 40%;margin-bottom: 30px;margin-top: 40px;height: 108px"
+          style="width: 40%;margin-bottom: 30px;margin-top: 40px;"
           :header-cell-style="this.tableHeaderColor">
           <el-table-column
             label="当日充值量"
