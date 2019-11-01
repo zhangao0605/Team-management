@@ -1,6 +1,7 @@
 import moment from 'moment'
 import CryptoJS from "crypto-js"
 import BigNumber from "bignumber.js"
+import Iban from '../../../static/web3-eth-iban/src/index'
 export default {
   install(Vue, opt) {
     Vue.prototype.tableHeaderColor = function ({row, column, rowIndex, columnIndex}) {
@@ -10,11 +11,23 @@ export default {
     }
     /*时间戳转换=>moment*/
     Vue.prototype.timestampToTime = function (timestamp) {
+      // console.log('555')
       let time = ''
       if (timestamp == '' || timestamp == null || timestamp == undefined) {
         time = ''
       } else {
         time = moment(timestamp * 1000).format('YYYY-MM-DD HH:mm:ss')
+      }
+      return time
+    }
+    /*时间戳转换=>无时分秒*/
+    Vue.prototype.timestampToTime_1 = function (timestamp) {
+      // console.log('555')
+      let time = ''
+      if (timestamp == '' || timestamp == null || timestamp == undefined) {
+        time = ''
+      } else {
+        time = moment(timestamp * 1000).format('YYYY-MM-DD')
       }
       return time
     }
@@ -38,6 +51,16 @@ export default {
         // }
       }
       return num
+    }
+    /*16进制转32进制*/
+    Vue.prototype.to_32_decimal = function (e) {
+      let ban =Iban.toIban(e);
+      return ban
+    }
+    /*32进制转16进制*/
+    Vue.prototype.to_16_decimal = function (e) {
+      let ban =Iban.toAddress(e);
+      return ban
     }
   }
 

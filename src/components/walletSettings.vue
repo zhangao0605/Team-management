@@ -287,7 +287,7 @@
         ],
         table_items_2: [
           {"name": ' IOS系统 '},
-          {"name": ' 安卓系统 '},
+          {"name": 'Android系统 '},
         ],
         isactive_2: 0,
         is_show_2: [

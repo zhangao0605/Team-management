@@ -24,10 +24,12 @@
       <service-monitoring v-show="is_show[5].is_true"/>
       <wallet-settings v-show="is_show[6].is_true"/>
       <hierarchical-structure v-show="is_show[7].is_true"/>
+      <address-translation v-show="is_show[8].is_true"/>
     </div>
 </template>
 <script>
   import bindingRelationship from '../../components/bindingRelationship'
+  import addressTranslation from '../../components/addressTranslation'
   import walletSettings from '../../components/walletSettings'
   import hierarchicalStructure from '../../components/hierarchicalStructure'
   import accountInformation from '../../components/accountInformation'
@@ -37,11 +39,12 @@
   import serviceMonitoring from '../home/home'
     export default {
       name: "index",
-      components: {hierarchicalStructure,bindingRelationship,accountInformation,numericalSetting,rechargeRecord,withdrawalsRecord,serviceMonitoring,walletSettings},
+      components: {addressTranslation,hierarchicalStructure,bindingRelationship,accountInformation,numericalSetting,rechargeRecord,withdrawalsRecord,serviceMonitoring,walletSettings},
       data(){
           return{
             is_show:[
               {"is_true":true},
+              {"is_true":false},
               {"is_true":false},
               {"is_true":false},
               {"is_true":false},
@@ -63,6 +66,7 @@
               {"name":' 服务监控  '},
               {"name":' 钱包设置 '},
               {"name":' 节点树结构  '},
+              {"name":' 地址转换  '},
             ]
           }
       },
