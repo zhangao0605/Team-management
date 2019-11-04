@@ -24,14 +24,14 @@
               label="时间"
               align="center">
               <template slot-scope="scope">
-                <span>{{timestampToTime(scope.row.time)}}</span>
+                <span>{{timestampToTime(scope.row.timestamp)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="节点类型"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.address}}</span>
+                <span>{{node_level_matching_2(scope.row.identity)}}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -222,8 +222,8 @@
           <span>{{detailes.nodename}}</span>
         </el-form-item>
         <el-form-item label="节点类型：" :label-width="formLabelWidth_1">
-          <span>{{detailes.nodetype}}<span class="operating"
-                                           @click="see_de_all_1(detailes.nodeaddress)">历史记录</span></span>
+          <span>{{node_level_matching_2(detailes.nodetype)}}<span class="operating"
+                                                                  @click="see_de_all_1(detailes.nodeaddress)">历史记录</span></span>
         </el-form-item>
         <el-form-item label="节点地址：" :label-width="formLabelWidth_1">
           <span>{{detailes.nodeaddress}}</span>
@@ -255,6 +255,21 @@
             @click="see_de_all_4(detailes.nodeaddress)">查看详情</span></span>
         </el-form-item>
       </el-form>
+    </el-dialog>
+    <!--part_1 节点累计收益tue，usdt历史记录查看-->
+    <el-dialog class="his_dialog" width="25%" title="累计收益" :visible.sync="dialogTableVisible">
+      <el-table :data="tableData_10" :header-cell-style="this.tableHeaderColor">
+        <el-table-column align="center" label="收益">
+          <template slot-scope="scope">
+            <span>{{scope.row.value}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="时间">
+          <template slot-scope="scope">
+            <span>{{timestampToTime(scope.row.timestamp)}}</span>
+          </template>
+        </el-table-column>
+      </el-table>
     </el-dialog>
     <!--part_2 单个批准-->
     <el-dialog
@@ -446,14 +461,15 @@
               label="时间"
               align="center">
               <template slot-scope="scope">
-                <span @click="get_historical_details()">{{timestampToTime(scope.row.timestamp)}}</span>
+                <span v-show="!is_show_mi">{{timestampToTime(scope.row.timestamp)}}</span>
+                <span v-show="is_show_mi">{{timestampToTime_1(scope.row.timestamp)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="数值"
               align="center">
               <template slot-scope="scope">
-                <span @click="get_historical_details()">{{scope.row.value}}</span>
+                <span>{{scope.row.value}}</span>
               </template>
             </el-table-column>
 
@@ -470,6 +486,7 @@
       </div>
 
     </el-dialog>
+
     <!--节点信息-->
     <div class="part_1" v-show="part_show[0].isShow">
       <div class="con_search" style="width: 60%">
@@ -481,10 +498,10 @@
             </el-input>
           </div>
         </div>
-        <el-button type="primary" class="con_search_submit" style="position: relative;left: -13%"
+        <el-button type="primary" class="con_search_submit" style="position: relative;left: 0%"
                    @click="search_ad_ph_1()">搜索
         </el-button>
-        <el-select style="left: -19.8%;position: relative" v-model="select_value" @change="change_user_source_1()"
+        <el-select style="left: 5%;position: relative" v-model="select_value" @change="change_user_source_1()"
                    placeholder="请选择节点类型">
           <el-option
             v-for="item in part2_options1"
@@ -493,7 +510,17 @@
             :value="item.typeid">
           </el-option>
         </el-select>
+        <el-select style="left: 10%;position: relative" v-model="sorting" @change="change_order()"
+                   placeholder="请选择节点类型">
+          <el-option
+            v-for="item in order_options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </div>
+      <!--排序不对注意类型-->
       <div class="con_table">
         <el-table
           :data="tableData"
@@ -545,7 +572,6 @@
             prop="currentpledgeamount"
             label="当前质押金额"
             align="center"
-            sortable
           >
             <template slot-scope="scope">
               <span>{{scientificCounting(scope.row.currentpledgeamount==''?0:scope.row.currentpledgeamount)}} <span> TUE</span></span>
@@ -562,9 +588,10 @@
           <el-table-column
             prop="nodecumulativebenefits"
             label="节点累计收益"
-            align="center">
+            align="center"
+          >
             <template slot-scope="scope">
-              <span>{{scientificCounting(scope.row.nodecumulativebenefits==''?0:scope.row.nodecumulativebenefits)}}<span> USDT</span></span>
+              <span class="operating_2" @click="tue_income_his(scope.row.nodeaddress,0)">{{scientificCounting(scope.row.nodecumulativebenefits==''?0:scope.row.nodecumulativebenefits)}}<span> USDT</span></span>
             </template>
           </el-table-column>
           <el-table-column
@@ -602,11 +629,18 @@
           </el-table-column>
           <el-table-column
             prop="currentwed"
-            label="当前WED持有量"
-            align="center"
-            sortable>
+            label="节点累计收益（TUE）"
+            align="center">
             <template slot-scope="scope">
-              <span>{{scientificCounting(scope.row.currentwed==''?0:scope.row.currentwed)}} <span> WED</span></span>
+              <span class="operating_2" @click="tue_income_his(scope.row.nodeaddress,1)">{{scientificCounting(scope.row.accumulatedincometue)}} </span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="currentwed"
+            label="符合王者解锁"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row.whether==0?'否':'是'}} </span>
             </template>
           </el-table-column>
           <el-table-column
@@ -968,7 +1002,7 @@
         <el-table
           :data="data_record_1"
           border
-          style="width: 40%;margin-bottom: 30px;margin-top: 40px;height: 108px"
+          style="width: 40%;margin-bottom: 30px;margin-top: 40px;"
           :header-cell-style="this.tableHeaderColor">
           <el-table-column
             label="当日充值量"
@@ -1020,7 +1054,8 @@
             label="结算币价"
             align="center">
             <template slot-scope="scope">
-              <span class="select_active" @click="get_historical_details(1,1,99)">$ {{scope.row.settlementPrice}} USDT</span>
+              <span class="select_active"
+                    @click="get_historical_details(1,1,99)">$ {{scope.row.settlementPrice}} USDT</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -1056,14 +1091,15 @@
             label="数量"
             align="center">
             <template slot-scope="scope">
-              <span class="select_active" @click="get_historical_details(2,0,scope.row.identity)">{{scope.row.num}}</span>
+              <span class="select_active"
+                    @click="get_historical_details(2,0,scope.row.identity)">{{scope.row.num}}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="质押总额（TUE）"
             align="center">
             <template slot-scope="scope">
-              <span  class="select_active" @click="get_historical_details(2,1,scope.row.identity)">{{scientificCounting(scope.row.totalamountpledge)}}</span>
+              <span class="select_active" @click="get_historical_details(2,1,scope.row.identity)">{{scientificCounting(scope.row.totalamountpledge)}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -1071,14 +1107,15 @@
             align="center">
             <template slot-scope="scope">
               <span class="select_active"
-                @click="get_historical_details(2,2,scope.row.identity)">{{scientificCounting(scope.row.lastwednum)}}</span>
+                    @click="get_historical_details(2,2,scope.row.identity)">{{scientificCounting(scope.row.lastwednum)}}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="N值"
             align="center">
             <template slot-scope="scope">
-              <span class="select_active" @click="get_historical_details(2,3,scope.row.identity)">{{scope.row.nvalue}}</span>
+              <span class="select_active"
+                    @click="get_historical_details(2,3,scope.row.identity)">{{scope.row.nvalue}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -1094,7 +1131,23 @@
             align="center">
             <template slot-scope="scope">
               <span
-                class="select_active"  @click="get_historical_details(2,5,scope.row.identity)">{{scientificCounting(scope.row.curtue)}}</span>
+                class="select_active" @click="get_historical_details(2,5,scope.row.identity)">{{scientificCounting(scope.row.curtue)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="总计USDT"
+            align="center">
+            <template slot-scope="scope">
+              <span
+                class="select_active" @click="get_historical_details(2,6,scope.row.identity)">{{scientificCounting(scope.row.totalusdt)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="总计TUE"
+            align="center">
+            <template slot-scope="scope">
+              <span
+                class="select_active" @click="get_historical_details(2,7,scope.row.identity)">{{scientificCounting(scope.row.totaltue)}}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -1125,12 +1178,16 @@
     nodeReport,
     getEarningsLog,
     getNowSettlement,
+    getnodeusdthistory,
+    getnodetuehistory,
   } from '../api/interface'
 
   export default {
     name: "accountInformation",
     data() {
       return {
+        is_show_mi: false,
+        dialogTableVisible: false,
         time_hi_1: '',
         time_hi_2: '',
         pickerOptions: {
@@ -1176,6 +1233,17 @@
             'value': false,
           },
         ],
+        order_options: [
+          {
+            'label': '倒序',
+            'value': '-1',
+          },
+          {
+            'label': '正序',
+            'value': '1',
+          },
+        ],
+        sorting: '-1', /*倒序-1正序1*/
         select_value: '',
         select_value_1: '',
         select_value_2: '',
@@ -1230,6 +1298,7 @@
         tableData_7: [],
         tableData_8: [],
         tableData_9: [],
+        tableData_10: [],
         currentPage: 1,
         pagesize: 10,
         totla: 0,
@@ -1296,7 +1365,7 @@
         nodeAllCheck_peoples_1: 0,
         nodeAllCheck_tue_1: 0,
         nodelevels: [],
-        approvalbind_value:'',
+        approvalbind_value: '',
         form_node_de: {
           "bindphone": "",
           "nodeaddress": "",
@@ -1329,6 +1398,8 @@
           {"name": 'N值', "value": 'n'},
           {"name": '当期派息USDT数量 ', "value": 'usdt'},
           {"name": '当期TUE结算数量', "value": 'balance'},
+          {"name": '总计USDT', "value": 'totalusdt'},
+          {"name": '总计TUE', "value": 'totaltue'},
         ],
         record_field_1: '',
         identity_value: 0,
@@ -1337,7 +1408,7 @@
           "value": 0,
           "type": 0,
         },
-        pick_data: null
+        pick_data: null,
 
       }
     },
@@ -1347,6 +1418,7 @@
         let data = {}
         nodeType(data).then(response => {
           this.part2_options1 = this.part2_options1.concat(response)
+          console.log( this.part2_options1 )
         })
       },
       /*part_1 获取数据公共接口*/
@@ -1356,11 +1428,11 @@
             this.tableData = []
             this.totla = 0
           } else {
-            // // currentpledgeamount
-            // response.data.dataList.forEach((item,index,self)=>{
-            //   item.currentpledgeamount=Number(item.currentpledgeamount)
-            //   item.currentwed=Number(item.currentwed)
-            // })
+            response.dataList.forEach((item, index, self) => {
+              item.currentpledgeamount = Number(item.currentpledgeamount)
+              item.nodecumulativebenefits = Number(item.nodecumulativebenefits)
+              item.currentwed = Number(item.currentwed)
+            })
             this.tableData = response.dataList
             this.totla = response.total
             if (q == 1) {
@@ -1372,9 +1444,10 @@
       /*part_1 初始化*/
       Initialization_data_1() {
         this.search_1 = ''
+        this.sorting='-1'
         this.currentPage = 1
         this.select_value = ''
-        let data = {"phone": "", "address": "", "type": "", "page": 1, "pagesize": 10}
+        let data = {"phone": "", "address": "", "type": "", "page": 1, "pagesize": 10, "sorting": '-1'}
         this.get_data_1(data, 0)
       },
       /*table切换*/
@@ -1415,21 +1488,75 @@
         this.currentPage = 1
         this.select_value = ''
         if (this.search_1.length == 11) {
-          let data = {"phone": this.search_1, "address": "", "type": "", "page": 1, "pagesize": 10}
+          let data = {
+            "phone": this.search_1,
+            "address": "",
+            "type": "",
+            "page": 1,
+            "pagesize": 10,
+            "sorting": this.sorting
+          }
           this.get_data_1(data, 1)
         } else {
-          let data = {"phone": "", "address": this.search_1, "type": "", "page": 1, "pagesize": 10}
+          let data = {
+            "phone": "",
+            "address": this.search_1,
+            "type": "",
+            "page": 1,
+            "pagesize": 10,
+            "sorting": this.sorting
+          }
           this.get_data_1(data, 1)
         }
+      },
+      /*part_1 正序倒序排列*/
+      change_order() {
+        let data
+
+        this.currentPage = 1
+        if (this.part_1_recording.length == 11) {
+          data = {
+            "phone": this.part_1_recording,
+            "address": "",
+            "type": this.select_value,
+            "page": 1,
+            "pagesize": 10,
+            "sorting": this.sorting
+          }
+        } else {
+          data = {
+            "phone": "",
+            "address": this.part_1_recording,
+            "type": this.select_value,
+            "page": 1,
+            "pagesize": 10,
+            "sorting": this.sorting
+          }
+        }
+        this.get_data_1(data, 0)
       },
       /*part_1 改变节点类型*/
       change_user_source_1() {
         let data
         this.currentPage = 1
         if (this.part_1_recording.length == 11) {
-          data = {"phone": this.part_1_recording, "address": "", "type": this.select_value, "page": 1, "pagesize": 10}
+          data = {
+            "phone": this.part_1_recording,
+            "address": "",
+            "type": this.select_value,
+            "page": 1,
+            "pagesize": 10,
+            "sorting": this.sorting
+          }
         } else {
-          data = {"phone": "", "address": this.part_1_recording, "type": this.select_value, "page": 1, "pagesize": 10}
+          data = {
+            "phone": "",
+            "address": this.part_1_recording,
+            "type": this.select_value,
+            "page": 1,
+            "pagesize": 10,
+            "sorting": this.sorting
+          }
         }
         this.get_data_1(data, 0)
       },
@@ -1443,7 +1570,8 @@
             "address": "",
             "type": this.select_value,
             "page": this.currentPage,
-            "pagesize": 10
+            "pagesize": 10,
+            "sorting": this.sorting
           }
         } else {
           data = {
@@ -1451,7 +1579,9 @@
             "address": this.part_1_recording,
             "type": this.select_value,
             "page": this.currentPage,
-            "pagesize": 10
+            "pagesize": 10,
+            "sorting": this.sorting
+
           }
         }
         this.get_data_1(data, 0)
@@ -1657,6 +1787,33 @@
           })
         }
         return a
+      },
+      /*节点累计TUE/usdt收益*/
+      tue_income_his(address, type) {
+        if (type == 0) {
+          let data = {"address": address}
+          getnodeusdthistory(data).then(response => {
+            this.dialogTableVisible = true
+            if (response.eCode == 200) {
+              this.tableData_10 = response.data.dataList
+              console.log(this.tableData_10)
+            } else {
+              this.tableData_10 = []
+            }
+          })
+        } else {
+          let data = {"address": address}
+          getnodetuehistory(data).then(response => {
+            this.dialogTableVisible = true
+            if (response.eCode == 200) {
+              this.tableData_10 = response.data.dataList
+              console.log(this.tableData_10)
+            } else {
+              this.tableData_10 = []
+            }
+          })
+        }
+
       },
       /*===============================================*/
       /*part_2 获取数据公共接口*/
@@ -1907,12 +2064,12 @@
       },
       /*part_3 单个批准*/
       part_3_untied(e) {
-        this.approvalbind_value=e
+        this.approvalbind_value = e
         this.alert_1_9 = true
       },
       /*part_3 取消单个批准*/
       alert_1_9_cancel() {
-        this.approvalbind_value=''
+        this.approvalbind_value = ''
         this.alert_1_9 = false
       },
       /*part_3 确认单个批准*/
@@ -2108,6 +2265,8 @@
           a = '王者节点'
         } else if (e == 2) {
           a = '青铜节点'
+        } else if (e == 4) {
+          a = '白银节点'
         }
         return a
       },
@@ -2146,6 +2305,11 @@
         this.record_list.value = value
         this.record_list.type = type
         if (table == 0) {
+          if (value == 2) {
+            this.is_show_mi = true
+          } else {
+            this.is_show_mi = false
+          }
           this.details_name = this.hist_list[value].name + '历史记录'
           this.record_field_1 = this.hist_list[value].value
           let data = {"page": 1, "pageSize": 10, "startTime": 0, "endTime": 0, "columnName": this.record_field_1}
@@ -2223,8 +2387,8 @@
 
       },
       change_historical_details(starttime, endtime, currpage) {
-        if(currpage==1){
-          this.currentPage_record_1=1
+        if (currpage == 1) {
+          this.currentPage_record_1 = 1
         }
         let table = this.record_list.table
         let value = this.record_list.value
@@ -2311,9 +2475,9 @@
       },
       /*part5 分页查询*/
       change_currentPage_record_1(e) {
-        this.currentPage_record_1=e
+        this.currentPage_record_1 = e
         if (this.pick_data == null) {
-          this.change_historical_details(0, 0,this.currentPage_record_1)
+          this.change_historical_details(0, 0, this.currentPage_record_1)
         } else {
           this.change_historical_details(this.pick_data[0], this.pick_data[1], this.currentPage_record_1)
         }
@@ -2324,7 +2488,7 @@
         if (this.pick_data == null) {
           this.change_historical_details(0, 0, 1)
         } else {
-          this.change_historical_details(this.pick_data[0]/1000, this.pick_data[1]/1000, 1)
+          this.change_historical_details(this.pick_data[0] / 1000, this.pick_data[1] / 1000, 1)
         }
 
       },
@@ -2340,6 +2504,30 @@
   .af_all .con_search_div input {
     outline: none;
     border: none;
+  }
+
+  .his_dialog .el-dialog__body {
+    height: 500px;
+    overflow: auto;
+  }
+
+  .his_dialog .el-dialog__body::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .his_dialog .el-dialog__body::-webkit-scrollbar-track {
+
+    background-color: #FFFFFF;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+  }
+
+  .his_dialog .el-dialog__body::-webkit-scrollbar-thumb {
+    background-color: #cdcdcd;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
   }
 </style>
 <style scoped>
@@ -2421,6 +2609,11 @@
     /*margin: 0 10px;*/
   }
 
+  .operating_2 {
+    cursor: pointer;
+    color: #800080;
+  }
+
   .input_fath {
     width: 80%;
     position: relative;
@@ -2430,6 +2623,7 @@
   .block {
     padding-bottom: 30px;
   }
+
   .select_active {
     color: #800080;
     cursor: pointer;

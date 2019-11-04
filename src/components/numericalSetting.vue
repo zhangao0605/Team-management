@@ -22,58 +22,10 @@
     <el-button type="primary" @click="dialog_sure()">确 定</el-button>
        </span>
     </el-dialog>
-    <!--修改权益值N-->
-    <el-dialog
-      title=""
-      :visible.sync="dialogVisible_1"
-      width="30%"
-    >
-      <span>N值现在为：{{edit_value.n_value}}</span>
-      <br>
-      <span>修改N值后，将会影响现在及以后的奖励计算，请确认后再进行更改</span>
-      <br>
-      <el-input style="width: 70%;margin-top: 30px" v-model="verify_value_1" placeholder="请输入新N值"></el-input>
-      <span slot="footer" class="dialog-footer">
-    <el-button @click="dialog_cancel_1()">取 消</el-button>
-    <el-button type="primary" @click="dialog_sure_1()">确 定</el-button>
-       </span>
-    </el-dialog>
-    <!--修改权益值KN-->
-    <el-dialog
-      title=""
-      :visible.sync="dialogVisible_2"
-      width="30%"
-    >
-      <span>KN值现在为：{{edit_value.kn_value}}</span>
-      <br>
-      <span>修改KN值后，将会影响现在及以后的奖励计算，请确认后再进行更改</span>
-      <br>
-      <el-input style="width: 70%;margin-top: 30px" v-model="verify_value_2" placeholder="请输入新KN值"></el-input>
-      <span slot="footer" class="dialog-footer">
-    <el-button @click="dialog_cancel_2()">取 消</el-button>
-    <el-button type="primary" @click="dialog_sure_2()">确 定</el-button>
-       </span>
-    </el-dialog>
-    <!--修改权益值ON-->
-    <el-dialog
-      title=""
-      :visible.sync="dialogVisible_3"
-      width="30%"
-    >
-      <span>ON值现在为：{{edit_value.on_value}}</span>
-      <br>
-      <span>修改ON值后，将会影响现在及以后的奖励计算，请确认后再进行更改</span>
-      <br>
-      <el-input style="width: 70%;margin-top: 30px" v-model="verify_value_3" placeholder="请输入新ON值"></el-input>
-      <span slot="footer" class="dialog-footer">
-    <el-button @click="dialog_cancel_3()">取 消</el-button>
-    <el-button type="primary" @click="dialog_sure_3()">确 定</el-button>
-       </span>
-    </el-dialog>
     <!--历史记录M值-->
-    <el-dialog width="30%" title="历史记录 M值" :visible.sync="dialogTableVisible">
+    <el-dialog class="his_dialog" width="30%" title="历史记录" :visible.sync="dialogTableVisible">
       <el-table :data="gridData" :header-cell-style="this.tableHeaderColor">
-        <el-table-column align="center" label="M值">
+        <el-table-column align="center" label="历史值">
           <template slot-scope="scope">
             <span>{{scope.row.value}}</span>
           </template>
@@ -85,71 +37,107 @@
         </el-table-column>
       </el-table>
     </el-dialog>
-    <!--历史记录N值-->
-    <el-dialog width="30%" title="历史记录 N值" :visible.sync="dialogTableVisible_1">
-      <el-table :data="gridData_1" :header-cell-style="this.tableHeaderColor">
-        <el-table-column align="center" label="N值">
-          <template slot-scope="scope">
-            <span>{{scope.row.value}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="修改时间">
-          <template slot-scope="scope">
-            <span>{{timestampToTime(scope.row.timestamp)}}</span>
-          </template>
-        </el-table-column>
-      </el-table>
+    <!--数值设置修改-->
+    <el-dialog width="40%" title="数值设置修改" :visible.sync="dialogTableVisible_1">
+      <el-form :model="table_form">
+        <el-form-item label="要求自身锁定量：" :label-width="formLabelWidth_2">
+          <el-input v-model="table_form.pledge_coins" style="width: 70%" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="要求一级青铜及以上节点数：" :label-width="formLabelWidth_2">
+          <el-input v-model="table_form.Level_one_count" style="width: 70%" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="要求全部青铜及以上节点数：" :label-width="formLabelWidth_2">
+          <el-input v-model="table_form.Level_total_count" style="width: 70%" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="要求全部节点锁定金额：" :label-width="formLabelWidth_2">
+          <el-input v-model="table_form.lever_total_pledge_coins" style="width: 70%" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="下属一级节点传导系数：" :label-width="formLabelWidth_2">
+          <el-input v-model="table_form.mining_percentage" style="width: 70%" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Rx：" :label-width="formLabelWidth_2">
+          <el-select v-model="Rx_select" placeholder="">
+            <el-option
+              v-for="item in Rx_options"
+              :key="item.batch"
+              :label="item.batchName"
+              :value="item.batch">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="解锁周期：" :label-width="formLabelWidth_2">
+          <el-input v-model="table_form.unlock_period_days" style="width: 70%" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="是否会降级：" :label-width="formLabelWidth_2">
+          <el-input
+            style="width: 70%;resize: none"
+            type="textarea"
+            :autosize="{ minRows: 4, maxRows: 4}"
+            placeholder="请输入内容"
+            v-model="table_form.level_down_desc">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="是否会升级：" :label-width="formLabelWidth_2">
+          <el-input
+            style="width: 70%;resize: none"
+            type="textarea"
+            :autosize="{ minRows: 4, maxRows: 4}"
+            placeholder="请输入内容"
+            v-model="table_form.level_up_desc">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="是否自动升级：" :label-width="formLabelWidth_2">
+          <el-select v-model="auto_select" placeholder="">
+            <el-option
+              v-for="item in auto_options"
+              :key="item.batch"
+              :label="item.batchName"
+              :value="item.batch">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="N值：" :label-width="formLabelWidth_2">
+          <el-input v-model="table_form.param_n" style="width: 70%" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="M值：" :label-width="formLabelWidth_2">
+          <el-input v-model="table_form.param_m" style="width: 70%" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="KN值：" :label-width="formLabelWidth_2">
+          <el-input v-model="table_form.param_kn" style="width: 70%" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="ON值：" :label-width="formLabelWidth_2">
+          <el-input v-model="table_form.param_on" style="width: 70%" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogcancle_nusi()">取 消</el-button>
+        <el-button type="primary" @click="dialogsure_nusi()">确 定</el-button>
+      </div>
     </el-dialog>
-    <!--历史记录kN值-->
-    <el-dialog width="30%" title="历史记录 KN值" :visible.sync="dialogTableVisible_2">
-      <el-table :data="gridData_2" :header-cell-style="this.tableHeaderColor">
-        <el-table-column align="center" label="KN值">
-          <template slot-scope="scope">
-            <span>{{scope.row.value}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="修改时间">
-          <template slot-scope="scope">
-            <span>{{timestampToTime(scope.row.timestamp)}}</span>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-dialog>
-    <!--历史记录ON值-->
-    <el-dialog width="30%" title="历史记录 ON值" :visible.sync="dialogTableVisible_3">
-      <el-table :data="gridData_3" :header-cell-style="this.tableHeaderColor">
-        <el-table-column align="center" label="ON值">
-          <template slot-scope="scope">
-            <span>{{scope.row.value}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="修改时间">
-          <template slot-scope="scope">
-            <span>{{timestampToTime(scope.row.timestamp)}}</span>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-dialog>
+
     <!--添加节点-->
     <el-dialog width="35%" title="添加创世王者节点" :visible.sync="dialogFormVisible">
       <!--<el-dialog-->
-        <!--title=""-->
-        <!--:visible.sync="dialogtwo"-->
-        <!--width="30%"-->
-        <!--append-to-body-->
+      <!--title=""-->
+      <!--:visible.sync="dialogtwo"-->
+      <!--width="30%"-->
+      <!--append-to-body-->
       <!--&gt;-->
-        <!--<span>您正在将地址为：XXXXXX，绑定手机号为XXXX的节点添加为创世王者节点，节点质押金额XXXXX TUE ，本次添加需要二次确认，是否确认</span>-->
-        <!--<span slot="footer" class="dialog-footer">-->
-        <!--<el-button @click="dialogtwo_cancel()">取 消</el-button><el-button type="primary"-->
-                                                                         <!--@click="dialogtwo_sure()">确 定</el-button>-->
-       <!--</span>-->
+      <!--<span>您正在将地址为：XXXXXX，绑定手机号为XXXX的节点添加为创世王者节点，节点质押金额XXXXX TUE ，本次添加需要二次确认，是否确认</span>-->
+      <!--<span slot="footer" class="dialog-footer">-->
+      <!--<el-button @click="dialogtwo_cancel()">取 消</el-button><el-button type="primary"-->
+      <!--@click="dialogtwo_sure()">确 定</el-button>-->
+      <!--</span>-->
       <!--</el-dialog>-->
       <el-form :model="form">
         <el-form-item label="节点地址：" :label-width="formLabelWidth">
           <el-input v-model="form.address" style="width: 70%" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="节点绑定手机号：" :label-width="formLabelWidth">
-          <el-input maxlength="11" show-word-limit v-model="form.phone" style="width: 70%" autocomplete="off"></el-input>
+          <el-input maxlength="11" show-word-limit v-model="form.phone" style="width: 70%"
+                    autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="质押金额：" :label-width="formLabelWidth">
           <el-input min="0" type="number" v-model="form.value" style="width: 70%" autocomplete="off"></el-input>
@@ -206,10 +194,12 @@
           <span>{{form_1.address}}</span>
         </el-form-item>
         <el-form-item label="节点绑定手机号：" :label-width="formLabelWidth">
-          <el-input maxlength="11" show-word-limit v-model="form_1.phone" style="width: 70%" autocomplete="off"></el-input>
+          <el-input maxlength="11" show-word-limit v-model="form_1.phone" style="width: 70%"
+                    autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="质押金额：" :label-width="formLabelWidth">
-          <el-input type="number" min="0" v-model="form_1.pledgeBalance" style="width: 70%" autocomplete="off"></el-input>
+          <el-input type="number" min="0" v-model="form_1.pledgeBalance" style="width: 70%"
+                    autocomplete="off"></el-input>
           <span style="margin-left: 5%;font-size: 16px">TUE</span>
         </el-form-item>
         <el-form-item label="节点所属批次：" :label-width="formLabelWidth">
@@ -236,7 +226,8 @@
         :visible.sync="dialog_de_all"
         append-to-body>
         <div>
-          共 {{nodeAllCheck_peoples==''?0:nodeAllCheck_peoples}} 人，质押 {{scientificCounting(nodeAllCheck_tue==''?0:nodeAllCheck_tue)}} TUE
+          共 {{nodeAllCheck_peoples==''?0:nodeAllCheck_peoples}} 人，质押
+          {{scientificCounting(nodeAllCheck_tue==''?0:nodeAllCheck_tue)}} TUE
         </div>
         <div>
           <el-select style="margin-top: 30px" v-model="select_value_1" @change="change_nodeLevel()" placeholder="请选择">
@@ -321,7 +312,7 @@
         <el-form-item label="节点地址：" :label-width="formLabelWidth_1">
           <span>{{form_2.address}}</span>
         </el-form-item>
-        <el-form-item  label="节点绑定手机号：" :label-width="formLabelWidth_1">
+        <el-form-item label="节点绑定手机号：" :label-width="formLabelWidth_1">
           <span>{{form_2.phone}}</span>
         </el-form-item>
         <el-form-item label="节点质押金额：" :label-width="formLabelWidth_1">
@@ -339,6 +330,8 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+
+
     <!--数值设置-->
     <div class="part_1" v-show="part_show[0].isShow">
       <div class="con_table">
@@ -349,25 +342,140 @@
           :header-cell-style="this.tableHeaderColor"
         >
           <el-table-column
-            label="数据名称"
+            label="级别"
+            fixed
+            width="150"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.name}}</span>
+              <span>{{scope.row.node_name}}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="数据值"
+            label="要求自身锁定量"
+            width="150"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.value}}</span>
+              <span class="operating_2" @click="getNewLog(scope.row.node_identity,0)">{{scope.row.pledge_coins}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="要求一级青铜及以上节点数（不包含王者，创世王者，8折王者及其下属）"
+            width="300"
+            align="center">
+            <template slot-scope="scope">
+              <span class="operating_2"
+                    @click="getNewLog(scope.row.node_identity,1)">{{scope.row.Level_one_count}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="要求全部青铜及以上节点数（不包含王者，创世王者，8折王者及其下属）"
+            width="300"
+            align="center">
+            <template slot-scope="scope">
+              <span class="operating_2"
+                    @click="getNewLog(scope.row.node_identity,2)">{{scope.row.Level_total_count}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="要求全部节点锁定金额（不包含王者，创世王者，8折王者及其下属）"
+            width="300"
+            align="center">
+            <template slot-scope="scope">
+              <span class="operating_2" @click="getNewLog(scope.row.node_identity,3)">{{scope.row.lever_total_pledge_coins}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="下属一级节点传导系数"
+            width="150"
+            align="center">
+            <template slot-scope="scope">
+              <span class="operating_2"
+                    @click="getNewLog(scope.row.node_identity,4)">{{scope.row.mining_percentage}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="Rx"
+            width="100"
+            align="center">
+            <template slot-scope="scope">
+              <span class="operating_2"
+                    @click="getNewLog(scope.row.node_identity,5)">{{scope.row.rx==0?'不存在':'存在'}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="解锁周期"
+            width="100"
+            align="center">
+            <template slot-scope="scope">
+              <span class="operating_2"
+                    @click="getNewLog(scope.row.node_identity,6)">{{scope.row.unlock_period_days}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="是否会降级"
+            width="250"
+            align="center">
+            <template slot-scope="scope">
+              <span class="operating_2"
+                    @click="getNewLog(scope.row.node_identity,7)">{{scope.row.level_down_desc}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="是否会升级"
+            width="250"
+            align="center">
+            <template slot-scope="scope">
+              <span class="operating_2" @click="getNewLog(scope.row.node_identity,8)">{{scope.row.level_up_desc}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="升级是否自动"
+            width="150"
+            align="center">
+            <template slot-scope="scope">
+              <span class="operating_2" @click="getNewLog(scope.row.node_identity,9)">{{scope.row.auto_update==0?'审批':'自动'}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="N值"
+            width="100"
+            align="center">
+            <template slot-scope="scope">
+              <span class="operating_2" @click="getNewLog(scope.row.node_identity,10)">{{scope.row.param_n}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="M值"
+            width="100"
+            align="center">
+            <template slot-scope="scope">
+              <span class="operating_2" @click="getNewLog(scope.row.node_identity,11)">{{scope.row.param_m}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="KN值"
+            width="100"
+            align="center">
+            <template slot-scope="scope">
+              <span class="operating_2" @click="getNewLog(scope.row.node_identity,12)">{{scope.row.param_kn}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="ON值"
+            width="100"
+            align="center">
+            <template slot-scope="scope">
+              <span class="operating_2" @click="getNewLog(scope.row.node_identity,13)">{{scope.row.param_on}}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="操作"
+            fixed="right"
+            width="200"
             align="center">
             <template slot-scope="scope">
-              <span class="operating" v-show="scope.row.isShow" @click="edit(scope.row.label,scope.row.value)">修改</span>
-              <span class="operating" v-show="scope.row.isShow" @click="history_record(scope.row.label)">历史记录</span>
+              <span class="operating" @click="edit_all(scope.row)">修改</span>
+              <!--<span class="operating"  @click="history_record(scope.row.label)">历史记录</span>-->
             </template>
           </el-table-column>
         </el-table>
@@ -465,12 +573,70 @@
     deleteCreationAddress,
     subordinateNodeAllCheck,
     nodeLevel,
+    getNodeSettingNew,
+    updateNodeSettingNew,
+    getNodeSettingNewLog,
   } from '../api/interface'
 
   export default {
     name: "numericalSetting",
     data() {
       return {
+        Rx_select: 0,
+        Rx_options: [
+          {
+            batch: 0,
+            batchName: "不存在",
+          },
+          {
+            batch: 1,
+            batchName: "存在",
+          },
+        ],
+        auto_options: [
+          {
+            batch: 0,
+            batchName: "审批",
+          },
+          {
+            batch: 1,
+            batchName: "自动",
+          },
+        ],
+        auto_select: 0,
+        table_form: {
+          'pledge_coins': '',//升级成该级别要求节点自身锁定量
+          'json:"Level_one_count': '',//升级成该级别要求一级非普通节点数量
+          'json:"Level_total_count': '', //升级成该级别要要求全部非普通节点数量
+          'lever_total_pledge_coins': '',//升级成该级别要要求全部非普通节点锁定量
+          'rx': '',//Rx是否存在 0 不存在 1 存在
+          'unlock_period_days': '',//解锁周期 （时间/天数）
+          'mining_percentage': '',//传导系数 （时间/天数）
+          'level_down_desc': '',//是否会降级
+          'level_up_desc': '', //是否会升级
+          'auto_update': '', //升级是否自动     0 不自动 1 自动
+          'param_n': '',
+          'param_m': '',
+          'param_kn': '',
+          'param_on': '',
+        },
+        getlog_name: [
+          {'value': 'pledge_coins'},
+          {'value': 'Level_one_count'},
+          {'value': 'Level_total_count'},
+          {'value': 'lever_total_pledge_coins'},
+          {'value': 'mining_percentage'},
+          {'value': 'rx'},
+          {'value': 'unlock_period_days'},
+          {'value': 'level_down_desc'},
+          {'value': 'level_up_desc'},
+          {'value': 'auto_update'},
+          {'value': 'param_n'},
+          {'value': 'param_m'},
+          {'value': 'param_kn'},
+          {'value': 'param_on'},
+        ],
+        dialogTableVisible_1: false,
         select_value_1: '',
         dialog_de_all: false,
         formLabelWidth_1: '200px',
@@ -504,18 +670,10 @@
         dialogUntied: false,
         dialogFormVisible: false,
         formLabelWidth: '150px',
+        formLabelWidth_2: '220px',
         dialogVisible: false,
         verify_value: '',
-        dialogVisible_1: false,
-        dialogVisible_2: false,
-        dialogVisible_3: false,
-        verify_value_1: '',
-        verify_value_2: '',
-        verify_value_3: '',
         dialogTableVisible: false,
-        dialogTableVisible_1: false,
-        dialogTableVisible_2: false,
-        dialogTableVisible_3: false,
         isactive: 0,
         table_items: [
           {"name": ' 数值设置 '},
@@ -530,9 +688,6 @@
           {"is_true": false},
         ],
         gridData: [],
-        gridData_1: [],
-        gridData_2: [],
-        gridData_3: [],
         item_active: 'item_active',
         item_default: 'item_default',
         number_seting: [],
@@ -600,8 +755,8 @@
           "kn_value": 0,
           "on_value": 0,
         },
-        untied_address:'',
-        remove_address:'',
+        untied_address: '',
+        remove_address: '',
         nodeAllCheck_peoples: 0,
         nodeAllCheck_tue: 0,
         hi_re_3: '',
@@ -616,7 +771,7 @@
       // },
       /*获取part_1 公共方法*/
       getdata_1(e) {
-        getSettingInfo(e).then(response => {
+        getNodeSettingNew(e).then(response => {
           if (response.data == []) {
             this.number_seting = []
           } else {
@@ -626,8 +781,7 @@
       },
       /*获取part_1 数据*/
       Initialization_data_1() {
-        let data = {"equityPoolM": "", "equityPoolN": ""}
-        this.getdata_1(data)
+        this.getdata_1()
       },
       /*part_1 table切换*/
       swich_tab(e) {
@@ -652,175 +806,105 @@
           this.Initialization_data_2()
         }
       },
-      /*part_1 修改*/
-      edit(e, q) {
-        if (e == 'M') {
-          this.edit_value.m_value = q
-          this.verify_value = q
-          this.dialogVisible = true
-        } else if (e == 'N') {
-          this.edit_value.n_value = q
-          this.verify_value_1 = q
-          this.dialogVisible_1 = true
-        } else if(e == 'KN') {
-          this.edit_value.kn_value = q
-          this.verify_value_2 = q
-          this.dialogVisible_2 = true
-        }else if(e == 'ON'){
-          this.edit_value.on_value = q
-          this.verify_value_3 = q
-          this.dialogVisible_3 = true
+      /*part_1 点击修改*/
+      edit_all(e) {
+        this.table_form = {
+          "Id": e.Id,
+          "node_name": e.node_name,
+          "node_identity": e.node_identity,
+          "sequence": e.sequence,
+          "mining_percentage": e.mining_percentage,
+          'pledge_coins': e.pledge_coins,//升级成该级别要求节点自身锁定量
+          'Level_one_count': e.Level_one_count,//升级成该级别要求一级非普通节点数量
+          'Level_total_count': e.Level_total_count, //升级成该级别要要求全部非普通节点数量
+          'lever_total_pledge_coins': e.lever_total_pledge_coins,//升级成该级别要要求全部非普通节点锁定量
+          'rx': e.rx,//Rx是否存在 0 不存在 1 存在
+          'unlock_period_days': e.unlock_period_days,//解锁周期 （时间/天数）
+          'level_down_desc': e.level_down_desc,//是否会降级
+          'level_up_desc': e.level_up_desc, //是否会升级
+          'auto_update': e.auto_update, //升级是否自动     0 不自动 1 自动
+          'param_n': e.param_n,
+          'param_m': e.param_m,
+          'param_kn': e.param_kn,
+          'param_on': e.param_on,
+        }
+        this.Rx_select = e.rx
+        this.auto_select = e.auto_update
+        this.dialogTableVisible_1 = true
+      },
+      /*part_1 确定修改*/
+      dialogsure_nusi() {
+        this.table_form.rx = this.Rx_select
+        this.table_form.auto_update = this.auto_select
+        this.table_form.Level_one_count = Number(this.table_form.Level_one_count)
+        this.table_form.Level_total_count = Number(this.table_form.Level_total_count)
+        this.table_form.unlock_period_days = Number(this.table_form.unlock_period_days)
+        updateNodeSettingNew(this.table_form).then(response => {
+          if (response.eCode == 200) {
+            this.Initialization_data_1()
+            this.$message({
+              message: '修改成功！',
+              type: 'success'
+            });
+            this.dialogcancle_nusi()
+          } else {
+            this.$message({
+              message: '修改失败，请稍后重试！',
+              type: 'error'
+            });
+            this.dialogcancle_nusi()
+          }
+        })
+      },
+      /*part_1 取消修改*/
+      dialogcancle_nusi() {
+        this.dialogTableVisible_1 = false
+        this.table_form = {
+          'pledge_coins': '',//升级成该级别要求节点自身锁定量
+          'json:"Level_one_count': '',//升级成该级别要求一级非普通节点数量
+          'json:"Level_total_count': '', //升级成该级别要要求全部非普通节点数量
+          'lever_total_pledge_coins': '',//升级成该级别要要求全部非普通节点锁定量
+          'rx': '',//Rx是否存在 0 不存在 1 存在
+          'unlock_period_days': '',//解锁周期 （时间/天数）
+          'level_down_desc': '',//是否会降级
+          'level_up_desc': '', //是否会升级
+          'auto_update': '', //升级是否自动     0 不自动 1 自动
+          'param_n': '',
+          'param_m': '',
+          'param_kn': '',
+          'param_on': '',
         }
       },
-      /*part_1 M值修改弹窗取消*/
-      dialog_cancel() {
-        this.dialogVisible = false
-        this.verify_value = ''
-      },
-      /*part_1 M值修改弹窗确认*/
-      dialog_sure() {
-        let data = {"value": this.verify_value, "label": "M"}
-        updateSetting(data).then(response => {
-          this.dialogVisible = false
-          this.verify_value = ''
-          if (response.eCode == 200) {
-            this.Initialization_data_1()
-            this.$message({
-              type: 'success',
-              message: '修改成功!'
-            });
-          } else {
-            this.$message({
-              type: 'error',
-              message: '修改失败!'
-            });
-          }
-        })
-      },
-
-      /*part_1  KN值修改弹窗取消*/
-      dialog_cancel_2() {
-        this.dialogVisible_2 = false
-        this.verify_value_2 = ''
-      },
-      /*part_1 KN值修改弹窗确认*/
-      dialog_sure_2() {
-        let data = {"value": this.verify_value_2, "label": "KN"}
-        updateSetting(data).then(response => {
-          this.dialogVisible_2 = false
-          this.verify_value_2 = ''
-          if (response.eCode == 200) {
-            this.Initialization_data_1()
-            this.$message({
-              type: 'success',
-              message: '修改成功!'
-            });
-          } else {
-            this.$message({
-              type: 'error',
-              message: '修改失败!'
-            });
-          }
-        })
-      },
-
-      /*part_1  ON值修改弹窗取消*/
-      dialog_cancel_3() {
-        this.dialogVisible_3 = false
-        this.verify_value_3 = ''
-      },
-      /*part_1 ON值修改弹窗确认*/
-      dialog_sure_3() {
-        let data = {"value": this.verify_value_3, "label": "ON"}
-        updateSetting(data).then(response => {
-          this.dialogVisible_3 = false
-          this.verify_value_3 = ''
-          if (response.eCode == 200) {
-            this.Initialization_data_1()
-            this.$message({
-              type: 'success',
-              message: '修改成功!'
-            });
-          } else {
-            this.$message({
-              type: 'error',
-              message: '修改失败!'
-            });
-          }
-        })
-      },
-
-
-      /*part_1 N值修改弹窗取消*/
-      dialog_cancel_1() {
-        this.dialogVisible_1 = false
-        this.verify_value_1 = ''
-      },
-      /*part_1 N值修改弹窗确认*/
-      dialog_sure_1() {
-        let data = {"value": this.verify_value_1, "label": "N"}
-        updateSetting(data).then(response => {
-          this.dialogVisible_1 = false
-          this.verify_value_1 = ''
-          if (response.eCode == 200) {
-            this.Initialization_data_1()
-            this.$message({
-              type: 'success',
-              message: '修改成功!'
-            });
-          } else {
-            this.$message({
-              type: 'error',
-              message: '修改失败!'
-            });
-          }
-        })
-      },
-      /*part_1 打开历史记录*/
-      history_record(e) {
-        if (e == 'M') {
-          let data = {"label": "M"}
-          getMNLog(data).then(response => {
-            if (response.data == []) {
-              this.gridData = []
-            } else {
-              this.gridData = response.data
-            }
-          })
+      /*part_1 修改log获取*/
+      getNewLog(identity, index) {
+        let data = {"node_identity": identity, "column_name": this.getlog_name[index].value}
+        getNodeSettingNewLog(data).then(response => {
           this.dialogTableVisible = true
-        } else if (e == 'N') {
-          let data = {"label": "N"}
-          this.dialogTableVisible_1 = true
-          getMNLog(data).then(response => {
-            if (response.data == []) {
-              this.gridData_1 = []
-            } else {
-              this.gridData_1 = response.data
+          if (response.eCode == 200) {
+            if (index == 5) {
+              response.data.forEach((item, index, self) => {
+                if (item.value == 0) {
+                  item.value = '不存在'
+                } else {
+                  item.value = '存在'
+                }
+              })
+            } else if (index == 9) {
+              response.data.forEach((item, index, self) => {
+                if (item.value == 0) {
+                  item.value = '审批'
+                } else {
+                  item.value = '自动'
+                }
+              })
             }
-          })
-        } else if (e == 'KN') {
-          let data = {"label": "KN"}
-          this.dialogTableVisible_2 = true
-          getMNLog(data).then(response => {
-            if (response.data == []) {
-              this.gridData_2 = []
-            } else {
-              this.gridData_2 = response.data
-            }
-          })
-        }
-        else if (e == 'ON') {
-          let data = {"label": "ON"}
-          this.dialogTableVisible_3 = true
-          getMNLog(data).then(response => {
-            if (response.data == []) {
-              this.gridData_3 = []
-            } else {
-              this.gridData_3 = response.data
-            }
-          })
-        }
+            this.gridData = response.data
+          } else {
+            this.gridData = []
+          }
+        })
       },
+      /*==========================================*/
       // getPersonInfo
       /*获取part_2 公共方法*/
       getdata_2(e) {
@@ -835,7 +919,7 @@
       },
       /*获取part_2 数据*/
       Initialization_data_2() {
-        this.currentPage=1
+        this.currentPage = 1
         let data = {"status": "", "page": 1, "pageSize": 10}
         this.getdata_2(data)
       },
@@ -848,7 +932,12 @@
       /*查看节点状态详情分页获取数据*/
       currentPageChange_1(e) {
         this.currentPage_1 = e
-        let data = {"page": this.currentPage_1, "pagesize": 10, "address": this.hi_re_3 , "level": this.select_value_1.toString()}
+        let data = {
+          "page": this.currentPage_1,
+          "pagesize": 10,
+          "address": this.hi_re_3,
+          "level": this.select_value_1.toString()
+        }
         subordinateNodeAllCheck(data).then(response => {
           if (response.data.dataList == []) {
             this.tableData_3 = []
@@ -856,8 +945,8 @@
             this.nodeAllCheck_peoples = 0
             this.nodeAllCheck_tue = 0
           } else {
-            this.nodeAllCheck_peoples =response.allp
-            this.nodeAllCheck_tue =response.alln
+            this.nodeAllCheck_peoples = response.allp
+            this.nodeAllCheck_tue = response.alln
             this.tableData_3 = response.data.dataList
             this.totla_1 = response.data.total
           }
@@ -881,17 +970,17 @@
       },
       /*添加节点确认*/
       dialogFormsure() {
-        if(this.form.address==''){
+        if (this.form.address == '') {
           this.$message({
             type: 'error',
             message: '添加创世王者节点节点地址不能为空！'
           });
-        }else if(this.form.phone=='') {
+        } else if (this.form.phone == '') {
           this.$message({
             type: 'error',
             message: '添加创世王者节点节点绑定手机号不能为空'
           });
-        }else {
+        } else {
           let data = {
             "name": "",
             "address": this.form.address,
@@ -901,7 +990,7 @@
           }
           insertCreationPerson(data).then(response => {
             if (response.eCode == 200) {
-              this.node_select=1
+              this.node_select = 1
               this.form = {
                 "address": '',
                 "phone": '',
@@ -913,10 +1002,10 @@
                 });
               this.Initialization_data_2()
               this.dialogFormVisible = false
-            } else if(response.eCode == 10000){
+            } else if (response.eCode == 10000) {
               this.$message({
                 type: 'error',
-                message:response.eMsg
+                message: response.eMsg
               });
             } else {
               this.$message({
@@ -940,7 +1029,7 @@
       // },
       /*强制解绑*/
       untied(e) {
-        this.untied_address=e
+        this.untied_address = e
         this.dialogUntied = true
       },
       /*取消解绑*/
@@ -949,7 +1038,7 @@
       },
       /*确认解绑*/
       dialogUntied_sure() {
-        let data={"address":this.untied_address}
+        let data = {"address": this.untied_address}
         unBindCreationAddress(data).then(response => {
           if (response.eCode == 200) {
             this.$message({
@@ -984,10 +1073,15 @@
       },
       /*确认修改节点*/
       dialogeditsure() {
-        let data={"phone":this.form_1.phone,"pledgeBalance":this.form_1.pledgeBalance,"batch":this.form_1.batch,"address":this.form_1.address}
+        let data = {
+          "phone": this.form_1.phone,
+          "pledgeBalance": this.form_1.pledgeBalance,
+          "batch": this.form_1.batch,
+          "address": this.form_1.address
+        }
         updateCreationPerson(data).then(response => {
           if (response.eCode == 200) {
-            this.node_select=1
+            this.node_select = 1
             this.form_1 = {
               "name": '',
               "address": '',
@@ -995,10 +1089,10 @@
               "pledgeBalance": '',
               "batch": '',
             }
-              this.$message({
-                type: 'success',
-                message: '节点修改成功'
-              });
+            this.$message({
+              type: 'success',
+              message: '节点修改成功'
+            });
             this.Initialization_data_2()
             this.dialogedit = false
           } else {
@@ -1006,7 +1100,7 @@
               type: 'error',
               message: '节点添加失败'
             });
-            this.node_select=1
+            this.node_select = 1
             this.form_1 = {
               "name": '',
               "address": '',
@@ -1020,7 +1114,7 @@
       },
       /*删除节点*/
       delete_node(e) {
-        this.remove_address=e
+        this.remove_address = e
         this.dialogdelete = true
       },
       /*取消删除节点*/
@@ -1029,7 +1123,7 @@
       },
       /*确认删除节点*/
       dialogdelete_sure() {
-        let data={"address":this.remove_address}
+        let data = {"address": this.remove_address}
         deleteCreationAddress(data).then(response => {
           if (response.eCode == 200) {
             this.$message({
@@ -1062,16 +1156,16 @@
         this.currentPage_1 = 1
         this.hi_re_3 = e
         let data = {"page": 1, "pagesize": 10, "address": e, "level": ""}
-        let data_1 ={"address":e}
-        nodeLevel(data_1).then(response=>{
-          this.select_value_1=''
-          this.node_options_1= [
+        let data_1 = {"address": e}
+        nodeLevel(data_1).then(response => {
+          this.select_value_1 = ''
+          this.node_options_1 = [
             {
               "typeid": '',
               "typename": "请选择节点级别"
             },
           ]
-          this.node_options_1=this.node_options_1.concat(response)
+          this.node_options_1 = this.node_options_1.concat(response)
           subordinateNodeAllCheck(data).then(response => {
             if (response.data.dataList == []) {
               this.tableData_3 = []
@@ -1079,8 +1173,8 @@
               this.nodeAllCheck_peoples = 0
               this.nodeAllCheck_tue = 0
             } else {
-              this.nodeAllCheck_peoples =response.allp
-              this.nodeAllCheck_tue =response.alln
+              this.nodeAllCheck_peoples = response.allp
+              this.nodeAllCheck_tue = response.alln
               this.tableData_3 = response.data.dataList
               this.totla_1 = response.data.total
             }
@@ -1089,23 +1183,23 @@
         this.dialog_de_all = true
       },
       /*part_1 节点级别匹配*/
-      node_level_matching(e){
+      node_level_matching(e) {
         let a
-        if(e==''||this.node_options_1==[]){
-          a=e
-        }else {
-          this.node_options_1.forEach((item,index,self)=>{
-            if(e==item.typeid){
-              a=item.typename
+        if (e == '' || this.node_options_1 == []) {
+          a = e
+        } else {
+          this.node_options_1.forEach((item, index, self) => {
+            if (e == item.typeid) {
+              a = item.typename
             }
           })
         }
         return a
       },
       /*part_1 查看节点下属全部节点数量详情切换级别*/
-      change_nodeLevel(){
+      change_nodeLevel() {
         this.currentPage_1 = 1
-        let data = {"page": 1, "pagesize": 10, "address": this.hi_re_3 , "level": this.select_value_1.toString()}
+        let data = {"page": 1, "pagesize": 10, "address": this.hi_re_3, "level": this.select_value_1.toString()}
         subordinateNodeAllCheck(data).then(response => {
           if (response.data.dataList == []) {
             this.tableData_3 = []
@@ -1113,8 +1207,8 @@
             this.nodeAllCheck_peoples = 0
             this.nodeAllCheck_tue = 0
           } else {
-            this.nodeAllCheck_peoples =response.allp
-            this.nodeAllCheck_tue =response.alln
+            this.nodeAllCheck_peoples = response.allp
+            this.nodeAllCheck_tue = response.alln
             this.tableData_3 = response.data.dataList
             this.totla_1 = response.data.total
           }
@@ -1127,7 +1221,31 @@
     }
   }
 </script>
+<style>
+  .his_dialog .el-dialog__body {
+    height: 500px;
+    overflow: auto;
+  }
 
+  .his_dialog .el-dialog__body::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .his_dialog .el-dialog__body::-webkit-scrollbar-track {
+
+    background-color: #FFFFFF;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+  }
+
+  .his_dialog .el-dialog__body::-webkit-scrollbar-thumb {
+    background-color: #cdcdcd;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
+  }
+</style>
 <style scoped>
   .ns_all {
     width: 100%;
@@ -1170,6 +1288,12 @@
     padding: 0 5px;
     margin: 0 10px;
     font-size: 15px;
+  }
+
+  .operating_2 {
+    cursor: pointer;
+    color: #800080;
+    user-select: none;
   }
 
   .operating_1 {
