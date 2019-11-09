@@ -118,7 +118,7 @@
               label="收益"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.balance==''?0:scope.row.balance}} TUE</span>
+                <span>{{scientificCounting(scope.row.balance==''?0:scope.row.balance)}} TUE</span>
               </template>
             </el-table-column>
           </el-table>
@@ -261,7 +261,7 @@
       <el-table :data="tableData_10" :header-cell-style="this.tableHeaderColor">
         <el-table-column align="center" label="收益">
           <template slot-scope="scope">
-            <span>{{scope.row.value}}</span>
+            <span>{{scientificCounting(scope.row.value)}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="时间">
@@ -524,6 +524,7 @@
       <div class="con_table">
         <el-table
           :data="tableData"
+          v-loading="loading"
           border
           style="width: 100%;margin-bottom: 30px;margin-top: 40px;min-height: 529px"
           :header-cell-style="this.tableHeaderColor"
@@ -633,6 +634,14 @@
             align="center">
             <template slot-scope="scope">
               <span class="operating_2" @click="tue_income_his(scope.row.nodeaddress,1)">{{scientificCounting(scope.row.accumulatedincometue)}} </span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="currentwed"
+            label="符合王者解锁"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row.whether==0?'否':'是'}} </span>
             </template>
           </el-table-column>
           <el-table-column
@@ -1178,6 +1187,7 @@
     name: "accountInformation",
     data() {
       return {
+        loading: false,
         is_show_mi: false,
         dialogTableVisible: false,
         time_hi_1: '',
@@ -1401,7 +1411,8 @@
           "type": 0,
         },
         pick_data: null,
-
+        // set:'',
+        // isdone:true,
       }
     },
     methods: {
@@ -1414,7 +1425,9 @@
       },
       /*part_1 获取数据公共接口*/
       get_data_1(e, q) {
+        this.loading = true
         nodeInfo(e).then(response => {
+          this.loading = false
           if (response.dataList == []) {
             this.tableData = []
             this.totla = 0
@@ -1435,6 +1448,7 @@
       /*part_1 初始化*/
       Initialization_data_1() {
         this.search_1 = ''
+        this.sorting = '-1'
         this.currentPage = 1
         this.select_value = ''
         let data = {"phone": "", "address": "", "type": "", "page": 1, "pagesize": 10, "sorting": '-1'}
@@ -1476,6 +1490,7 @@
       /*part_1 查询*/
       search_ad_ph_1() {
         this.currentPage = 1
+        this.sorting = '-1'
         this.select_value = ''
         if (this.search_1.length == 11) {
           let data = {
@@ -1786,7 +1801,6 @@
             this.dialogTableVisible = true
             if (response.eCode == 200) {
               this.tableData_10 = response.data.dataList
-              console.log(this.tableData_10)
             } else {
               this.tableData_10 = []
             }
@@ -1797,7 +1811,6 @@
             this.dialogTableVisible = true
             if (response.eCode == 200) {
               this.tableData_10 = response.data.dataList
-              console.log(this.tableData_10)
             } else {
               this.tableData_10 = []
             }
@@ -2294,12 +2307,9 @@
         this.record_list.table = table
         this.record_list.value = value
         this.record_list.type = type
+        this.is_show_mi = false
         if (table == 0) {
-          if (value == 2) {
-            this.is_show_mi = true
-          } else {
-            this.is_show_mi = false
-          }
+          this.is_show_mi = true
           this.details_name = this.hist_list[value].name + '历史记录'
           this.record_field_1 = this.hist_list[value].value
           let data = {"page": 1, "pageSize": 10, "startTime": 0, "endTime": 0, "columnName": this.record_field_1}
@@ -2482,10 +2492,12 @@
         }
 
       },
+
     },
     created() {
       this.Initialization_data_1()
       this.get_public()
+
     }
 
   }

@@ -44,13 +44,13 @@
           <el-input v-model="table_form.pledge_coins" style="width: 70%" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="要求一级青铜及以上节点数：" :label-width="formLabelWidth_2">
-          <el-input v-model="table_form.Level_one_count" style="width: 70%" autocomplete="off"></el-input>
+          <el-input v-model="table_form.level_one_count" style="width: 70%" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="要求全部青铜及以上节点数：" :label-width="formLabelWidth_2">
-          <el-input v-model="table_form.Level_total_count" style="width: 70%" autocomplete="off"></el-input>
+          <el-input v-model="table_form.level_total_count" style="width: 70%" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="要求全部节点锁定金额：" :label-width="formLabelWidth_2">
-          <el-input v-model="table_form.lever_total_pledge_coins" style="width: 70%" autocomplete="off"></el-input>
+          <el-input v-model="table_form.level_total_pledge_coins" style="width: 70%" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="下属一级节点传导系数：" :label-width="formLabelWidth_2">
           <el-input v-model="table_form.mining_percentage" style="width: 70%" autocomplete="off"></el-input>
@@ -355,7 +355,7 @@
             width="150"
             align="center">
             <template slot-scope="scope">
-              <span class="operating_2" @click="getNewLog(scope.row.node_identity,0)">{{scope.row.pledge_coins}}</span>
+              <span class="operating_2" @click="getNewLog(scope.row.node_identity,0)">{{scientificCounting(scope.row.pledge_coins)}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -364,7 +364,7 @@
             align="center">
             <template slot-scope="scope">
               <span class="operating_2"
-                    @click="getNewLog(scope.row.node_identity,1)">{{scope.row.Level_one_count}}</span>
+                    @click="getNewLog(scope.row.node_identity,1)">{{scope.row.level_one_count}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -373,7 +373,7 @@
             align="center">
             <template slot-scope="scope">
               <span class="operating_2"
-                    @click="getNewLog(scope.row.node_identity,2)">{{scope.row.Level_total_count}}</span>
+                    @click="getNewLog(scope.row.node_identity,2)">{{scope.row.level_total_count}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -381,7 +381,7 @@
             width="300"
             align="center">
             <template slot-scope="scope">
-              <span class="operating_2" @click="getNewLog(scope.row.node_identity,3)">{{scope.row.lever_total_pledge_coins}}</span>
+              <span class="operating_2" @click="getNewLog(scope.row.node_identity,3)">{{scientificCounting(scope.row.level_total_pledge_coins)}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -606,9 +606,9 @@
         auto_select: 0,
         table_form: {
           'pledge_coins': '',//升级成该级别要求节点自身锁定量
-          'json:"Level_one_count': '',//升级成该级别要求一级非普通节点数量
-          'json:"Level_total_count': '', //升级成该级别要要求全部非普通节点数量
-          'lever_total_pledge_coins': '',//升级成该级别要要求全部非普通节点锁定量
+          'json:"level_one_count': '',//升级成该级别要求一级非普通节点数量
+          'json:"level_total_count': '', //升级成该级别要要求全部非普通节点数量
+          'level_total_pledge_coins': '',//升级成该级别要要求全部非普通节点锁定量
           'rx': '',//Rx是否存在 0 不存在 1 存在
           'unlock_period_days': '',//解锁周期 （时间/天数）
           'mining_percentage': '',//传导系数 （时间/天数）
@@ -622,9 +622,9 @@
         },
         getlog_name: [
           {'value': 'pledge_coins'},
-          {'value': 'Level_one_count'},
-          {'value': 'Level_total_count'},
-          {'value': 'lever_total_pledge_coins'},
+          {'value': 'level_one_count'},
+          {'value': 'level_total_count'},
+          {'value': 'level_total_pledge_coins'},
           {'value': 'mining_percentage'},
           {'value': 'rx'},
           {'value': 'unlock_period_days'},
@@ -657,8 +657,8 @@
         },
         form_2: {
           "address": "",
-          "childrenLevelSecond": 0,
-          "childrenLevelsCount": 0,
+          "childrenlevelSecond": 0,
+          "childrenlevelsCount": 0,
           "childrenPledgeBalance": "",
           "name": "",
           "status": "",
@@ -814,10 +814,10 @@
           "node_identity": e.node_identity,
           "sequence": e.sequence,
           "mining_percentage": e.mining_percentage,
-          'pledge_coins': e.pledge_coins,//升级成该级别要求节点自身锁定量
-          'Level_one_count': e.Level_one_count,//升级成该级别要求一级非普通节点数量
-          'Level_total_count': e.Level_total_count, //升级成该级别要要求全部非普通节点数量
-          'lever_total_pledge_coins': e.lever_total_pledge_coins,//升级成该级别要要求全部非普通节点锁定量
+          'pledge_coins': this.scientificCounting(e.pledge_coins),//升级成该级别要求节点自身锁定量
+          'level_one_count': e.level_one_count,//升级成该级别要求一级非普通节点数量
+          'level_total_count': e.level_total_count, //升级成该级别要要求全部非普通节点数量
+          'level_total_pledge_coins': this.scientificCounting(e.level_total_pledge_coins),//升级成该级别要要求全部非普通节点锁定量
           'rx': e.rx,//Rx是否存在 0 不存在 1 存在
           'unlock_period_days': e.unlock_period_days,//解锁周期 （时间/天数）
           'level_down_desc': e.level_down_desc,//是否会降级
@@ -836,9 +836,10 @@
       dialogsure_nusi() {
         this.table_form.rx = this.Rx_select
         this.table_form.auto_update = this.auto_select
-        this.table_form.Level_one_count = Number(this.table_form.Level_one_count)
-        this.table_form.Level_total_count = Number(this.table_form.Level_total_count)
+        this.table_form.level_one_count = Number(this.table_form.level_one_count)
+        this.table_form.level_total_count = Number(this.table_form.level_total_count)
         this.table_form.unlock_period_days = Number(this.table_form.unlock_period_days)
+        this.table_form.level_total_pledge_coins = this.table_form.level_total_pledge_coins.toString()
         updateNodeSettingNew(this.table_form).then(response => {
           if (response.eCode == 200) {
             this.Initialization_data_1()
@@ -861,9 +862,9 @@
         this.dialogTableVisible_1 = false
         this.table_form = {
           'pledge_coins': '',//升级成该级别要求节点自身锁定量
-          'json:"Level_one_count': '',//升级成该级别要求一级非普通节点数量
-          'json:"Level_total_count': '', //升级成该级别要要求全部非普通节点数量
-          'lever_total_pledge_coins': '',//升级成该级别要要求全部非普通节点锁定量
+          'json:"level_one_count': '',//升级成该级别要求一级非普通节点数量
+          'json:"level_total_count': '', //升级成该级别要要求全部非普通节点数量
+          'level_total_pledge_coins': '',//升级成该级别要要求全部非普通节点锁定量
           'rx': '',//Rx是否存在 0 不存在 1 存在
           'unlock_period_days': '',//解锁周期 （时间/天数）
           'level_down_desc': '',//是否会降级
@@ -896,6 +897,10 @@
                 } else {
                   item.value = '自动'
                 }
+              })
+            } else if (index == 3||index == 0) {
+              response.data.forEach((item, index, self) => {
+                item.value=this.scientificCounting(item.value)
               })
             }
             this.gridData = response.data

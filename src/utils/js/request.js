@@ -6,8 +6,9 @@ import {getToken} from '@/utils/js/token'
 const service = axios.create({
   // baseURL: document.location.protocol+ window.location.search,
   // baseURL: 'http://invest.thinkey.org/',
-  // baseURL: 'http://192.168.1.108:8600',
-  baseURL: 'http://192.168.1.106:8600',
+  // baseURL: 'http://investtest.thinkey.xyz/',
+  baseURL: 'http://192.168.1.108:8600',
+  // baseURL: 'http://192.168.1.106:8600',
   // baseURL: 'http://43.247.184.50:8600',
   // withCredentials: true, // 跨域请求时发送 cookies
   timeout: 30000 // 请求超时时间
