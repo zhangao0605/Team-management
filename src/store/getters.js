@@ -1,9 +1,7 @@
 const getters = {
 
   language: state => state.app.language,
-
-
-  /*登录信息部分*/
+  seturl: state => state.app.get_url,
   token: state => state.login.token,
   roles: state => state.login.roles,
 }

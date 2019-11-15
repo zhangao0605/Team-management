@@ -5,9 +5,7 @@
            :class="index== isactive ? item_active :'item_default'">{{list.name}}
       </div>
     </div>
-    <!--part_1 查看详细-->
     <el-dialog width="35%" title="节点详情" :visible.sync="alert_1">
-      <!--二级弹窗节点类型-->
       <el-dialog
         width="40%"
         title="历史记录"
@@ -47,7 +45,6 @@
           </el-pagination>
         </div>
       </el-dialog>
-      <!--二级弹窗质押金额-->
       <el-dialog
         width="40%"
         title="质押金额"
@@ -94,7 +91,6 @@
           </el-pagination>
         </div>
       </el-dialog>
-      <!--二级弹窗累计收益-->
       <el-dialog
         width="40%"
         title="累计收益"
@@ -134,7 +130,6 @@
           </el-pagination>
         </div>
       </el-dialog>
-      <!--二级弹窗下属节点详情-->
       <el-dialog
         width="70%"
         title="节点下属全部节点详情"
@@ -256,7 +251,6 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <!--part_1 节点累计收益tue，usdt历史记录查看-->
     <el-dialog class="his_dialog" width="25%" title="累计收益" :visible.sync="dialogTableVisible">
       <el-table :data="tableData_10" :header-cell-style="this.tableHeaderColor">
         <el-table-column align="center" label="收益">
@@ -271,7 +265,6 @@
         </el-table-column>
       </el-table>
     </el-dialog>
-    <!--part_2 单个批准-->
     <el-dialog
       title=""
       :visible.sync="alert_1_5"
@@ -283,7 +276,6 @@
     <el-button type="primary" @click="promotion_sure()">确 定</el-button>
        </span>
     </el-dialog>
-    <!--part_2 全部批准-->
     <el-dialog
       title=""
       :visible.sync="alert_1_6"
@@ -295,9 +287,7 @@
     <el-button type="primary" @click="batch_approval_sure()">确 定</el-button>
        </span>
     </el-dialog>
-    <!--part_2 查看详细-->
     <el-dialog width="35%" title="节点详情" :visible.sync="alert_1_7">
-      <!--二级弹窗下属节点详情-->
       <el-dialog
         width="70%"
         title="节点下属全部节点详情"
@@ -408,7 +398,6 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <!--part_3 单个批准-->
     <el-dialog
       title=""
       :visible.sync="alert_1_9"
@@ -420,7 +409,6 @@
     <el-button type="primary" @click="alert_1_9_sure()">确 定</el-button>
        </span>
     </el-dialog>
-    <!--part_3 全部批准-->
     <el-dialog
       title=""
       :visible.sync="alert_1_10"
@@ -432,7 +420,6 @@
     <el-button type="primary" @click="alert_1_10_sure()">确 定</el-button>
        </span>
     </el-dialog>
-    <!--part_5 单个数据查看详细-->
     <el-dialog
       :title="details_name"
       :visible.sync="historical_details"
@@ -486,8 +473,6 @@
       </div>
 
     </el-dialog>
-
-    <!--节点信息-->
     <div class="part_1" v-show="part_show[0].isShow">
       <div class="con_search" style="width: 60%">
         <div class="con_search_div">
@@ -520,7 +505,7 @@
           </el-option>
         </el-select>
       </div>
-      <!--排序不对注意类型-->
+
       <div class="con_table">
         <el-table
           :data="tableData"
@@ -662,7 +647,7 @@
         </el-pagination>
       </div>
     </div>
-    <!--晋级审核-->
+
     <div class="part_2" v-show="part_show[1].isShow">
       <el-button type="primary" @click="batch_approval()">
         全部批准
@@ -727,7 +712,7 @@
         </el-pagination>
       </div>
     </div>
-    <!--解绑审核-->
+
     <div class="part_3" v-show="part_show[2].isShow">
       <div class="con_search" style="width: 60%">
         <div class="con_search_div">
@@ -863,7 +848,7 @@
         </el-pagination>
       </div>
     </div>
-    <!--交易记录-->
+
     <div class="part_4" v-show="part_show[3].isShow">
       <div class="con_search" style="width: 60%">
         <div class="con_search_div">
@@ -994,7 +979,6 @@
       <!--</el-pagination>-->
       <!--</div>-->
     </div>
-    <!--节点大赛数据记录-->
     <div class="part_4" v-show="part_show[4].isShow">
       <div class="part_4_time">
         时间：{{timestampToTime(time_hi_1)}}
@@ -1416,14 +1400,12 @@
       }
     },
     methods: {
-      /*获取所有公共资源例如节点类型*/
       get_public() {
         let data = {}
         nodeType(data).then(response => {
           this.part2_options1 = this.part2_options1.concat(response)
         })
       },
-      /*part_1 获取数据公共接口*/
       get_data_1(e, q) {
         this.loading = true
         nodeInfo(e).then(response => {
@@ -1445,7 +1427,6 @@
           }
         })
       },
-      /*part_1 初始化*/
       Initialization_data_1() {
         this.search_1 = ''
         this.sorting = '-1'
@@ -1454,7 +1435,6 @@
         let data = {"phone": "", "address": "", "type": "", "page": 1, "pagesize": 10, "sorting": '-1'}
         this.get_data_1(data, 0)
       },
-      /*table切换*/
       swich_tab(e) {
         this.is_show.forEach((item, index, self) => {
           if (index == e) {
@@ -1487,7 +1467,6 @@
         }
 
       },
-      /*part_1 查询*/
       search_ad_ph_1() {
         this.currentPage = 1
         this.sorting = '-1'
@@ -1514,7 +1493,6 @@
           this.get_data_1(data, 1)
         }
       },
-      /*part_1 正序倒序排列*/
       change_order() {
         let data
 
@@ -1540,7 +1518,6 @@
         }
         this.get_data_1(data, 0)
       },
-      /*part_1 改变节点类型*/
       change_user_source_1() {
         let data
         this.currentPage = 1
@@ -1565,7 +1542,6 @@
         }
         this.get_data_1(data, 0)
       },
-      /*part_1 分页查询*/
       currentPageChange(e) {
         this.currentPage = e
         let data
@@ -1591,7 +1567,6 @@
         }
         this.get_data_1(data, 0)
       },
-      /*part_1 弹窗历史记录分页查询*/
       currentPageChange_1(e) {
         this.currentPage_1 = e
         let data = {"page": this.currentPage_1, "pagesize": 10, "Address": this.hi_re}
@@ -1605,7 +1580,6 @@
           }
         })
       },
-      /*part_1 弹窗质押金额分页查询*/
       currentPageChange_1_1(e) {
         this.currentPage_1_1 = e
         let data = {"page": this.currentPage_1_1, "pagesize": 10, "Addr": this.hi_re_2}
@@ -1619,7 +1593,6 @@
           }
         })
       },
-      /*part_1 弹窗累计收益分页查询*/
       currentPageChange_1_2(e) {
         this.currentPage_1_2 = e
         let data = {"page": this.currentPage_1_2, "pagesize": 10, "address": this.hi_re_4}
@@ -1634,7 +1607,6 @@
         })
         this.alert_1_4 = true
       },
-      /*part_1 弹窗下属节点详情分页查询*/
       currentPageChange_1_3(e) {
         this.currentPage_1_3 = e
         let data = {
@@ -1657,7 +1629,6 @@
           }
         })
       },
-      /*part_1 查看*/
       seedetail(e) {
         let data = {"address": e, "page": 1, "pageSize": 10, "phone": '', "type": ''}
         nodeInfo(data).then(response => {
@@ -1682,7 +1653,6 @@
         })
 
       },
-      /*part_1 查看节点类型历史纪录详情*/
       see_de_all_1(e) {
         this.currentPage_1 = 1
         this.hi_re = e
@@ -1698,7 +1668,6 @@
         })
         this.alert_1_1 = true
       },
-      /*part_1 查看节点质押金额详情*/
       see_de_all_2(e) {
         this.currentPage_1_1 = 1
         this.hi_re_2 = e
@@ -1714,7 +1683,6 @@
         })
         this.alert_1_2 = true
       },
-      /*part_1 查看节点下属全部节点数量详情*/
       see_de_all_3(e) {
         this.currentPage_1_3 = 1
         this.hi_re_3 = e
@@ -1745,7 +1713,6 @@
         })
         this.alert_1_3 = true
       },
-      /*part_1 查看节点下属全部节点数量详情切换级别*/
       change_nodeLevel() {
         this.currentPage_1_3 = 1
         let data = {"page": 1, "pagesize": 10, "address": this.hi_re_3, "level": this.select_value_1.toString()}
@@ -1763,7 +1730,6 @@
           }
         })
       },
-      /*part_1 查看节点累计收益详情*/
       see_de_all_4(e) {
         this.hi_re_4 = e
         this.currentPage_1_2 = 1
@@ -1779,7 +1745,6 @@
         })
         this.alert_1_4 = true
       },
-      /*part_1 节点级别匹配*/
       node_level_matching(e) {
         let a
         if (e == '' || this.node_options == []) {
@@ -1793,7 +1758,6 @@
         }
         return a
       },
-      /*节点累计TUE/usdt收益*/
       tue_income_his(address, type) {
         if (type == 0) {
           let data = {"address": address}
@@ -1818,8 +1782,6 @@
         }
 
       },
-      /*===============================================*/
-      /*part_2 获取数据公共接口*/
       get_data_2(e) {
         promotionAudit(e).then(response => {
           if (response.data.dataList == []) {
@@ -1831,28 +1793,23 @@
           }
         })
       },
-      /*part_2 初始化*/
       Initialization_data_2() {
         this.currentPage_5 = 1
         let data = {"page": 1, "pageSize": 10}
         this.get_data_2(data)
       },
-      /*part_2 晋级审核分页*/
       currentPageChange_5(e) {
         this.currentPage_5 = e
         let data = {"page": this.currentPage_5, "pageSize": 10}
         this.get_data_2(data)
       },
-      /*part_2 单独批准晋级*/
       approved_for_promotion(e) {
         this.promotionAuditExe = e
         this.alert_1_5 = true
       },
-      /*part_2 取消单独批准晋级*/
       promotion_cancel() {
         this.alert_1_5 = false
       },
-      /*part_2 确认单独批准晋级*/
       promotion_sure() {
         let data = {"address": this.promotionAuditExe}
         promotionAuditExe(data).then(response => {
@@ -1872,15 +1829,15 @@
         })
 
       },
-      /*part_2 批量批准晋级*/
+
       batch_approval() {
         this.alert_1_6 = true
       },
-      /*part_2 取消批量批准晋级*/
+
       batch_approval_cancel() {
         this.alert_1_6 = false
       },
-      /*part_2 确认批量批准晋级*/
+
       batch_approval_sure() {
         allPromotionAuditExe().then(response => {
           if (response.eCode == 200) {
@@ -1899,7 +1856,7 @@
         })
 
       },
-      /*part_2 节点状态查看详情*/
+
       see_details(e) {
         let data = {"address": e}
         promotionAuditCheck(data).then(response => {
@@ -1920,7 +1877,7 @@
         })
         this.alert_1_7 = true
       },
-      /*part_2 节点详细*/
+
       part_2_see_1(e) {
         this.currentPage_6 = 1
         this.hi_re_5 = e
@@ -1951,7 +1908,6 @@
         })
         this.alert_1_8 = true
       },
-      /*part_2 节点二级弹窗分页*/
       currentPageChange_6(e) {
         this.currentPage_6 = e
         let data = {
@@ -1974,7 +1930,6 @@
           }
         })
       },
-      /*part_2 节点级别切换*/
       change_nodeLevel_1() {
         this.currentPage_6 = 1
         let data = {"page": 1, "pagesize": 10, "address": this.hi_re_5, "level": this.select_value_2.toString()}
@@ -1992,7 +1947,6 @@
           }
         })
       },
-      /*part_2 节点级别匹配*/
       node_level_matching_1(e) {
         let a
         if (e == '' || this.node_options_1 == []) {
@@ -2019,8 +1973,6 @@
         }
         return a
       },
-      /*==================================================*/
-      /*part_3 初始化数据*/
       get_data_3(e, q) {
         // let data={"page":1,"pagesize":10,"address":"","phone":""}
         unbindingAudit(e).then(response => {
@@ -2036,13 +1988,11 @@
           }
         })
       },
-      /*part_3 获取初始化数据*/
       Initialization_data_3() {
         this.currentPage_7 = 1
         let data = {"page": 1, "pagesize": 10, "address": "", "phone": ""}
         this.get_data_3(data, 0)
       },
-      /*part_3分页查询*/
       currentPageChange_7(e) {
         this.currentPage_7 = e
         let data
@@ -2053,7 +2003,6 @@
         }
         this.get_data_3(data, 0)
       },
-      /*part_3 查询*/
       search_ad_ph_2() {
         this.currentPage_7 = 1
         let data
@@ -2065,17 +2014,14 @@
 
         this.get_data_3(data, 1)
       },
-      /*part_3 单个批准*/
       part_3_untied(e) {
         this.approvalbind_value = e
         this.alert_1_9 = true
       },
-      /*part_3 取消单个批准*/
       alert_1_9_cancel() {
         this.approvalbind_value = ''
         this.alert_1_9 = false
       },
-      /*part_3 确认单个批准*/
       alert_1_9_sure() {
         let data = {"address": this.approvalbind_value}
         approvalbind(data).then(response => {
@@ -2095,15 +2041,12 @@
         })
         this.alert_1_9 = false
       },
-      /*part_3 全部批准*/
       part3_approve() {
         this.alert_1_10 = true
       },
-      /*part_3 取消全部批准*/
       alert_1_10_cancel() {
         this.alert_1_10 = false
       },
-      /*part_3 确认全部批准*/
       alert_1_10_sure() {
         allApprovalbind().then(response => {
           if (response.eCode == 200) {
@@ -2121,13 +2064,7 @@
         })
         this.alert_1_10 = false
       },
-      /*==================================================*/
-      // transactionRecordScreen
-      // /*级别匹配*/
-      // level_matching(e){
-      //
-      // },
-      /*part_4 初始化数据*/
+
       get_data_4(e, q) {
         transactionRecordScreen(e).then(response => {
           if (response.dataList == []) {
@@ -2144,7 +2081,6 @@
           }
         })
       },
-      /*part_4 获取初始化数据*/
       Initialization_data_4() {
         this.currentPage_8 = 1
         this.select_value_3 = ''
@@ -2152,7 +2088,6 @@
         let data = {"page": 1, "pagesize": 10, "address": "", "phone": "", "type": "", "in": ""}
         this.get_data_4(data, 0)
       },
-      /*part_4分页查询*/
       currentPageChange_8(e) {
         this.currentPage_8 = e
         let data
@@ -2177,7 +2112,6 @@
         }
         this.get_data_4(data, 0)
       },
-      /*part_4 查询*/
       search_ad_ph_3() {
         this.select_value_3 = ''
         this.select_value_4 = ''
@@ -2190,7 +2124,6 @@
         }
         this.get_data_4(data, 1)
       },
-      /*part_4 改变用户来源*/
       change_user_source_2() {
         this.currentPage_8 = 1
         let data
@@ -2215,7 +2148,6 @@
         }
         this.get_data_4(data, 0)
       },
-      /*part_4 改变交易类型*/
       change_tr_type() {
         this.currentPage_8 = 1
         let data
@@ -2240,7 +2172,6 @@
         }
         this.get_data_4(data, 0)
       },
-      /*交易类别*/
       tr_macth(e) {
         let a
         if (e == '' || e == undefined) {
@@ -2256,8 +2187,6 @@
 
         return a
       },
-      /*===================================================*/
-      /*根据identity判断节点类型*/
       identity_type(e) {
         let a = ''
         if (e == -1) {
@@ -2273,7 +2202,6 @@
         }
         return a
       },
-      /*part5 列表初始化*/
       Initialization_data_5() {
         getAcceptAndRedeemLogNew().then(response => {
           if (response.eCode == 200) {
@@ -2300,7 +2228,6 @@
           }
         })
       },
-      /*充值提现相关查看历史记录*/
       get_historical_details(table, value, type) {
         this.pick_data = null
         this.currentPage_record_1 = 1
@@ -2473,7 +2400,6 @@
         }
 
       },
-      /*part5 分页查询*/
       change_currentPage_record_1(e) {
         this.currentPage_record_1 = e
         if (this.pick_data == null) {
@@ -2482,7 +2408,6 @@
           this.change_historical_details(this.pick_data[0], this.pick_data[1], this.currentPage_record_1)
         }
       },
-      /*选择相关时间*/
       chooseTimeRange(e) {
         this.pick_data = e
         if (this.pick_data == null) {

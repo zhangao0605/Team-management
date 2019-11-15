@@ -84,7 +84,6 @@
       }
     },
     methods: {
-      /*检索*/
       search_address() {
         this.currentPage=1
         let data
@@ -95,7 +94,6 @@
         }
         this.getdata(data,1)
       },
-      /*分页*/
       currentPageChange(e) {
         this.currentPage=e
         let data
@@ -106,7 +104,6 @@
         }
         this.getdata(data,0)
       },
-      /*获取数据公共方法*/
       getdata(e,q) {
         getPersonInfo(e).then(response => {
           if (response.data.dataList == []) {
@@ -120,7 +117,6 @@
           }
         })
       },
-      /*获取数据*/
       initialization_data() {
         let data = {"phone": "", "address": "", "page": 1, "pageSize": 10}
         this.getdata(data,0)

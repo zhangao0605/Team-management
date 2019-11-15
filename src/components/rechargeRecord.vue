@@ -5,7 +5,6 @@
            :class="index== isactive ? item_active :'item_default'">{{list.name}}
       </div>
     </div>
-    <!--总表-->
     <div class="part_1" v-show="part_show[0].isShow">
       <div class="con_search">
         <div class="con_search_div">
@@ -114,7 +113,6 @@
         </el-pagination>
       </div>
     </div>
-    <!--已到账-->
     <div class="part_2" v-show="part_show[1].isShow">
       <div class="con_search" style="width: 60%">
         <div class="con_search_div">
@@ -191,7 +189,6 @@
         </el-pagination>
       </div>
     </div>
-    <!--未到账-->
     <div class="part_3" v-show="part_show[2].isShow">
       <div class="con_search" style="width: 60%">
         <div class="con_search_div">
@@ -382,7 +379,6 @@
       }
     },
     methods: {
-      /*part_1 改变用户来源*/
       change_user_source() {
         let data = {
           "phone": this.save_search_value,
@@ -396,7 +392,6 @@
         this.getdata(data, 0)
         this.currentPage = 1
       },
-      /*part_1 改变是否到账*/
       change_arrive() {
         let data = {
           "phone": this.save_search_value,
@@ -410,7 +405,6 @@
         this.getdata(data, 0)
         this.currentPage = 1
       },
-      /*part_1 改变是否后台打款*/
       change_backstage_payment() {
         let data = {
           "phone": this.save_search_value,
@@ -424,7 +418,6 @@
         this.getdata(data, 0)
         this.currentPage = 1
       },
-      /*获取用户来源*/
       get_user_source() {
         getExchangeType().then(response => {
           this.options1 = this.options1.concat(response.data)
@@ -432,7 +425,6 @@
           this.part2_options2 = this.part2_options2.concat(response.data)
         })
       },
-      /*初始化数据*/
       initialization_data() {
         let data = {
           "phone": "",
@@ -445,7 +437,6 @@
         }
         this.getdata(data, 0)
       },
-      /*公共数据方法*/
       getdata(e, q, type) {
         getAcceptRecord(e).then(response => {
           if (response.data.dataList == []) {
@@ -484,7 +475,6 @@
           }
         })
       },
-      /*table切换*/
       swich_tab(e) {
         this.is_show.forEach((item, index, self) => {
           if (index == e) {
@@ -547,7 +537,6 @@
         this.select_value = ''
         this.select_value_1 = ''
       },
-      /*part_1利用手机号进行检索*/
       search_phone() {
         this.value1 = ''
         this.value2 = ''
@@ -564,7 +553,6 @@
         }
         this.getdata(data, 0)
       },
-      /*part_1分页切换*/
       currentPageChange(e) {
         this.currentPage = e
         let data = {
@@ -578,7 +566,6 @@
         }
         this.getdata(data, 0)
       },
-      /*part_2利用手机号进行检索*/
       search_phone_1() {
         this.select_value = ''
         this.currentPage_1 = 1
@@ -593,7 +580,6 @@
         }
         this.getdata(data, 1)
       },
-      /*part_2分页切换*/
       currentPageChange_1(e) {
         this.currentPage_1 = e
         let data = {
@@ -607,7 +593,6 @@
         }
         this.getdata(data, 1)
       },
-      /*part_2 改变用户来源*/
       change_user_source_1() {
         let data = {
           "phone": this.save_search_value_1,
@@ -621,7 +606,6 @@
         this.getdata(data, 1)
         this.currentPage_1 = 1
       },
-      /*part_3改变用户来源*/
       change_user_source_2() {
         let data = {
           "phone": this.save_search_value_2,
@@ -635,7 +619,6 @@
         this.getdata(data, 2)
         this.currentPage_2 = 1
       },
-      /*part_3分页切换*/
       currentPageChange_2(e) {
         this.currentPage_2 = e
         let data = {
@@ -649,7 +632,6 @@
         }
         this.getdata(data, 2)
       },
-      /*part_3重试*/
       retry(e,q) {
         if(this.repeat_click==''){
           this.repeat_click=q
@@ -686,11 +668,6 @@
 
 
       },
-      // /*part_3后台打款*/
-      // pay(e){
-      //
-      // },
-      /*part_3利用手机号进行检索*/
       search_phone_2() {
         this.select_value_1 = ''
         let data = {

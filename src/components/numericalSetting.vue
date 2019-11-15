@@ -5,7 +5,6 @@
            :class="index== isactive ? item_active :'item_default'">{{list.name}}
       </div>
     </div>
-    <!--修改权益值M-->
     <el-dialog
       title=""
       :visible.sync="dialogVisible"
@@ -22,7 +21,6 @@
     <el-button type="primary" @click="dialog_sure()">确 定</el-button>
        </span>
     </el-dialog>
-    <!--历史记录M值-->
     <el-dialog class="his_dialog" width="30%" title="历史记录" :visible.sync="dialogTableVisible">
       <el-table :data="gridData" :header-cell-style="this.tableHeaderColor">
         <el-table-column align="center" label="历史值">
@@ -37,7 +35,6 @@
         </el-table-column>
       </el-table>
     </el-dialog>
-    <!--数值设置修改-->
     <el-dialog width="40%" title="数值设置修改" :visible.sync="dialogTableVisible_1">
       <el-form :model="table_form">
         <el-form-item label="要求自身锁定量：" :label-width="formLabelWidth_2">
@@ -117,7 +114,6 @@
       </div>
     </el-dialog>
 
-    <!--添加节点-->
     <el-dialog width="35%" title="添加创世王者节点" :visible.sync="dialogFormVisible">
       <!--<el-dialog-->
       <!--title=""-->
@@ -159,7 +155,6 @@
         <el-button type="primary" @click="dialogFormsure()">确 定</el-button>
       </div>
     </el-dialog>
-    <!--强制解绑-->
     <el-dialog
       title=""
       :visible.sync="dialogUntied"
@@ -171,7 +166,6 @@
     <el-button type="primary" @click="dialogUntied_sure()">强制解绑</el-button>
        </span>
     </el-dialog>
-    <!--删除节点-->
     <el-dialog
       title=""
       :visible.sync="dialogdelete"
@@ -184,7 +178,6 @@
     <el-button type="primary" @click="dialogdelete_sure()">确 定</el-button>
        </span>
     </el-dialog>
-    <!--修改节点-->
     <el-dialog width="35%" title="修改创世王者节点" :visible.sync="dialogedit">
       <el-form :model="form_1">
         <el-form-item label="节点名称：" :label-width="formLabelWidth">
@@ -218,7 +211,6 @@
         <el-button type="primary" @click="dialogeditsure()">确 定</el-button>
       </div>
     </el-dialog>
-    <!--查看节点状态详情-->
     <el-dialog width="35%" title="下属节点详情" :visible.sync="dialogseedetail">
       <el-dialog
         width="70%"
@@ -332,7 +324,6 @@
     </el-dialog>
 
 
-    <!--数值设置-->
     <div class="part_1" v-show="part_show[0].isShow">
       <div class="con_table">
         <el-table
@@ -481,7 +472,6 @@
         </el-table>
       </div>
     </div>
-    <!--创世王者设置-->
     <div class="part_2" v-show="part_show[1].isShow">
       <el-button type="primary" @click="add_node()">添加节点
       </el-button>
@@ -605,16 +595,16 @@
         ],
         auto_select: 0,
         table_form: {
-          'pledge_coins': '',//升级成该级别要求节点自身锁定量
-          'json:"level_one_count': '',//升级成该级别要求一级非普通节点数量
-          'json:"level_total_count': '', //升级成该级别要要求全部非普通节点数量
-          'level_total_pledge_coins': '',//升级成该级别要要求全部非普通节点锁定量
-          'rx': '',//Rx是否存在 0 不存在 1 存在
-          'unlock_period_days': '',//解锁周期 （时间/天数）
-          'mining_percentage': '',//传导系数 （时间/天数）
-          'level_down_desc': '',//是否会降级
-          'level_up_desc': '', //是否会升级
-          'auto_update': '', //升级是否自动     0 不自动 1 自动
+          'pledge_coins': '',
+          'json:"level_one_count': '',
+          'json:"level_total_count': '',
+          'level_total_pledge_coins': '',
+          'rx': '',
+          'unlock_period_days': '',
+          'mining_percentage': '',
+          'level_down_desc': '',
+          'level_up_desc': '',
+          'auto_update': '',
           'param_n': '',
           'param_m': '',
           'param_kn': '',
@@ -763,13 +753,11 @@
       }
     },
     methods: {
-      /*初始化公共数据*/
       // getdata_public(){
       //   reviewBatch().then(response=>{
       //     this.node_options=this.node_options.concat(response.data)
       //   })
       // },
-      /*获取part_1 公共方法*/
       getdata_1(e) {
         getNodeSettingNew(e).then(response => {
           if (response.data == []) {
@@ -779,11 +767,9 @@
           }
         })
       },
-      /*获取part_1 数据*/
       Initialization_data_1() {
         this.getdata_1()
       },
-      /*part_1 table切换*/
       swich_tab(e) {
         this.is_show.forEach((item, index, self) => {
           if (index == e) {
@@ -806,7 +792,6 @@
           this.Initialization_data_2()
         }
       },
-      /*part_1 点击修改*/
       edit_all(e) {
         this.table_form = {
           "Id": e.Id,
@@ -814,15 +799,15 @@
           "node_identity": e.node_identity,
           "sequence": e.sequence,
           "mining_percentage": e.mining_percentage,
-          'pledge_coins': this.scientificCounting(e.pledge_coins),//升级成该级别要求节点自身锁定量
-          'level_one_count': e.level_one_count,//升级成该级别要求一级非普通节点数量
-          'level_total_count': e.level_total_count, //升级成该级别要要求全部非普通节点数量
-          'level_total_pledge_coins': this.scientificCounting(e.level_total_pledge_coins),//升级成该级别要要求全部非普通节点锁定量
-          'rx': e.rx,//Rx是否存在 0 不存在 1 存在
-          'unlock_period_days': e.unlock_period_days,//解锁周期 （时间/天数）
-          'level_down_desc': e.level_down_desc,//是否会降级
-          'level_up_desc': e.level_up_desc, //是否会升级
-          'auto_update': e.auto_update, //升级是否自动     0 不自动 1 自动
+          'pledge_coins': this.scientificCounting(e.pledge_coins),
+          'level_one_count': e.level_one_count,
+          'level_total_count': e.level_total_count,
+          'level_total_pledge_coins': this.scientificCounting(e.level_total_pledge_coins),
+          'rx': e.rx,
+          'unlock_period_days': e.unlock_period_days,
+          'level_down_desc': e.level_down_desc,
+          'level_up_desc': e.level_up_desc,
+          'auto_update': e.auto_update,
           'param_n': e.param_n,
           'param_m': e.param_m,
           'param_kn': e.param_kn,
@@ -832,7 +817,6 @@
         this.auto_select = e.auto_update
         this.dialogTableVisible_1 = true
       },
-      /*part_1 确定修改*/
       dialogsure_nusi() {
         this.table_form.rx = this.Rx_select
         this.table_form.auto_update = this.auto_select
@@ -857,26 +841,24 @@
           }
         })
       },
-      /*part_1 取消修改*/
       dialogcancle_nusi() {
         this.dialogTableVisible_1 = false
         this.table_form = {
-          'pledge_coins': '',//升级成该级别要求节点自身锁定量
-          'json:"level_one_count': '',//升级成该级别要求一级非普通节点数量
-          'json:"level_total_count': '', //升级成该级别要要求全部非普通节点数量
-          'level_total_pledge_coins': '',//升级成该级别要要求全部非普通节点锁定量
-          'rx': '',//Rx是否存在 0 不存在 1 存在
-          'unlock_period_days': '',//解锁周期 （时间/天数）
-          'level_down_desc': '',//是否会降级
-          'level_up_desc': '', //是否会升级
-          'auto_update': '', //升级是否自动     0 不自动 1 自动
+          'pledge_coins': '',
+          'json:"level_one_count': '',
+          'json:"level_total_count': '',
+          'level_total_pledge_coins': '',
+          'rx': '',
+          'unlock_period_days': '',
+          'level_down_desc': '',
+          'level_up_desc': '',
+          'auto_update': '',
           'param_n': '',
           'param_m': '',
           'param_kn': '',
           'param_on': '',
         }
       },
-      /*part_1 修改log获取*/
       getNewLog(identity, index) {
         let data = {"node_identity": identity, "column_name": this.getlog_name[index].value}
         getNodeSettingNewLog(data).then(response => {
@@ -909,9 +891,6 @@
           }
         })
       },
-      /*==========================================*/
-      // getPersonInfo
-      /*获取part_2 公共方法*/
       getdata_2(e) {
         getPersonInfoCreation(e).then(response => {
           if (response.data.dataList == []) {
@@ -922,19 +901,16 @@
           }
         })
       },
-      /*获取part_2 数据*/
       Initialization_data_2() {
         this.currentPage = 1
         let data = {"status": "", "page": 1, "pageSize": 10}
         this.getdata_2(data)
       },
-      /*part_2 分页获取数据*/
       currentPageChange(e) {
         this.currentPage = e
         let data = {"status": "", "page": this.currentPage, "pageSize": 10}
         this.getdata_2(data)
       },
-      /*查看节点状态详情分页获取数据*/
       currentPageChange_1(e) {
         this.currentPage_1 = e
         let data = {
@@ -957,7 +933,6 @@
           }
         })
       },
-      /*添加节点*/
       add_node() {
         this.form = {
           "address": '',
@@ -966,14 +941,12 @@
         }
         this.dialogFormVisible = true
       },
-      /*添加节点取消*/
       dialogFormcancle() {
         this.form.address = ''
         this.form.phone = ''
         this.form.value = ''
         this.dialogFormVisible = false
       },
-      /*添加节点确认*/
       dialogFormsure() {
         if (this.form.address == '') {
           this.$message({
@@ -1023,25 +996,14 @@
 
 
       },
-      // /*添加节点二次确认,取消操作*/
-      // dialogtwo_cancel() {
-      //   this.dialogtwo = false
-      // },
-      // /*添加节点二次确认,确认操作*/
-      // dialogtwo_sure() {
-      //   this.dialogtwo = false
-      //   this.dialogFormVisible = false
-      // },
-      /*强制解绑*/
+
       untied(e) {
         this.untied_address = e
         this.dialogUntied = true
       },
-      /*取消解绑*/
       dialogUntied_cancel() {
         this.dialogUntied = false
       },
-      /*确认解绑*/
       dialogUntied_sure() {
         let data = {"address": this.untied_address}
         unBindCreationAddress(data).then(response => {
@@ -1061,7 +1023,6 @@
           }
         })
       },
-      /*修改节点*/
       edit_node(name, address, phone, batch, pledgeBalance) {
         this.form_1 = {
           "name": name,
@@ -1072,11 +1033,9 @@
         }
         this.dialogedit = true
       },
-      /*取消修改节点*/
       dialogeditcancle() {
         this.dialogedit = false
       },
-      /*确认修改节点*/
       dialogeditsure() {
         let data = {
           "phone": this.form_1.phone,
@@ -1117,16 +1076,13 @@
           }
         })
       },
-      /*删除节点*/
       delete_node(e) {
         this.remove_address = e
         this.dialogdelete = true
       },
-      /*取消删除节点*/
       dialogdelete_cancel() {
         this.dialogdelete = false
       },
-      /*确认删除节点*/
       dialogdelete_sure() {
         let data = {"address": this.remove_address}
         deleteCreationAddress(data).then(response => {
@@ -1147,7 +1103,6 @@
         })
 
       },
-      /*查看节点状态详情*/
       see_details(e, q) {
         let data = {"address": e}
         checkCreationDetails(data).then(response => {
@@ -1156,7 +1111,6 @@
           this.dialogseedetail = true
         })
       },
-      /*查看下属节点详情*/
       see_de_all(e) {
         this.currentPage_1 = 1
         this.hi_re_3 = e
@@ -1187,7 +1141,6 @@
         })
         this.dialog_de_all = true
       },
-      /*part_1 节点级别匹配*/
       node_level_matching(e) {
         let a
         if (e == '' || this.node_options_1 == []) {
@@ -1201,7 +1154,6 @@
         }
         return a
       },
-      /*part_1 查看节点下属全部节点数量详情切换级别*/
       change_nodeLevel() {
         this.currentPage_1 = 1
         let data = {"page": 1, "pagesize": 10, "address": this.hi_re_3, "level": this.select_value_1.toString()}

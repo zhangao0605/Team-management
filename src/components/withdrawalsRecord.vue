@@ -6,7 +6,6 @@
       </div>
     </div>
 
-    <!--批量审核提示框-->
     <el-dialog
       title=""
       :visible.sync="dialogVisible"
@@ -18,7 +17,6 @@
     <el-button type="primary" @click="dialog_sure()">确 定</el-button>
        </span>
     </el-dialog>
-    <!--提现失败修改地址提示框-->
     <el-dialog
       title=""
       :visible.sync="dialogVisible_1"
@@ -33,7 +31,6 @@
     <el-button type="primary" @click="dialog_sure_1()">确 定</el-button>
        </span>
     </el-dialog>
-    <!--提现失败修改地址二次确认提示框-->
     <el-dialog
       title=""
       :visible.sync="dialogVisible_3"
@@ -46,7 +43,6 @@
     <el-button type="primary" @click="dialog_sure_3()">确 定</el-button>
        </span>
     </el-dialog>
-    <!--提现失败退款提示框-->
     <el-dialog
       title=""
       :visible.sync="dialogVisible_2"
@@ -60,7 +56,6 @@
     </el-dialog>
 
 
-    <!--提现审核提醒框-->
     <el-dialog
       title=""
       :visible.sync="dialogVisible_4"
@@ -77,7 +72,6 @@
        </span>
     </el-dialog>
 
-    <!--全部-->
     <div class="part_1" v-show="part_show[0].is_true">
       <div class="con_table">
         <el-table
@@ -153,7 +147,6 @@
         </el-pagination>
       </div>
     </div>
-    <!--未审核-->
     <div class="part_2" v-show="part_show[1].is_true">
       <el-button type="primary" class="con_search_submit_2" style="float: right" @click="batch_review()">批量审核
       </el-button>
@@ -252,7 +245,6 @@
         </el-pagination>
       </div>
     </div>
-    <!--审批批次-->
     <div class="part_3" v-show="part_show[2].is_true">
       <div class="con_table">
         <el-table
@@ -307,7 +299,6 @@
         </el-pagination>
       </div>
     </div>
-    <!--提现成功-->
     <div class="part_4" v-show="part_show[3].is_true">
       <div class="con_search">
         <div class="con_search_div">
@@ -419,7 +410,6 @@
         </el-pagination>
       </div>
     </div>
-    <!--提现失败-->
     <div class="part_5" v-show="part_show[4].is_true">
       <div class="con_search">
         <div class="con_search_div">
@@ -540,7 +530,6 @@
         </el-pagination>
       </div>
     </div>
-    <!--已退款-->
     <div class="part_6" v-show="part_show[5].is_true">
       <div class="con_search">
         <div class="con_search_div">
@@ -645,7 +634,6 @@
         </el-pagination>
       </div>
     </div>
-    <!--暂不审核-->
     <div class="part_7" v-show="part_show[6].is_true">
       <div class="con_search" style="width: 30%">
         <div class="con_search_div" style="width: 78%">
@@ -846,7 +834,6 @@
       }
     },
     methods: {
-      /*part_1 获取公共数据*/
       get_data_1(e) {
         getWithdrawalRecord(e).then(response => {
           if (response.data.dataList == []) {
@@ -858,7 +845,6 @@
           }
         })
       },
-      /*part_2 获取公共数据*/
       get_data_2(e) {
         getWithdrawalRecord(e).then(response => {
           if (response.data.dataList == []) {
@@ -870,7 +856,6 @@
           }
         })
       },
-      /*part_3 获取公共数据*/
       get_data_3(e) {
         getALLReviewBatch(e).then(response => {
           if (response.data.dataList == [] || response.data.dataList == null) {
@@ -882,7 +867,6 @@
           }
         })
       },
-      /*part_5 获取公共数据*/
       get_data_5(e, q) {
         getWithdrawalRecord(e).then(response => {
           if (response.data.dataList == []) {
@@ -897,7 +881,6 @@
           }
         })
       },
-      /*part_4 获取公共数据*/
       get_data_4(e, q) {
         getWithdrawalRecord(e).then(response => {
           if (response.data.dataList == []) {
@@ -912,7 +895,6 @@
           }
         })
       },
-      /*part_6 获取公共数据*/
       get_data_6(e, q) {
         getWithdrawalRecord(e).then(response => {
           if (response.data.dataList == []) {
@@ -927,7 +909,6 @@
           }
         })
       },
-      /*part_7 获取公共数据*/
       get_data_7(e, q) {
         getWithdrawalRecord(e).then(response => {
           if (response.data.dataList == []) {
@@ -942,7 +923,6 @@
           }
         })
       },
-      /*id对应交易所*/
       match_exchange(e) {
         let a = ''
         if (e == '' || e == undefined) {
@@ -958,7 +938,6 @@
         }
         return a
       },
-      /*id匹配交易状态*/
       match_status(e) {
         let a = ''
         if (e == 1) {
@@ -972,7 +951,6 @@
         }
         return a
       },
-      /*id匹配批次*/
       match_batch(e) {
         let a = ''
         if (e == '' || e == undefined) {
@@ -988,7 +966,6 @@
         }
         return a
       },
-      /*初始化公共数据*/
       getdata_public() {
         getExchangeType().then(response => {
           this.options = this.options.concat(response.data)
@@ -997,7 +974,6 @@
           this.options_1 = this.options_1.concat(response.data)
         })
       },
-      /*part_1 初始化数据*/
       Initialization_data_1() {
         this.currentPage = 1
         let data = {
@@ -1011,7 +987,6 @@
         }
         this.get_data_1(data)
       },
-      /*part_4初始化数据*/
       Initialization_data_4() {
         this.currentPage_3 = 1
         this.search_more_vlue = ''
@@ -1028,7 +1003,6 @@
         }
         this.get_data_4(data, 0)
       },
-      /*part_5 初始化数据*/
       Initialization_data_5() {
         this.currentPage_4 = 1
         this.search_more_vlue_1 = ''
@@ -1045,7 +1019,6 @@
         }
         this.get_data_5(data, 0)
       },
-      /*part_6 初始化数据*/
       Initialization_data_6() {
         this.currentPage_5 = 1
         this.search_more_vlue_2 = ''
@@ -1061,7 +1034,6 @@
         }
         this.get_data_6(data, 0)
       },
-      /*part_7 初始化数据*/
       Initialization_data_7() {
         this.currentPage_7 = 1
         this.search_more_vlue_7 = ''
@@ -1076,7 +1048,6 @@
         }
         this.get_data_7(data, 0)
       },
-      /*part_2 初始化数据*/
       Initialization_data_2() {
         this.currentPage_1 = 1
         let data = {
@@ -1090,13 +1061,11 @@
         }
         this.get_data_2(data)
       },
-      /*part_3 初始化数据*/
       Initialization_data_3() {
         this.currentPage_2 = 1
         let data = {"page": 1, "pageSize": 10}
         this.get_data_3(data)
       },
-      /*table切换*/
       swich_tab_1(e) {
         this.isactive = e
         this.is_show.forEach((item, index, self) => {
@@ -1136,7 +1105,6 @@
         }
 
       },
-      /*part_1 分页切换*/
       currentPageChange(e) {
         this.currentPage = e
         let data = {
@@ -1150,7 +1118,6 @@
         }
         this.get_data_1(data)
       },
-      /*part_2 分页切换*/
       currentPageChange_1(e) {
         this.currentPage_1 = e
         let data = {
@@ -1164,13 +1131,11 @@
         }
         this.get_data_2(data)
       },
-      /*part_3 分页切换*/
       currentPageChange_2(e) {
         this.currentPage_2 = e
         let data = {"page": this.currentPage_2, "pageSize": 10}
         this.get_data_3(data)
       },
-      /*part_4 分页切换*/
       currentPageChange_3(e) {
         this.currentPage_3 = e
         if (this.part_4_recording.length == 11) {
@@ -1198,7 +1163,6 @@
         }
 
       },
-      /*part_5 分页切换*/
       currentPageChange_4(e) {
         this.currentPage_4 = e
         let data
@@ -1227,7 +1191,6 @@
         }
 
       },
-      /*part_6 分页切换*/
       currentPageChange_5(e) {
         this.currentPage_5 = e
         let data
@@ -1254,7 +1217,6 @@
         }
         this.get_data_6(data, 0)
       },
-      /*part_7 分页切换*/
       currentPageChange_7(e) {
         this.currentPage_7 = e
         if (this.search_more_vlue_7.length == 11) {
@@ -1281,7 +1243,6 @@
           this.get_data_7(data, 0)
         }
       },
-      /*part_2 批量审核*/
       batch_review() {
 
         // console.log(this.multipleSelection)
@@ -1295,12 +1256,10 @@
         }
 
       },
-      /*part_2 批量审核弹窗取消按钮*/
       dialog_cancel() {
         this.dialogVisible = false
         this.verify_phone_number = ''
       },
-      /*part_2 批量审核弹窗确认按钮*/
       dialog_sure() {
         let ids_str = ''
         this.multipleSelection.forEach((item, index, self) => {
@@ -1341,11 +1300,9 @@
         })
 
       },
-      /*批量审核取消提现*/
       dialog_cancel_4() {
         this.dialogVisible_4 = false
       },
-      /*批量审核继续提现*/
       dialog_sure_4() {
         let ids_str = ''
         this.multipleSelection.forEach((item, index, self) => {
@@ -1374,7 +1331,6 @@
           this.Initialization_data_2()
         })
       },
-      /*part_2 加入暂不审核列表*/
       join_without_review(e) {
 
         let data = {'id': e, 'flag': 0}
@@ -1403,7 +1359,6 @@
 
         })
       },
-      /*part_2 手机号搜索*/
       search_more_review() {
         this.currentPage_1 = 1
         if (this.search_more_vlue_3.length == 11) {
@@ -1442,7 +1397,6 @@
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
-      /*part4 提现成功检索*/
       search_more() {
         this.select_value1 = ''
         this.select_value2 = ''
@@ -1470,7 +1424,6 @@
           this.get_data_4(data, 1)
         }
       },
-      /*part4 交易所检索*/
       pa_search_4_1() {
         let data
         if (this.part_4_recording.length == 11) {
@@ -1496,7 +1449,6 @@
         }
         this.get_data_4(data, 0)
       },
-      /*part4 审核批次检索*/
       pa_search_4_2() {
         let data
         if (this.part_4_recording.length == 11) {
@@ -1522,7 +1474,6 @@
         }
         this.get_data_4(data, 0)
       },
-      /*part5 交易所检索*/
       pa_search_5_1() {
         let data
         if (this.part_5_recording.length == 11) {
@@ -1548,7 +1499,6 @@
         }
         this.get_data_5(data, 0)
       },
-      /*part5 审核批次检索*/
       pa_search_5_2() {
         let data
         if (this.part_5_recording.length == 11) {
@@ -1574,7 +1524,6 @@
         }
         this.get_data_5(data, 0)
       },
-      /*part5 提现失败检索*/
       search_more_1() {
         this.select_value1_1 = ''
         this.select_value2_1 = ''
@@ -1602,40 +1551,31 @@
           this.get_data_5(data, 1)
         }
       },
-      /*part5 提现失败修改地址*/
       change_address() {
         this.dialogVisible_1 = true
       },
-      /*part_5 批量审核弹窗取消按钮*/
       dialog_cancel_1() {
         this.dialogVisible_1 = false
         this.verify_phone_number_1 = ''
       },
-      /*part_5 批量审核弹窗确认按钮*/
       dialog_sure_1() {
         this.dialogVisible_1 = false
         this.dialogVisible_3 = true
       },
-      /*part_5 批量审核弹窗取消按钮*/
       dialog_cancel_3() {
         this.dialogVisible_3 = false
       },
-      /*part_5 批量审核弹窗确认按钮*/
       dialog_sure_3() {
         this.dialogVisible_3 = false
-        /*二次确认发送请求*/
       },
-      /*part5 提现失败退款*/
       refund(e, q) {
         this.refund_value = e
         this.refund_value_id = q
         this.dialogVisible_2 = true
       },
-      /*part_5 退款弹窗取消按钮*/
       dialog_cancel_2() {
         this.dialogVisible_2 = false
       },
-      /*part_5 退款弹窗确认按钮*/
       dialog_sure_2() {
         let data = {"hash": this.refund_value, "id": this.refund_value_id}
         withdrawalRefund(data).then(response => {
@@ -1653,9 +1593,7 @@
           }
         })
         this.dialogVisible_2 = false
-        /*发送退款请求成功后关闭弹窗*/
       },
-      /*part_6 退款检索*/
       search_more_2() {
         this.select_value1_2 = ''
         if (this.search_more_vlue_2.length == 11) {
@@ -1682,7 +1620,6 @@
           this.get_data_6(data, 1)
         }
       },
-      /*part6 选择交易所*/
       pa6_select() {
         let data
         if (this.part_6_recording.length == 11) {
@@ -1708,7 +1645,6 @@
         }
         this.get_data_6(data, 0)
       },
-      /*匹配交易状态*/
       tradingStatus(e) {
         let a
         if (e == -1) {
@@ -1726,7 +1662,6 @@
         }
         return a
       },
-      /*part_7 加入审核列表*/
       join_review(e) {
         let data = {'id': e, 'flag': 1}
         withholdAudit(data).then(response => {
@@ -1753,7 +1688,6 @@
           }
         })
       },
-      /*part_7 手机号搜索*/
       search_without_review() {
         this.currentPage_7 = 1
         if (this.search_more_vlue_7.length == 11) {
