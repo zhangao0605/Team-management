@@ -727,6 +727,8 @@
         // this.search_phone6
       },
       rebate(e) {
+      },
+      rebates(e) {
       }
     }
   }
