@@ -1069,7 +1069,7 @@
             label=""
             align="center">
             <template slot-scope="scope">
-              <span>{{identity_type(scope.row.identity)}}</span>
+              <span>{{scope.row.identity_name}}</span>
             </template>
           </el-table-column>
           <el-table-column

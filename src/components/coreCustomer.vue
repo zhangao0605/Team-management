@@ -716,16 +716,16 @@
         this.currentPage_6 = e
         // this.search_phone6
       },
-      // marketing_retry(e) {
-      //
-      // },
-      // search_phone7() {
-      //   // this.search_phone7
-      // },
-      // currentPageChange_7(e) {
-      //   this.currentPage_7 = e
-      //   // this.search_phone6
-      // },
+      marketing_retry(e) {
+
+      },
+      search_phone7() {
+        // this.search_phone7
+      },
+      currentPageChange_7(e) {
+        this.currentPage_7 = e
+        // this.search_phone6
+      },
       rebate(e) {
       },
       rebates(e) {

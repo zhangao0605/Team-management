@@ -8,7 +8,7 @@ const service = axios.create({
   baseURL: 'http://investtest.thinkey.xyz/',
   // baseURL: this.$store.state.get_url,
   // baseURL: 'http://192.168.1.106:8600',
-  // baseURL: 'http://43.247.184.50:8600',
+  // baseURL: 'http://192.168.1.108:8600',
   timeout: 30000
 
 })
