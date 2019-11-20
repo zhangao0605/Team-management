@@ -2295,13 +2295,14 @@
             "identity": this.identity_value
           }
           getEarningsLog(data).then(response => {
+            console.log('111')
             this.picker_value1 = ''
             this.historical_details = true
             if (response.data.dataList == []) {
               this.data_record_4 = []
               this.totla_record_1 = 0
             } else {
-              if (value == 1 || value == 2 || value == 4 || value == 5) {
+              if (value == 1 || value == 2 || value == 4 || value == 5|| value == 6|| value == 7) {
                 response.data.dataList.forEach((item, index, self) => {
                   item.value = this.scientificCounting(item.value)
                 })
