@@ -21,6 +21,113 @@
     <el-button type="primary" @click="dialog_sure()">确 定</el-button>
        </span>
     </el-dialog>
+    <el-dialog
+      title=""
+      :visible.sync="dialogVisible_1"
+      width="30%"
+    >
+      <span>N值现在为：{{edit_value.n_value}}</span>
+      <br>
+      <span>修改N值后，将会影响现在及以后的奖励计算，请确认后再进行更改</span>
+      <br>
+      <el-input style="width: 70%;margin-top: 30px" v-model="verify_value_1" placeholder="请输入新N值"></el-input>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialog_cancel_1()">取 消</el-button>
+    <el-button type="primary" @click="dialog_sure_1()">确 定</el-button>
+       </span>
+    </el-dialog>
+    <el-dialog
+      title=""
+      :visible.sync="dialogVisible_2"
+      width="30%"
+    >
+      <span>KN值现在为：{{edit_value.kn_value}}</span>
+      <br>
+      <span>修改KN值后，将会影响现在及以后的奖励计算，请确认后再进行更改</span>
+      <br>
+      <el-input style="width: 70%;margin-top: 30px" v-model="verify_value_2" placeholder="请输入新KN值"></el-input>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialog_cancel_2()">取 消</el-button>
+    <el-button type="primary" @click="dialog_sure_2()">确 定</el-button>
+       </span>
+    </el-dialog>
+    <el-dialog
+      title=""
+      :visible.sync="dialogVisible_3"
+      width="30%"
+    >
+      <span>ON值现在为：{{edit_value.on_value}}</span>
+      <br>
+      <span>修改ON值后，将会影响现在及以后的奖励计算，请确认后再进行更改</span>
+      <br>
+      <el-input style="width: 70%;margin-top: 30px" v-model="verify_value_3" placeholder="请输入新ON值"></el-input>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialog_cancel_3()">取 消</el-button>
+    <el-button type="primary" @click="dialog_sure_3()">确 定</el-button>
+       </span>
+    </el-dialog>
+
+    <!--历史记录M值-->
+    <el-dialog width="30%" title="历史记录 M值" :visible.sync="dialogTableVisible_s">
+      <el-table :data="gridData_s" :header-cell-style="this.tableHeaderColor">
+        <el-table-column align="center" label="M值">
+          <template slot-scope="scope">
+            <span>{{scope.row.value}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="修改时间">
+          <template slot-scope="scope">
+            <span>{{timestampToTime(scope.row.timestamp)}}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
+    <!--历史记录N值-->
+    <el-dialog width="30%" title="历史记录 N值" :visible.sync="dialogTableVisible_1_s">
+      <el-table :data="gridData_1" :header-cell-style="this.tableHeaderColor">
+        <el-table-column align="center" label="N值">
+          <template slot-scope="scope">
+            <span>{{scope.row.value}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="修改时间">
+          <template slot-scope="scope">
+            <span>{{timestampToTime(scope.row.timestamp)}}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
+    <!--历史记录kN值-->
+    <el-dialog width="30%" title="历史记录 KN值" :visible.sync="dialogTableVisible_2_s">
+      <el-table :data="gridData_2" :header-cell-style="this.tableHeaderColor">
+        <el-table-column align="center" label="KN值">
+          <template slot-scope="scope">
+            <span>{{scope.row.value}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="修改时间">
+          <template slot-scope="scope">
+            <span>{{timestampToTime(scope.row.timestamp)}}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
+    <!--历史记录ON值-->
+    <el-dialog width="30%" title="历史记录 ON值" :visible.sync="dialogTableVisible_3_s">
+      <el-table :data="gridData_3" :header-cell-style="this.tableHeaderColor">
+        <el-table-column align="center" label="ON值">
+          <template slot-scope="scope">
+            <span>{{scope.row.value}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="修改时间">
+          <template slot-scope="scope">
+            <span>{{timestampToTime(scope.row.timestamp)}}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
+
     <el-dialog class="his_dialog" width="30%" title="历史记录" :visible.sync="dialogTableVisible">
       <el-table :data="gridData" :header-cell-style="this.tableHeaderColor">
         <el-table-column align="center" label="历史值">
@@ -93,18 +200,18 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="N值：" :label-width="formLabelWidth_2">
-          <el-input v-model="table_form.param_n" style="width: 70%" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="M值：" :label-width="formLabelWidth_2">
-          <el-input v-model="table_form.param_m" style="width: 70%" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="KN值：" :label-width="formLabelWidth_2">
-          <el-input v-model="table_form.param_kn" style="width: 70%" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="ON值：" :label-width="formLabelWidth_2">
-          <el-input v-model="table_form.param_on" style="width: 70%" autocomplete="off"></el-input>
-        </el-form-item>
+        <!--<el-form-item label="N值：" :label-width="formLabelWidth_2">-->
+          <!--<el-input v-model="table_form.param_n" style="width: 70%" autocomplete="off"></el-input>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item label="M值：" :label-width="formLabelWidth_2">-->
+          <!--<el-input v-model="table_form.param_m" style="width: 70%" autocomplete="off"></el-input>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item label="KN值：" :label-width="formLabelWidth_2">-->
+          <!--<el-input v-model="table_form.param_kn" style="width: 70%" autocomplete="off"></el-input>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item label="ON值：" :label-width="formLabelWidth_2">-->
+          <!--<el-input v-model="table_form.param_on" style="width: 70%" autocomplete="off"></el-input>-->
+        <!--</el-form-item>-->
       </el-form>
 
 
@@ -326,6 +433,38 @@
 
     <div class="part_1" v-show="part_show[0].isShow">
       <div class="con_table">
+        <div class="con_table">
+          <el-table
+            :data="value_seting"
+            border
+            style="width: 100%;margin-bottom: 30px;margin-top: 40px;min-height: 257px"
+            :header-cell-style="this.tableHeaderColor"
+          >
+            <el-table-column
+              label="数据名称"
+              align="center">
+              <template slot-scope="scope">
+                <span>{{scope.row.label}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="数据值"
+              align="center">
+              <template slot-scope="scope">
+                <span>{{scope.row.value}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="操作"
+              align="center">
+              <template slot-scope="scope">
+                <span class="operating" v-show="scope.row.isShow"
+                      @click="edit_value_old(scope.row.label,scope.row.value)">修改</span>
+                <span class="operating" v-show="scope.row.isShow" @click="history_record(scope.row.label)">历史记录</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
         <el-table
           :data="number_seting"
           border
@@ -427,38 +566,38 @@
               <span class="operating_2" @click="getNewLog(scope.row.node_identity,9)">{{scope.row.auto_update==0?'审批':'自动'}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="N值"
-            width="100"
-            align="center">
-            <template slot-scope="scope">
-              <span class="operating_2" @click="getNewLog(scope.row.node_identity,10)">{{scope.row.param_n}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="M值"
-            width="100"
-            align="center">
-            <template slot-scope="scope">
-              <span class="operating_2" @click="getNewLog(scope.row.node_identity,11)">{{scope.row.param_m}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="KN值"
-            width="100"
-            align="center">
-            <template slot-scope="scope">
-              <span class="operating_2" @click="getNewLog(scope.row.node_identity,12)">{{scope.row.param_kn}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="ON值"
-            width="100"
-            align="center">
-            <template slot-scope="scope">
-              <span class="operating_2" @click="getNewLog(scope.row.node_identity,13)">{{scope.row.param_on}}</span>
-            </template>
-          </el-table-column>
+          <!--<el-table-column-->
+            <!--label="N值"-->
+            <!--width="100"-->
+            <!--align="center">-->
+            <!--<template slot-scope="scope">-->
+              <!--<span class="operating_2" @click="getNewLog(scope.row.node_identity,10)">{{scope.row.param_n}}</span>-->
+            <!--</template>-->
+          <!--</el-table-column>-->
+          <!--<el-table-column-->
+            <!--label="M值"-->
+            <!--width="100"-->
+            <!--align="center">-->
+            <!--<template slot-scope="scope">-->
+              <!--<span class="operating_2" @click="getNewLog(scope.row.node_identity,11)">{{scope.row.param_m}}</span>-->
+            <!--</template>-->
+          <!--</el-table-column>-->
+          <!--<el-table-column-->
+            <!--label="KN值"-->
+            <!--width="100"-->
+            <!--align="center">-->
+            <!--<template slot-scope="scope">-->
+              <!--<span class="operating_2" @click="getNewLog(scope.row.node_identity,12)">{{scope.row.param_kn}}</span>-->
+            <!--</template>-->
+          <!--</el-table-column>-->
+          <!--<el-table-column-->
+            <!--label="ON值"-->
+            <!--width="100"-->
+            <!--align="center">-->
+            <!--<template slot-scope="scope">-->
+              <!--<span class="operating_2" @click="getNewLog(scope.row.node_identity,13)">{{scope.row.param_on}}</span>-->
+            <!--</template>-->
+          <!--</el-table-column>-->
           <el-table-column
             label="操作"
             fixed="right"
@@ -572,6 +711,15 @@
     name: "numericalSetting",
     data() {
       return {
+        gridData_s: [],
+        gridData_1: [],
+        gridData_2: [],
+        gridData_3: [],
+        dialogTableVisible_s: false,
+        dialogTableVisible_1_s: false,
+        dialogTableVisible_2_s: false,
+        dialogTableVisible_3_s: false,
+        value_seting: [],
         Rx_select: 0,
         Rx_options: [
           {
@@ -661,7 +809,13 @@
         dialogFormVisible: false,
         formLabelWidth: '150px',
         formLabelWidth_2: '220px',
+        verify_value_1: '',
+        verify_value_2: '',
+        verify_value_3: '',
         dialogVisible: false,
+        dialogVisible_1: false,
+        dialogVisible_2: false,
+        dialogVisible_3: false,
         verify_value: '',
         dialogTableVisible: false,
         isactive: 0,
@@ -753,17 +907,162 @@
       }
     },
     methods: {
-      // getdata_public(){
-      //   reviewBatch().then(response=>{
-      //     this.node_options=this.node_options.concat(response.data)
-      //   })
-      // },
+      history_record(e) {
+        if (e == 'M') {
+          let data = {"label": "M"}
+          getMNLog(data).then(response => {
+            if (response.data == []) {
+              this.gridData_s = []
+            } else {
+              this.gridData_s = response.data
+            }
+          })
+          this.dialogTableVisible_s = true
+        } else if (e == 'N') {
+          let data = {"label": "N"}
+          this.dialogTableVisible_1_s = true
+          getMNLog(data).then(response => {
+            if (response.data == []) {
+              this.gridData_1 = []
+            } else {
+              this.gridData_1 = response.data
+            }
+          })
+        } else if (e == 'KN') {
+          let data = {"label": "KN"}
+          this.dialogTableVisible_2_s = true
+          getMNLog(data).then(response => {
+            if (response.data == []) {
+              this.gridData_2 = []
+            } else {
+              this.gridData_2 = response.data
+            }
+          })
+        }
+        else if (e == 'ON') {
+          let data = {"label": "ON"}
+          this.dialogTableVisible_3_s = true
+          getMNLog(data).then(response => {
+            if (response.data == []) {
+              this.gridData_3 = []
+            } else {
+              this.gridData_3 = response.data
+            }
+          })
+        }
+      },
+      dialog_cancel() {
+        this.dialogVisible = false
+        this.verify_value = ''
+      },
+      dialog_sure() {
+        let data = {"value": this.verify_value, "label": "M"}
+        updateSetting(data).then(response => {
+          this.dialogVisible = false
+          this.verify_value = ''
+          if (response.eCode == 200) {
+            this.Initialization_data_1()
+            this.$message({
+              type: 'success',
+              message: '修改成功!'
+            });
+          } else {
+            this.$message({
+              type: 'error',
+              message: '修改失败!'
+            });
+          }
+        })
+      },
+      dialog_cancel_2() {
+        this.dialogVisible_2 = false
+        this.verify_value_2 = ''
+      },
+      dialog_sure_2() {
+        let data = {"value": this.verify_value_2, "label": "KN"}
+        updateSetting(data).then(response => {
+          this.dialogVisible_2 = false
+          this.verify_value_2 = ''
+          if (response.eCode == 200) {
+            this.Initialization_data_1()
+            this.$message({
+              type: 'success',
+              message: '修改成功!'
+            });
+          } else {
+            this.$message({
+              type: 'error',
+              message: '修改失败!'
+            });
+          }
+        })
+      },
+      dialog_cancel_3() {
+        this.dialogVisible_3 = false
+        this.verify_value_3 = ''
+      },
+      dialog_sure_3() {
+        let data = {"value": this.verify_value_3, "label": "ON"}
+        updateSetting(data).then(response => {
+          this.dialogVisible_3 = false
+          this.verify_value_3 = ''
+          if (response.eCode == 200) {
+            this.Initialization_data_1()
+            this.$message({
+              type: 'success',
+              message: '修改成功!'
+            });
+          } else {
+            this.$message({
+              type: 'error',
+              message: '修改失败!'
+            });
+          }
+        })
+      },
+      dialog_cancel_1() {
+        this.dialogVisible_1 = false
+        this.verify_value_1 = ''
+      },
+      dialog_sure_1() {
+        let data = {"value": this.verify_value_1, "label": "N"}
+        updateSetting(data).then(response => {
+          this.dialogVisible_1 = false
+          this.verify_value_1 = ''
+          if (response.eCode == 200) {
+            this.Initialization_data_1()
+            this.$message({
+              type: 'success',
+              message: '修改成功!'
+            });
+          } else {
+            this.$message({
+              type: 'error',
+              message: '修改失败!'
+            });
+          }
+        })
+      },
       getdata_1(e) {
         getNodeSettingNew(e).then(response => {
           if (response.data == []) {
             this.number_seting = []
           } else {
             this.number_seting = response.data
+          }
+        })
+        let data = {"equityPoolM": "", "equityPoolN": ""}
+        getSettingInfo(data).then(response => {
+          if (response.data == []) {
+            this.value_seting = []
+          } else {
+            let arr = []
+            response.data.forEach((item, index, self) => {
+              if (item.label === "M" || item.label === "N" || item.label === "ON" || item.label === "KN") {
+                arr.push(item)
+              }
+            })
+            this.value_seting = arr
           }
         })
       },
@@ -808,10 +1107,10 @@
           'level_down_desc': e.level_down_desc,
           'level_up_desc': e.level_up_desc,
           'auto_update': e.auto_update,
-          'param_n': e.param_n,
-          'param_m': e.param_m,
-          'param_kn': e.param_kn,
-          'param_on': e.param_on,
+          'param_n': '0',
+          'param_m': '0',
+          'param_kn': '0',
+          'param_on': '0',
         }
         this.Rx_select = e.rx
         this.auto_select = e.auto_update
@@ -830,13 +1129,13 @@
             this.$message({
               message: '修改成功！',
               type: 'success'
-            });
+            })
             this.dialogcancle_nusi()
           } else {
             this.$message({
               message: '修改失败，请稍后重试！',
               type: 'error'
-            });
+            })
             this.dialogcancle_nusi()
           }
         })
@@ -880,9 +1179,9 @@
                   item.value = '自动'
                 }
               })
-            } else if (index == 3||index == 0) {
+            } else if (index == 3 || index == 0) {
               response.data.forEach((item, index, self) => {
-                item.value=this.scientificCounting(item.value)
+                item.value = this.scientificCounting(item.value)
               })
             }
             this.gridData = response.data
@@ -952,12 +1251,12 @@
           this.$message({
             type: 'error',
             message: '添加创世王者节点节点地址不能为空！'
-          });
+          })
         } else if (this.form.phone == '') {
           this.$message({
             type: 'error',
             message: '添加创世王者节点节点绑定手机号不能为空'
-          });
+          })
         } else {
           let data = {
             "name": "",
@@ -977,26 +1276,44 @@
                 this.$message({
                   type: 'success',
                   message: '节点添加成功'
-                });
+                })
               this.Initialization_data_2()
               this.dialogFormVisible = false
             } else if (response.eCode == 10000) {
               this.$message({
                 type: 'error',
                 message: response.eMsg
-              });
+              })
             } else {
               this.$message({
                 type: 'error',
                 message: '节点添加失败'
-              });
+              })
             }
           })
         }
 
 
       },
-
+      edit_value_old(e, q) {
+        if (e == 'M') {
+          this.edit_value.m_value = q
+          this.verify_value = q
+          this.dialogVisible = true
+        } else if (e == 'N') {
+          this.edit_value.n_value = q
+          this.verify_value_1 = q
+          this.dialogVisible_1 = true
+        } else if(e == 'KN') {
+          this.edit_value.kn_value = q
+          this.verify_value_2 = q
+          this.dialogVisible_2 = true
+        }else if(e == 'ON'){
+          this.edit_value.on_value = q
+          this.verify_value_3 = q
+          this.dialogVisible_3 = true
+        }
+      },
       untied(e) {
         this.untied_address = e
         this.dialogUntied = true
@@ -1011,14 +1328,14 @@
             this.$message({
               type: 'success',
               message: '节点强制解绑成功'
-            });
+            })
             this.Initialization_data_2()
             this.dialogUntied = false
           } else {
             this.$message({
               type: 'error',
               message: '节点强制解绑失败'
-            });
+            })
             this.dialogUntied = false
           }
         })
@@ -1056,14 +1373,14 @@
             this.$message({
               type: 'success',
               message: '节点修改成功'
-            });
+            })
             this.Initialization_data_2()
             this.dialogedit = false
           } else {
             this.$message({
               type: 'error',
               message: '节点添加失败'
-            });
+            })
             this.node_select = 1
             this.form_1 = {
               "name": '',
@@ -1090,14 +1407,14 @@
             this.$message({
               type: 'success',
               message: '节点删除成功'
-            });
+            })
             this.Initialization_data_2()
             this.dialogdelete = false
           } else {
             this.$message({
               type: 'error',
               message: '节点删除失败'
-            });
+            })
             this.dialogdelete = false
           }
         })
