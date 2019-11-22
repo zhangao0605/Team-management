@@ -15,7 +15,6 @@
         <div class="table_item" @click="swich_tab(index)"  v-for="(list, index) in table_items" :class="index== isactive ? item_active :'item_default'">{{list.name}}</div>
 
       </div>
-
       <binding-relationship v-show="is_show[0].is_true"/>
       <recharge-record v-show="is_show[1].is_true"/>
       <withdrawals-record v-show="is_show[2].is_true"/>
@@ -25,10 +24,12 @@
       <wallet-settings v-show="is_show[6].is_true"/>
       <hierarchical-structure v-show="is_show[7].is_true"/>
       <address-translation v-show="is_show[8].is_true"/>
+      <!--<core-customer v-show="is_show[9].is_true"/>-->
     </div>
 </template>
 <script>
   import bindingRelationship from '../../components/bindingRelationship'
+  import coreCustomer from '../../components/coreCustomer'
   import addressTranslation from '../../components/addressTranslation'
   import walletSettings from '../../components/walletSettings'
   import hierarchicalStructure from '../../components/hierarchicalStructure'
@@ -39,7 +40,7 @@
   import serviceMonitoring from '../home/home'
     export default {
       name: "index",
-      components: {addressTranslation,hierarchicalStructure,bindingRelationship,accountInformation,numericalSetting,rechargeRecord,withdrawalsRecord,serviceMonitoring,walletSettings},
+      components: {addressTranslation,hierarchicalStructure,bindingRelationship,accountInformation,numericalSetting,rechargeRecord,withdrawalsRecord,serviceMonitoring,walletSettings,coreCustomer},
       data(){
           return{
             is_show:[
@@ -52,6 +53,7 @@
               {"is_true":false},
               {"is_true":false},
               {"is_true":false},
+              // {"is_true":false},
             ],
             isactive:0,
             is_loginout:false,
@@ -67,6 +69,7 @@
               {"name":' 钱包设置 '},
               {"name":' 节点树结构  '},
               {"name":' 地址转换  '},
+              // {"name":' 芯客  '},
             ]
           }
       },
@@ -120,7 +123,7 @@
     /*color: #800080 ;*/
   }
   .index_table_swith{
-    width:75%;
+    width:82%;
     display: flex;
     justify-content: space-between;
   }

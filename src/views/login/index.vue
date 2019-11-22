@@ -46,7 +46,6 @@
   export default {
     name: 'Login',
     data() {
-      /*用户名验证规则*/
       const validateUsername = (rule, value, callback) => {
         if (!value) {
           return callback(new Error('用户名不能为空'));
@@ -54,7 +53,6 @@
           callback();
         }
       }
-      /*密码验证规则*/
       const validatePass = (rule, value, callback) => {
         if (value.length < 5) {
           callback(new Error('密码不能小于5位'))
@@ -63,7 +61,6 @@
         }
       }
       return {
-        /*账号密码变量存储*/
         loginForm: {
           username: '',
           password: ''

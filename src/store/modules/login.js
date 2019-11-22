@@ -17,7 +17,6 @@ const mutations = {
 }
 
 const actions = {
-  // 登录
   Login({commit}, userInfo) {
     const account = userInfo.username.trim()
     return new Promise((resolve, reject) => {
@@ -40,7 +39,6 @@ const actions = {
     })
   },
 
-// 登出
   LogOut({commit, state}) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
@@ -55,7 +53,6 @@ const actions = {
   }
   ,
 
-// 前端 登出
   FedLogOut({commit}) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')

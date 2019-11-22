@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!--添加节点-->
     <el-dialog width="35%" title="新增版本更新" :visible.sync="dialogFormVisible">
       <el-form :model="form">
         <el-form-item label="版本号：" :label-width="formLabelWidth">
@@ -28,7 +27,6 @@
         <el-button type="primary" @click="dialogFormsure()">确 定</el-button>
       </div>
     </el-dialog>
-    <!--修改-->
     <el-dialog
       title=""
       :visible.sync="dialogVisible"
@@ -43,7 +41,6 @@
     <el-button type="primary" @click="dialog_sure()">确 定</el-button>
        </span>
     </el-dialog>
-    <!--历史记录查看-->
     <el-dialog class="his_dialog" width="25%" title="历史记录" :visible.sync="dialogTableVisible">
       <el-table :data="tableData_4" :header-cell-style="this.tableHeaderColor">
         <el-table-column align="center" label="历史值">
@@ -367,36 +364,30 @@
           }
         })
       },
-      /*ios初始化数据*/
       initialization_data() {
         this.currentPage = 1
         let data = {"page": 1, "pagesize": 10, "system": "0"}
         this.getdata(data, 0)
       },
-      /*And初始化数据*/
       initialization_data_1() {
         this.currentPage_1 = 1
         let data = {"page": 1, "pagesize": 10, "system": "1"}
         this.getdata(data, 1)
       },
-      /*ios分页查询*/
       currentPageChange(e) {
         this.currentPage = e
         let data = {"page": this.currentPage, "pagesize": 10, "system": "0"}
         this.getdata(data, 0)
       },
-      /*安卓分页查询*/
       currentPageChange_1(e) {
         this.currentPage_1 = e
         let data = {"page": this.currentPage_1, "pagesize": 10, "system": "1"}
         this.getdata(data, 1)
       },
-      /*安卓，ios新增记录*/
       add_ios_android(e) {
         this.system = e
         this.dialogFormVisible = true
       },
-      /*取消新增更新*/
       dialogFormcancle() {
         this.dialogFormVisible = false
         this.form = {
@@ -406,7 +397,6 @@
           'link': '',
         }
       },
-      /*确认新增更新*/
       dialogFormsure() {
         let forced = true
         if (this.form.is_stronger == 1) {
@@ -450,7 +440,6 @@
         })
 
       },
-      /*获取规则*/
       get_rule() {
         withdrawalrules().then(response => {
           if (response.eCode == 200) {
@@ -467,7 +456,6 @@
           }
         })
       },
-      /*匹配规则name*/
       rule_name(e) {
         let name = ''
         if (e == 'redeemceiling') {
@@ -484,7 +472,6 @@
         }
         return name
       },
-      /*点击修改*/
       edit_rule(name, value, type) {
         this.edit_type = type
         this.verify_value = value
@@ -504,7 +491,6 @@
         }
         this.dialogVisible = true
       },
-      /*修改相关取消*/
       dialog_cance() {
         this.dialogVisible = false
         this.edit_con = {
@@ -516,7 +502,6 @@
           'value': '',
         }
       },
-      /*修改相关确认*/
       dialog_sure() {
         let data
         if (this.edit_type == 0) {
@@ -543,7 +528,6 @@
           }
         })
       },
-      /*查看修改历史*/
       view_history(name, type) {
         this.dialogTableVisible = true
         let data = {'name': name}

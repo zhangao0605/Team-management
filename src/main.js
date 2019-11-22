@@ -1,11 +1,11 @@
 
 import Vue from 'vue'
+import store from './store'
 import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import i18n from './i18n/langs';
-import store from './store'
 import './assets/font_class/iconfont.css'
 import utils from './utils/js/utils'
 import './permission'

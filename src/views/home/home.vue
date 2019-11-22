@@ -76,7 +76,6 @@
       }
     },
     methods: {
-      /*page切换*/
       currentPageChange(e) {
         this.currentPage = e
         let data = {
@@ -93,7 +92,6 @@
           }
         })
       },
-      /*初始化数据*/
       initialization_data() {
         this.currentPage=1
         let data = {
@@ -141,6 +139,8 @@
     mounted() {
     },
     created() {
+      // console.log(this.$store.state.get_url)
+      // console.log(document.location.protocol+ window.location.search)
       this.initialization_data()
       // this.updata_all()
     }

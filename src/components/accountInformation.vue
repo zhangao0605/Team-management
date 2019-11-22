@@ -5,9 +5,7 @@
            :class="index== isactive ? item_active :'item_default'">{{list.name}}
       </div>
     </div>
-    <!--part_1 查看详细-->
     <el-dialog width="35%" title="节点详情" :visible.sync="alert_1">
-      <!--二级弹窗节点类型-->
       <el-dialog
         width="40%"
         title="历史记录"
@@ -47,7 +45,6 @@
           </el-pagination>
         </div>
       </el-dialog>
-      <!--二级弹窗质押金额-->
       <el-dialog
         width="40%"
         title="质押金额"
@@ -94,7 +91,6 @@
           </el-pagination>
         </div>
       </el-dialog>
-      <!--二级弹窗累计收益-->
       <el-dialog
         width="40%"
         title="累计收益"
@@ -118,7 +114,7 @@
               label="收益"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.balance==''?0:scope.row.balance}} TUE</span>
+                <span>{{scientificCounting(scope.row.balance==''?0:scope.row.balance)}} TUE</span>
               </template>
             </el-table-column>
           </el-table>
@@ -134,7 +130,6 @@
           </el-pagination>
         </div>
       </el-dialog>
-      <!--二级弹窗下属节点详情-->
       <el-dialog
         width="70%"
         title="节点下属全部节点详情"
@@ -256,12 +251,11 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <!--part_1 节点累计收益tue，usdt历史记录查看-->
     <el-dialog class="his_dialog" width="25%" title="累计收益" :visible.sync="dialogTableVisible">
       <el-table :data="tableData_10" :header-cell-style="this.tableHeaderColor">
         <el-table-column align="center" label="收益">
           <template slot-scope="scope">
-            <span>{{scope.row.value}}</span>
+            <span>{{scientificCounting(scope.row.value)}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="时间">
@@ -271,7 +265,6 @@
         </el-table-column>
       </el-table>
     </el-dialog>
-    <!--part_2 单个批准-->
     <el-dialog
       title=""
       :visible.sync="alert_1_5"
@@ -283,7 +276,6 @@
     <el-button type="primary" @click="promotion_sure()">确 定</el-button>
        </span>
     </el-dialog>
-    <!--part_2 全部批准-->
     <el-dialog
       title=""
       :visible.sync="alert_1_6"
@@ -295,9 +287,7 @@
     <el-button type="primary" @click="batch_approval_sure()">确 定</el-button>
        </span>
     </el-dialog>
-    <!--part_2 查看详细-->
     <el-dialog width="35%" title="节点详情" :visible.sync="alert_1_7">
-      <!--二级弹窗下属节点详情-->
       <el-dialog
         width="70%"
         title="节点下属全部节点详情"
@@ -408,7 +398,6 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <!--part_3 单个批准-->
     <el-dialog
       title=""
       :visible.sync="alert_1_9"
@@ -420,7 +409,6 @@
     <el-button type="primary" @click="alert_1_9_sure()">确 定</el-button>
        </span>
     </el-dialog>
-    <!--part_3 全部批准-->
     <el-dialog
       title=""
       :visible.sync="alert_1_10"
@@ -432,7 +420,6 @@
     <el-button type="primary" @click="alert_1_10_sure()">确 定</el-button>
        </span>
     </el-dialog>
-    <!--part_5 单个数据查看详细-->
     <el-dialog
       :title="details_name"
       :visible.sync="historical_details"
@@ -486,8 +473,62 @@
       </div>
 
     </el-dialog>
+    <el-dialog width="40%" title="数值设置修改" :visible.sync="dialogTableVisible_1">
+      <el-form :model="table_form">
+        <el-form-item label="节点地址：" :label-width="formLabelWidth_2">
+          <span>{{table_form.address}}</span>
+        </el-form-item>
+        <el-form-item label="绑定手机号：" :label-width="formLabelWidth_2">
+          <span>{{table_form.phone}}</span>
+        </el-form-item>
+        <el-form-item label="修改节点名称：" :label-width="formLabelWidth_2">
+          <el-select v-model="no_ty_select" placeholder="">
+            <el-option
+              v-for="item in no_ty_selects"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="修改身份：" :label-width="formLabelWidth_2">
+          <el-select v-model="nodety_select" placeholder="">
+            <el-option
+              v-for="item in nodety_selects"
+              :key="item.typeid"
+              :label="item.typename"
+              :value="item.typeid">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="修改新身份：" :label-width="formLabelWidth_2">
+          <el-select v-model="nodety_select_1" placeholder="">
+            <el-option
+              v-for="item in nodety_selects"
+              :key="item.typeid"
+              :label="item.typename"
+              :value="item.typeid">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="修改质押金额：" :label-width="formLabelWidth_2">
+          <el-input v-model="table_form.pledgeBalance" style="width: 55%" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="接收验证码手机号：" :label-width="formLabelWidth_2">
+          <el-input v-model="table_form.user_phone" style="width: 55%" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="短信验证：" :label-width="formLabelWidth_2">
+          <el-input v-model="table_form.code" style="width: 30%" autocomplete="off"></el-input>
+          <el-button @click="get_code()" type="primary" size="small" style="margin-left: 13%">获取</el-button>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogcancle_nusi()">取 消</el-button>
+        <el-button type="primary" @click="dialogsure_nusi()">确 定</el-button>
+      </div>
+    </el-dialog>
 
-    <!--节点信息-->
+
     <div class="part_1" v-show="part_show[0].isShow">
       <div class="con_search" style="width: 60%">
         <div class="con_search_div">
@@ -520,10 +561,11 @@
           </el-option>
         </el-select>
       </div>
-      <!--排序不对注意类型-->
+
       <div class="con_table">
         <el-table
           :data="tableData"
+          v-loading="loading"
           border
           style="width: 100%;margin-bottom: 30px;margin-top: 40px;min-height: 529px"
           :header-cell-style="this.tableHeaderColor"
@@ -661,7 +703,7 @@
         </el-pagination>
       </div>
     </div>
-    <!--晋级审核-->
+
     <div class="part_2" v-show="part_show[1].isShow">
       <el-button type="primary" @click="batch_approval()">
         全部批准
@@ -726,7 +768,7 @@
         </el-pagination>
       </div>
     </div>
-    <!--解绑审核-->
+
     <div class="part_3" v-show="part_show[2].isShow">
       <div class="con_search" style="width: 60%">
         <div class="con_search_div">
@@ -862,7 +904,7 @@
         </el-pagination>
       </div>
     </div>
-    <!--交易记录-->
+
     <div class="part_4" v-show="part_show[3].isShow">
       <div class="con_search" style="width: 60%">
         <div class="con_search_div">
@@ -993,7 +1035,6 @@
       <!--</el-pagination>-->
       <!--</div>-->
     </div>
-    <!--节点大赛数据记录-->
     <div class="part_4" v-show="part_show[4].isShow">
       <div class="part_4_time">
         时间：{{timestampToTime(time_hi_1)}}
@@ -1084,7 +1125,7 @@
             label=""
             align="center">
             <template slot-scope="scope">
-              <span>{{identity_type(scope.row.identity)}}</span>
+              <span>{{scope.row.identity_name}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -1153,6 +1194,73 @@
         </el-table>
       </div>
     </div>
+    <div class="part_5" v-show="part_show[5].isShow">
+      <div class="part_5_title">
+        请正确输入需要进行相关修改的用户手机号！
+      </div>
+      <el-input style="width: 20%" v-model="search_phone_use" placeholder="请正确输入手机号">
+      </el-input>
+      <el-button style="margin-left: 30px" type="primary" @click="sea_userinfo()">搜索</el-button>
+      <div class="con_table">
+        <el-table
+          :data="tableData_11"
+          border
+          style="width: 100%;margin-bottom: 30px;margin-top: 40px;min-height: 380px"
+          :header-cell-style="this.tableHeaderColor"
+        >
+          <el-table-column
+            label="节点地址"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row.address}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="绑定手机号"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row.phone}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="节点名称"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row.name}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="身份"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{node_level_matching_2(scope.row.identity)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="新身份"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{node_level_matching_2(scope.row.newidentity)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="质押金额"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{scientificCounting(scope.row.pledgeBalance)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="操作"
+            align="center">
+            <template slot-scope="scope">
+              <span class="select_active"
+                    @click="edit_user_info(scope.row.Id,scope.row.address,scope.row.phone,scope.row.identity,scope.row.newidentity,scope.row.name,scope.row.pledgeBalance)">修改</span>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -1180,12 +1288,20 @@
     getNowSettlement,
     getnodeusdthistory,
     getnodetuehistory,
+    getNickNameInfo,
+    updateNodeInfo,
+    getphonecodeinvalid,
+    getPersonDetails,
+    getphonecode,
   } from '../api/interface'
 
   export default {
     name: "accountInformation",
     data() {
       return {
+
+        search_phone_use: '',
+        loading: false,
         is_show_mi: false,
         dialogTableVisible: false,
         time_hi_1: '',
@@ -1271,9 +1387,11 @@
           {"name": ' 解绑审核 '},
           {"name": ' 交易记录 '},
           {"name": ' 权益池金额记录 '},
+          {"name": ' 用户信息修改 '},
         ],
         part_show: [
           {"isShow": true},
+          {"isShow": false},
           {"isShow": false},
           {"isShow": false},
           {"isShow": false},
@@ -1299,6 +1417,7 @@
         tableData_8: [],
         tableData_9: [],
         tableData_10: [],
+        tableData_11: [],
         currentPage: 1,
         pagesize: 10,
         totla: 0,
@@ -1409,21 +1528,38 @@
           "type": 0,
         },
         pick_data: null,
-
+        no_ty_select: 0,
+        no_ty_selects: [],
+        nodety_select: '',
+        nodety_select_1: '',
+        nodety_selects: [],
+        formLabelWidth_2: '220px',
+        table_form: {
+          'address': '',
+          'phone': '',
+          'identity': '',
+          'name': '',
+          'pledgeBalance': '',
+          'user_phone': '',
+          'newidentity': '',
+          'code': '',
+          'id': '',
+        },
+        dialogTableVisible_1: false,
+        old_ident: ''
       }
     },
     methods: {
-      /*获取所有公共资源例如节点类型*/
       get_public() {
         let data = {}
         nodeType(data).then(response => {
           this.part2_options1 = this.part2_options1.concat(response)
-          console.log( this.part2_options1 )
         })
       },
-      /*part_1 获取数据公共接口*/
       get_data_1(e, q) {
+        this.loading = true
         nodeInfo(e).then(response => {
+          this.loading = false
           if (response.dataList == []) {
             this.tableData = []
             this.totla = 0
@@ -1441,16 +1577,14 @@
           }
         })
       },
-      /*part_1 初始化*/
       Initialization_data_1() {
         this.search_1 = ''
-        this.sorting='-1'
+        this.sorting = '-1'
         this.currentPage = 1
         this.select_value = ''
         let data = {"phone": "", "address": "", "type": "", "page": 1, "pagesize": 10, "sorting": '-1'}
         this.get_data_1(data, 0)
       },
-      /*table切换*/
       swich_tab(e) {
         this.is_show.forEach((item, index, self) => {
           if (index == e) {
@@ -1471,21 +1605,18 @@
           this.Initialization_data_1()
         } else if (e == 1) {
           this.Initialization_data_2()
-        }
-        else if (e == 2) {
+        } else if (e == 2) {
           this.Initialization_data_3()
-        }
-        else if (e == 3) {
+        } else if (e == 3) {
           this.Initialization_data_4()
-        }
-        else if (e == 4) {
+        } else if (e == 4) {
           this.Initialization_data_5()
         }
 
       },
-      /*part_1 查询*/
       search_ad_ph_1() {
         this.currentPage = 1
+        this.sorting = '-1'
         this.select_value = ''
         if (this.search_1.length == 11) {
           let data = {
@@ -1509,7 +1640,6 @@
           this.get_data_1(data, 1)
         }
       },
-      /*part_1 正序倒序排列*/
       change_order() {
         let data
 
@@ -1535,7 +1665,6 @@
         }
         this.get_data_1(data, 0)
       },
-      /*part_1 改变节点类型*/
       change_user_source_1() {
         let data
         this.currentPage = 1
@@ -1560,7 +1689,6 @@
         }
         this.get_data_1(data, 0)
       },
-      /*part_1 分页查询*/
       currentPageChange(e) {
         this.currentPage = e
         let data
@@ -1586,7 +1714,6 @@
         }
         this.get_data_1(data, 0)
       },
-      /*part_1 弹窗历史记录分页查询*/
       currentPageChange_1(e) {
         this.currentPage_1 = e
         let data = {"page": this.currentPage_1, "pagesize": 10, "Address": this.hi_re}
@@ -1600,7 +1727,6 @@
           }
         })
       },
-      /*part_1 弹窗质押金额分页查询*/
       currentPageChange_1_1(e) {
         this.currentPage_1_1 = e
         let data = {"page": this.currentPage_1_1, "pagesize": 10, "Addr": this.hi_re_2}
@@ -1614,7 +1740,6 @@
           }
         })
       },
-      /*part_1 弹窗累计收益分页查询*/
       currentPageChange_1_2(e) {
         this.currentPage_1_2 = e
         let data = {"page": this.currentPage_1_2, "pagesize": 10, "address": this.hi_re_4}
@@ -1629,7 +1754,6 @@
         })
         this.alert_1_4 = true
       },
-      /*part_1 弹窗下属节点详情分页查询*/
       currentPageChange_1_3(e) {
         this.currentPage_1_3 = e
         let data = {
@@ -1652,7 +1776,6 @@
           }
         })
       },
-      /*part_1 查看*/
       seedetail(e) {
         let data = {"address": e, "page": 1, "pageSize": 10, "phone": '', "type": ''}
         nodeInfo(data).then(response => {
@@ -1677,7 +1800,6 @@
         })
 
       },
-      /*part_1 查看节点类型历史纪录详情*/
       see_de_all_1(e) {
         this.currentPage_1 = 1
         this.hi_re = e
@@ -1693,7 +1815,6 @@
         })
         this.alert_1_1 = true
       },
-      /*part_1 查看节点质押金额详情*/
       see_de_all_2(e) {
         this.currentPage_1_1 = 1
         this.hi_re_2 = e
@@ -1709,7 +1830,6 @@
         })
         this.alert_1_2 = true
       },
-      /*part_1 查看节点下属全部节点数量详情*/
       see_de_all_3(e) {
         this.currentPage_1_3 = 1
         this.hi_re_3 = e
@@ -1740,7 +1860,6 @@
         })
         this.alert_1_3 = true
       },
-      /*part_1 查看节点下属全部节点数量详情切换级别*/
       change_nodeLevel() {
         this.currentPage_1_3 = 1
         let data = {"page": 1, "pagesize": 10, "address": this.hi_re_3, "level": this.select_value_1.toString()}
@@ -1758,7 +1877,6 @@
           }
         })
       },
-      /*part_1 查看节点累计收益详情*/
       see_de_all_4(e) {
         this.hi_re_4 = e
         this.currentPage_1_2 = 1
@@ -1774,7 +1892,6 @@
         })
         this.alert_1_4 = true
       },
-      /*part_1 节点级别匹配*/
       node_level_matching(e) {
         let a
         if (e == '' || this.node_options == []) {
@@ -1788,7 +1905,6 @@
         }
         return a
       },
-      /*节点累计TUE/usdt收益*/
       tue_income_his(address, type) {
         if (type == 0) {
           let data = {"address": address}
@@ -1796,7 +1912,6 @@
             this.dialogTableVisible = true
             if (response.eCode == 200) {
               this.tableData_10 = response.data.dataList
-              console.log(this.tableData_10)
             } else {
               this.tableData_10 = []
             }
@@ -1807,7 +1922,6 @@
             this.dialogTableVisible = true
             if (response.eCode == 200) {
               this.tableData_10 = response.data.dataList
-              console.log(this.tableData_10)
             } else {
               this.tableData_10 = []
             }
@@ -1815,8 +1929,6 @@
         }
 
       },
-      /*===============================================*/
-      /*part_2 获取数据公共接口*/
       get_data_2(e) {
         promotionAudit(e).then(response => {
           if (response.data.dataList == []) {
@@ -1828,28 +1940,23 @@
           }
         })
       },
-      /*part_2 初始化*/
       Initialization_data_2() {
         this.currentPage_5 = 1
         let data = {"page": 1, "pageSize": 10}
         this.get_data_2(data)
       },
-      /*part_2 晋级审核分页*/
       currentPageChange_5(e) {
         this.currentPage_5 = e
         let data = {"page": this.currentPage_5, "pageSize": 10}
         this.get_data_2(data)
       },
-      /*part_2 单独批准晋级*/
       approved_for_promotion(e) {
         this.promotionAuditExe = e
         this.alert_1_5 = true
       },
-      /*part_2 取消单独批准晋级*/
       promotion_cancel() {
         this.alert_1_5 = false
       },
-      /*part_2 确认单独批准晋级*/
       promotion_sure() {
         let data = {"address": this.promotionAuditExe}
         promotionAuditExe(data).then(response => {
@@ -1869,15 +1976,12 @@
         })
 
       },
-      /*part_2 批量批准晋级*/
       batch_approval() {
         this.alert_1_6 = true
       },
-      /*part_2 取消批量批准晋级*/
       batch_approval_cancel() {
         this.alert_1_6 = false
       },
-      /*part_2 确认批量批准晋级*/
       batch_approval_sure() {
         allPromotionAuditExe().then(response => {
           if (response.eCode == 200) {
@@ -1896,7 +2000,6 @@
         })
 
       },
-      /*part_2 节点状态查看详情*/
       see_details(e) {
         let data = {"address": e}
         promotionAuditCheck(data).then(response => {
@@ -1917,7 +2020,6 @@
         })
         this.alert_1_7 = true
       },
-      /*part_2 节点详细*/
       part_2_see_1(e) {
         this.currentPage_6 = 1
         this.hi_re_5 = e
@@ -1948,7 +2050,6 @@
         })
         this.alert_1_8 = true
       },
-      /*part_2 节点二级弹窗分页*/
       currentPageChange_6(e) {
         this.currentPage_6 = e
         let data = {
@@ -1971,7 +2072,6 @@
           }
         })
       },
-      /*part_2 节点级别切换*/
       change_nodeLevel_1() {
         this.currentPage_6 = 1
         let data = {"page": 1, "pagesize": 10, "address": this.hi_re_5, "level": this.select_value_2.toString()}
@@ -1989,7 +2089,6 @@
           }
         })
       },
-      /*part_2 节点级别匹配*/
       node_level_matching_1(e) {
         let a
         if (e == '' || this.node_options_1 == []) {
@@ -2016,8 +2115,6 @@
         }
         return a
       },
-      /*==================================================*/
-      /*part_3 初始化数据*/
       get_data_3(e, q) {
         // let data={"page":1,"pagesize":10,"address":"","phone":""}
         unbindingAudit(e).then(response => {
@@ -2033,13 +2130,11 @@
           }
         })
       },
-      /*part_3 获取初始化数据*/
       Initialization_data_3() {
         this.currentPage_7 = 1
         let data = {"page": 1, "pagesize": 10, "address": "", "phone": ""}
         this.get_data_3(data, 0)
       },
-      /*part_3分页查询*/
       currentPageChange_7(e) {
         this.currentPage_7 = e
         let data
@@ -2050,7 +2145,6 @@
         }
         this.get_data_3(data, 0)
       },
-      /*part_3 查询*/
       search_ad_ph_2() {
         this.currentPage_7 = 1
         let data
@@ -2062,17 +2156,14 @@
 
         this.get_data_3(data, 1)
       },
-      /*part_3 单个批准*/
       part_3_untied(e) {
         this.approvalbind_value = e
         this.alert_1_9 = true
       },
-      /*part_3 取消单个批准*/
       alert_1_9_cancel() {
         this.approvalbind_value = ''
         this.alert_1_9 = false
       },
-      /*part_3 确认单个批准*/
       alert_1_9_sure() {
         let data = {"address": this.approvalbind_value}
         approvalbind(data).then(response => {
@@ -2092,15 +2183,12 @@
         })
         this.alert_1_9 = false
       },
-      /*part_3 全部批准*/
       part3_approve() {
         this.alert_1_10 = true
       },
-      /*part_3 取消全部批准*/
       alert_1_10_cancel() {
         this.alert_1_10 = false
       },
-      /*part_3 确认全部批准*/
       alert_1_10_sure() {
         allApprovalbind().then(response => {
           if (response.eCode == 200) {
@@ -2118,13 +2206,6 @@
         })
         this.alert_1_10 = false
       },
-      /*==================================================*/
-      // transactionRecordScreen
-      // /*级别匹配*/
-      // level_matching(e){
-      //
-      // },
-      /*part_4 初始化数据*/
       get_data_4(e, q) {
         transactionRecordScreen(e).then(response => {
           if (response.dataList == []) {
@@ -2141,7 +2222,6 @@
           }
         })
       },
-      /*part_4 获取初始化数据*/
       Initialization_data_4() {
         this.currentPage_8 = 1
         this.select_value_3 = ''
@@ -2149,7 +2229,6 @@
         let data = {"page": 1, "pagesize": 10, "address": "", "phone": "", "type": "", "in": ""}
         this.get_data_4(data, 0)
       },
-      /*part_4分页查询*/
       currentPageChange_8(e) {
         this.currentPage_8 = e
         let data
@@ -2174,7 +2253,6 @@
         }
         this.get_data_4(data, 0)
       },
-      /*part_4 查询*/
       search_ad_ph_3() {
         this.select_value_3 = ''
         this.select_value_4 = ''
@@ -2187,7 +2265,6 @@
         }
         this.get_data_4(data, 1)
       },
-      /*part_4 改变用户来源*/
       change_user_source_2() {
         this.currentPage_8 = 1
         let data
@@ -2212,7 +2289,6 @@
         }
         this.get_data_4(data, 0)
       },
-      /*part_4 改变交易类型*/
       change_tr_type() {
         this.currentPage_8 = 1
         let data
@@ -2237,7 +2313,6 @@
         }
         this.get_data_4(data, 0)
       },
-      /*交易类别*/
       tr_macth(e) {
         let a
         if (e == '' || e == undefined) {
@@ -2253,8 +2328,6 @@
 
         return a
       },
-      /*===================================================*/
-      /*根据identity判断节点类型*/
       identity_type(e) {
         let a = ''
         if (e == -1) {
@@ -2270,7 +2343,6 @@
         }
         return a
       },
-      /*part5 列表初始化*/
       Initialization_data_5() {
         getAcceptAndRedeemLogNew().then(response => {
           if (response.eCode == 200) {
@@ -2290,26 +2362,23 @@
         })
         getNowSettlement().then(response => {
           if (response.eCode == 200) {
-            this.time_hi_2 = this.data_record_1[0].timestamp
             this.data_record_2 = response.data
+            this.time_hi_2 = this.data_record_2[0].timestamp
+
           } else {
             this.data_record_2 = []
           }
         })
       },
-      /*充值提现相关查看历史记录*/
       get_historical_details(table, value, type) {
         this.pick_data = null
         this.currentPage_record_1 = 1
         this.record_list.table = table
         this.record_list.value = value
         this.record_list.type = type
+        this.is_show_mi = false
         if (table == 0) {
-          if (value == 2) {
-            this.is_show_mi = true
-          } else {
-            this.is_show_mi = false
-          }
+          this.is_show_mi = true
           this.details_name = this.hist_list[value].name + '历史记录'
           this.record_field_1 = this.hist_list[value].value
           let data = {"page": 1, "pageSize": 10, "startTime": 0, "endTime": 0, "columnName": this.record_field_1}
@@ -2374,7 +2443,7 @@
               this.data_record_4 = []
               this.totla_record_1 = 0
             } else {
-              if (value == 1 || value == 2 || value == 4 || value == 5) {
+              if (value == 1 || value == 2 || value == 4 || value == 5 || value == 6 || value == 7) {
                 response.data.dataList.forEach((item, index, self) => {
                   item.value = this.scientificCounting(item.value)
                 })
@@ -2473,7 +2542,6 @@
         }
 
       },
-      /*part5 分页查询*/
       change_currentPage_record_1(e) {
         this.currentPage_record_1 = e
         if (this.pick_data == null) {
@@ -2482,7 +2550,6 @@
           this.change_historical_details(this.pick_data[0], this.pick_data[1], this.currentPage_record_1)
         }
       },
-      /*选择相关时间*/
       chooseTimeRange(e) {
         this.pick_data = e
         if (this.pick_data == null) {
@@ -2492,10 +2559,141 @@
         }
 
       },
+      sea_userinfo() {
+        let data = {'phone': this.search_phone_use, 'address': ''}
+        getPersonDetails(data).then(response => {
+          if (response.eCode === 200) {
+            if (response.data.length === 0) {
+              this.$message.error('查询结果为空，请输入正确手机号！');
+              this.tableData_11 = []
+            } else {
+              this.tableData_11 = response.data
+            }
+          } else {
+            this.$message.error('查询结果为空，请输入正确手机号！');
+          }
+        })
+      },
+      get_code() {
+        if (this.table_form.user_phone == '') {
+          this.$message({
+            message: '手机号不能为空，请输入正确手机号！',
+            type: 'error'
+          });
+        } else {
+          let data = {'phone': this.table_form.user_phone}
+          getphonecode(data).then(response => {
+            if (response.eCode === 200) {
+              this.$message({
+                message: '验证信息已下发，请注意查收！',
+                type: 'success'
+              });
+            } else {
+              this.$message({
+                message: response.eMsg,
+                type: 'error'
+              });
+            }
+          })
+        }
+
+      },
+      edit_user_info(id, address, phone, identity, newidentity, name, pledgeBalance) {
+        // this.old_ident = identity
+        this.table_form = {
+          'address': address,
+          'phone': phone,
+          'identity': identity,
+          'newidentity': newidentity,
+          'name': name,
+          'user_phone': '',
+          'pledgeBalance': this.scientificCounting(pledgeBalance),
+          'code': '',
+          'id': id,
+        }
+        getNickNameInfo().then(response => {
+          if (response.eCode === 200) {
+            response.data.forEach((item, index, self) => {
+              item.value = index + 1
+            })
+            this.no_ty_selects = response.data
+            let aa = {'name': name, 'value': 0}
+            this.no_ty_selects.unshift(aa)
+            let send_data = {}
+            this.nodety_select = identity.toString()
+            this.nodety_select_1 = newidentity.toString()
+            nodeType(send_data).then(response => {
+              this.nodety_selects = response
+              this.dialogTableVisible_1 = true
+            })
+          } else {
+
+          }
+        })
+
+      },
+      dialogcancle_nusi() {
+        this.table_form = {
+          'address': '',
+          'phone': '',
+          'identity': '',
+          'newidentity': '',
+          'name': '',
+          'pledgeBalance': '',
+          'user_phone': '',
+          'code': '',
+          'id': '',
+        }
+        this.dialogTableVisible_1 = false
+      },
+      dialogsure_nusi() {
+        if (this.table_form.user_phone == '' || this.table_form.code == '') {
+          this.$message({
+            message: '手机号与验证码不能为空',
+            type: 'error'
+          });
+        } else {
+          let send_data = {'phone': this.table_form.user_phone, 'code': this.table_form.code}
+          getphonecodeinvalid(send_data).then(response => {
+            if (response.eCode == 200) {
+              let send_data1 = {
+                "id": this.table_form.id,
+                "pledgebalance": this.table_form.pledgeBalance,
+                "name": this.no_ty_selects[this.no_ty_select].name,
+                "identity": this.nodety_select,
+                "newidentity": this.nodety_select_1,
+                "updateuserphone": this.table_form.user_phone
+              }
+              updateNodeInfo(send_data1).then(response => {
+                if (response.eCode == 200) {
+                  this.$message({
+                    message: '用户信息修改成功！',
+                    type: 'success'
+                  });
+                  this.sea_userinfo()
+                  this.dialogTableVisible_1 = false
+                } else {
+                  this.$message({
+                    message: '用户信息修改失败，请稍后重试！',
+                    type: 'success'
+                  });
+                }
+              })
+            } else {
+              this.$message({
+                message: '手机号与验证码匹配失败！请检查手机号，验证码后重试！',
+                type: 'error'
+              });
+            }
+          })
+        }
+
+      }
     },
     created() {
       this.Initialization_data_1()
       this.get_public()
+
     }
 
   }
@@ -2541,6 +2739,12 @@
     /*padding-bottom: 5px;*/
   }
 
+  .part_5_title {
+    color: #800080;
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+
   .item_default {
     color: #000000;
   }
@@ -2553,7 +2757,7 @@
   }
 
   .index_table_swith {
-    width: 40%;
+    width: 50%;
     display: flex;
     justify-content: space-between;
   }

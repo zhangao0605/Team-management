@@ -2,15 +2,15 @@ import axios from 'axios'
 import {Message, MessageBox} from 'element-ui'
 import store from '../../store'
 import {getToken} from '@/utils/js/token'
-// baseURL: 'http://invest.thinkey.org/',
 const service = axios.create({
   // baseURL: document.location.protocol+ window.location.search,
   // baseURL: 'http://invest.thinkey.org/',
-  // baseURL: 'http://192.168.1.108:8600',
-  baseURL: 'http://192.168.1.106:8600',
-  // baseURL: 'http://43.247.184.50:8600',
-  // withCredentials: true, // 跨域请求时发送 cookies
-  timeout: 30000 // 请求超时时间
+  // baseURL: 'http://investtest.thinkey.xyz/',
+  // baseURL: this.$store.state.get_url,
+  // baseURL: 'http://192.168.1.106:8600',
+  baseURL: 'http://192.168.1.108:8600',
+  timeout: 30000
+
 })
 service.interceptors.request.use(
   config => {
@@ -28,10 +28,9 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const res = response.data
-    if (response.data.eCode === undefined || response.data.eCode === '' || response.data.eCode === 201|| response.data.eCode === 200 || response.data.eCode === 0 || response.data.eCode === 1||res.eCode === 10000) {/*这里的指如果不存在直接进入error方法*/
+    if (response.data.eCode === undefined || response.data.eCode === '' || response.data.eCode === 201|| response.data.eCode === 200 || response.data.eCode === 0 || response.data.eCode === 1||res.eCode === 10000||res.eCode === 400||res.eCode === 500) {
       return response.data
     } else {
-      // 100001:超时token; 100002:为空;  100003:Token 过期了无效;
       if (res.eCode === 100001 || res.eCode === 100002 || res.eCode === 100003) {
         store.dispatch('login/FedLogOut').then(() => {
           location.reload()
