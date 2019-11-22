@@ -473,6 +473,62 @@
       </div>
 
     </el-dialog>
+    <el-dialog width="40%" title="数值设置修改" :visible.sync="dialogTableVisible_1">
+      <el-form :model="table_form">
+        <el-form-item label="节点地址：" :label-width="formLabelWidth_2">
+          <span>{{table_form.address}}</span>
+        </el-form-item>
+        <el-form-item label="绑定手机号：" :label-width="formLabelWidth_2">
+          <span>{{table_form.phone}}</span>
+        </el-form-item>
+        <el-form-item label="修改节点名称：" :label-width="formLabelWidth_2">
+          <el-select v-model="no_ty_select" placeholder="">
+            <el-option
+              v-for="item in no_ty_selects"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="修改身份：" :label-width="formLabelWidth_2">
+          <el-select v-model="nodety_select" placeholder="">
+            <el-option
+              v-for="item in nodety_selects"
+              :key="item.typeid"
+              :label="item.typename"
+              :value="item.typeid">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="修改新身份：" :label-width="formLabelWidth_2">
+          <el-select v-model="nodety_select_1" placeholder="">
+            <el-option
+              v-for="item in nodety_selects"
+              :key="item.typeid"
+              :label="item.typename"
+              :value="item.typeid">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="修改质押金额：" :label-width="formLabelWidth_2">
+          <el-input v-model="table_form.pledgeBalance" style="width: 55%" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="接收验证码手机号：" :label-width="formLabelWidth_2">
+          <el-input v-model="table_form.user_phone" style="width: 55%" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="短信验证：" :label-width="formLabelWidth_2">
+          <el-input v-model="table_form.code" style="width: 30%" autocomplete="off"></el-input>
+          <el-button @click="get_code()" type="primary" size="small" style="margin-left: 13%">获取</el-button>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogcancle_nusi()">取 消</el-button>
+        <el-button type="primary" @click="dialogsure_nusi()">确 定</el-button>
+      </div>
+    </el-dialog>
+
+
     <div class="part_1" v-show="part_show[0].isShow">
       <div class="con_search" style="width: 60%">
         <div class="con_search_div">
@@ -1138,6 +1194,73 @@
         </el-table>
       </div>
     </div>
+    <div class="part_5" v-show="part_show[5].isShow">
+      <div class="part_5_title">
+        请正确输入需要进行相关修改的用户手机号！
+      </div>
+      <el-input style="width: 20%" v-model="search_phone_use" placeholder="请正确输入手机号">
+      </el-input>
+      <el-button style="margin-left: 30px" type="primary" @click="sea_userinfo()">搜索</el-button>
+      <div class="con_table">
+        <el-table
+          :data="tableData_11"
+          border
+          style="width: 100%;margin-bottom: 30px;margin-top: 40px;min-height: 380px"
+          :header-cell-style="this.tableHeaderColor"
+        >
+          <el-table-column
+            label="节点地址"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row.address}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="绑定手机号"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row.phone}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="节点名称"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row.name}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="身份"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{node_level_matching_2(scope.row.identity)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="新身份"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{node_level_matching_2(scope.row.newidentity)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="质押金额"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{scientificCounting(scope.row.pledgeBalance)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="操作"
+            align="center">
+            <template slot-scope="scope">
+              <span class="select_active"
+                    @click="edit_user_info(scope.row.Id,scope.row.address,scope.row.phone,scope.row.identity,scope.row.newidentity,scope.row.name,scope.row.pledgeBalance)">修改</span>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -1165,12 +1288,19 @@
     getNowSettlement,
     getnodeusdthistory,
     getnodetuehistory,
+    getNickNameInfo,
+    updateNodeInfo,
+    getphonecodeinvalid,
+    getPersonDetails,
+    getphonecode,
   } from '../api/interface'
 
   export default {
     name: "accountInformation",
     data() {
       return {
+
+        search_phone_use: '',
         loading: false,
         is_show_mi: false,
         dialogTableVisible: false,
@@ -1257,9 +1387,11 @@
           {"name": ' 解绑审核 '},
           {"name": ' 交易记录 '},
           {"name": ' 权益池金额记录 '},
+          {"name": ' 用户信息修改 '},
         ],
         part_show: [
           {"isShow": true},
+          {"isShow": false},
           {"isShow": false},
           {"isShow": false},
           {"isShow": false},
@@ -1285,6 +1417,7 @@
         tableData_8: [],
         tableData_9: [],
         tableData_10: [],
+        tableData_11: [],
         currentPage: 1,
         pagesize: 10,
         totla: 0,
@@ -1395,8 +1528,25 @@
           "type": 0,
         },
         pick_data: null,
-        // set:'',
-        // isdone:true,
+        no_ty_select: 0,
+        no_ty_selects: [],
+        nodety_select: '',
+        nodety_select_1: '',
+        nodety_selects: [],
+        formLabelWidth_2: '220px',
+        table_form: {
+          'address': '',
+          'phone': '',
+          'identity': '',
+          'name': '',
+          'pledgeBalance': '',
+          'user_phone': '',
+          'newidentity': '',
+          'code': '',
+          'id': '',
+        },
+        dialogTableVisible_1: false,
+        old_ident: ''
       }
     },
     methods: {
@@ -1455,14 +1605,11 @@
           this.Initialization_data_1()
         } else if (e == 1) {
           this.Initialization_data_2()
-        }
-        else if (e == 2) {
+        } else if (e == 2) {
           this.Initialization_data_3()
-        }
-        else if (e == 3) {
+        } else if (e == 3) {
           this.Initialization_data_4()
-        }
-        else if (e == 4) {
+        } else if (e == 4) {
           this.Initialization_data_5()
         }
 
@@ -1829,15 +1976,12 @@
         })
 
       },
-
       batch_approval() {
         this.alert_1_6 = true
       },
-
       batch_approval_cancel() {
         this.alert_1_6 = false
       },
-
       batch_approval_sure() {
         allPromotionAuditExe().then(response => {
           if (response.eCode == 200) {
@@ -1856,7 +2000,6 @@
         })
 
       },
-
       see_details(e) {
         let data = {"address": e}
         promotionAuditCheck(data).then(response => {
@@ -1877,7 +2020,6 @@
         })
         this.alert_1_7 = true
       },
-
       part_2_see_1(e) {
         this.currentPage_6 = 1
         this.hi_re_5 = e
@@ -2064,7 +2206,6 @@
         })
         this.alert_1_10 = false
       },
-
       get_data_4(e, q) {
         transactionRecordScreen(e).then(response => {
           if (response.dataList == []) {
@@ -2221,8 +2362,9 @@
         })
         getNowSettlement().then(response => {
           if (response.eCode == 200) {
-            this.time_hi_2 = this.data_record_1[0].timestamp
             this.data_record_2 = response.data
+            this.time_hi_2 = this.data_record_2[0].timestamp
+
           } else {
             this.data_record_2 = []
           }
@@ -2295,14 +2437,13 @@
             "identity": this.identity_value
           }
           getEarningsLog(data).then(response => {
-            console.log('111')
             this.picker_value1 = ''
             this.historical_details = true
             if (response.data.dataList == []) {
               this.data_record_4 = []
               this.totla_record_1 = 0
             } else {
-              if (value == 1 || value == 2 || value == 4 || value == 5|| value == 6|| value == 7) {
+              if (value == 1 || value == 2 || value == 4 || value == 5 || value == 6 || value == 7) {
                 response.data.dataList.forEach((item, index, self) => {
                   item.value = this.scientificCounting(item.value)
                 })
@@ -2418,7 +2559,136 @@
         }
 
       },
+      sea_userinfo() {
+        let data = {'phone': this.search_phone_use, 'address': ''}
+        getPersonDetails(data).then(response => {
+          if (response.eCode === 200) {
+            if (response.data.length === 0) {
+              this.$message.error('查询结果为空，请输入正确手机号！');
+              this.tableData_11 = []
+            } else {
+              this.tableData_11 = response.data
+            }
+          } else {
+            this.$message.error('查询结果为空，请输入正确手机号！');
+          }
+        })
+      },
+      get_code() {
+        if (this.table_form.user_phone == '') {
+          this.$message({
+            message: '手机号不能为空，请输入正确手机号！',
+            type: 'error'
+          });
+        } else {
+          let data = {'phone': this.table_form.user_phone}
+          getphonecode(data).then(response => {
+            if (response.eCode === 200) {
+              this.$message({
+                message: '验证信息已下发，请注意查收！',
+                type: 'success'
+              });
+            } else {
+              this.$message({
+                message: response.eMsg,
+                type: 'error'
+              });
+            }
+          })
+        }
 
+      },
+      edit_user_info(id, address, phone, identity, newidentity, name, pledgeBalance) {
+        // this.old_ident = identity
+        this.table_form = {
+          'address': address,
+          'phone': phone,
+          'identity': identity,
+          'newidentity': newidentity,
+          'name': name,
+          'user_phone': '',
+          'pledgeBalance': this.scientificCounting(pledgeBalance),
+          'code': '',
+          'id': id,
+        }
+        getNickNameInfo().then(response => {
+          if (response.eCode === 200) {
+            response.data.forEach((item, index, self) => {
+              item.value = index + 1
+            })
+            this.no_ty_selects = response.data
+            let aa = {'name': name, 'value': 0}
+            this.no_ty_selects.unshift(aa)
+            let send_data = {}
+            this.nodety_select = identity.toString()
+            this.nodety_select_1 = newidentity.toString()
+            nodeType(send_data).then(response => {
+              this.nodety_selects = response
+              this.dialogTableVisible_1 = true
+            })
+          } else {
+
+          }
+        })
+
+      },
+      dialogcancle_nusi() {
+        this.table_form = {
+          'address': '',
+          'phone': '',
+          'identity': '',
+          'newidentity': '',
+          'name': '',
+          'pledgeBalance': '',
+          'user_phone': '',
+          'code': '',
+          'id': '',
+        }
+        this.dialogTableVisible_1 = false
+      },
+      dialogsure_nusi() {
+        if (this.table_form.user_phone == '' || this.table_form.code == '') {
+          this.$message({
+            message: '手机号与验证码不能为空',
+            type: 'error'
+          });
+        } else {
+          let send_data = {'phone': this.table_form.user_phone, 'code': this.table_form.code}
+          getphonecodeinvalid(send_data).then(response => {
+            if (response.eCode == 200) {
+              let send_data1 = {
+                "id": this.table_form.id,
+                "pledgebalance": this.table_form.pledgeBalance,
+                "name": this.no_ty_selects[this.no_ty_select].name,
+                "identity": this.nodety_select,
+                "newidentity": this.nodety_select_1,
+                "updateuserphone": this.table_form.user_phone
+              }
+              updateNodeInfo(send_data1).then(response => {
+                if (response.eCode == 200) {
+                  this.$message({
+                    message: '用户信息修改成功！',
+                    type: 'success'
+                  });
+                  this.sea_userinfo()
+                  this.dialogTableVisible_1 = false
+                } else {
+                  this.$message({
+                    message: '用户信息修改失败，请稍后重试！',
+                    type: 'success'
+                  });
+                }
+              })
+            } else {
+              this.$message({
+                message: '手机号与验证码匹配失败！请检查手机号，验证码后重试！',
+                type: 'error'
+              });
+            }
+          })
+        }
+
+      }
     },
     created() {
       this.Initialization_data_1()
@@ -2469,6 +2739,12 @@
     /*padding-bottom: 5px;*/
   }
 
+  .part_5_title {
+    color: #800080;
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+
   .item_default {
     color: #000000;
   }
@@ -2481,7 +2757,7 @@
   }
 
   .index_table_swith {
-    width: 40%;
+    width: 50%;
     display: flex;
     justify-content: space-between;
   }

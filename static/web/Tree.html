@@ -20,6 +20,7 @@
 </body>
 
 <script type="text/javascript">
+  var baseURL= document.location.protocol+ window.location.search
     // 选择的时候调用的方法
     $('#jstree_demo_div').on("changed.jstree", function (e, data) {
 
@@ -75,7 +76,7 @@
                         //请求的媒体类型
                         contentType: "application/json;charset=UTF-8",
                         //请求地址
-                        url : "http://investtest.thinkey.xyz/v1/investmentAdmin/info/getTreeNodes",
+                        url : baseURL+"/v1/investmentAdmin/info/getTreeNodes",
                         //数据，json字符串
                         data : JSON.stringify({}),
                         //请求成功

@@ -395,5 +395,40 @@ export function getnodetuehistory(e) {
     data: e
   })
 }
+export function getNickNameInfo(e) {
+  return request({
+    url: '/v1/investmentAdmin/info/getNickNameInfo',
+    method: 'get',
+    params: e
+  })
+}
+export function updateNodeInfo(e) {
+  return request({
+    url: '/v1/investmentAdmin/info/updateNodeInfo ',
+    method: 'post',
+    data: e
+  })
+}
+export function getPersonDetails(e) {
+  return request({
+    url: '/v1/investmentAdmin/info/getPersonDetails',
+    method: 'get',
+    params: e
+  })
+}
+export function getphonecode(e) {
+  return request({
+    url: '/v1/investmentAdmin/user/getphonecode',
+    method: 'get',
+    params: e
+  })
+}
+export function getphonecodeinvalid(e) {
+  return request({
+    url: '/v1/investmentAdmin/user/getphonecodeinvalid',
+    method: 'get',
+    params: e
+  })
+}
 
 

@@ -24,7 +24,7 @@
       <wallet-settings v-show="is_show[6].is_true"/>
       <hierarchical-structure v-show="is_show[7].is_true"/>
       <address-translation v-show="is_show[8].is_true"/>
-      <core-customer v-show="is_show[9].is_true"/>
+      <!--<core-customer v-show="is_show[9].is_true"/>-->
     </div>
 </template>
 <script>
@@ -53,7 +53,7 @@
               {"is_true":false},
               {"is_true":false},
               {"is_true":false},
-              {"is_true":false},
+              // {"is_true":false},
             ],
             isactive:0,
             is_loginout:false,
@@ -69,7 +69,7 @@
               {"name":' 钱包设置 '},
               {"name":' 节点树结构  '},
               {"name":' 地址转换  '},
-              {"name":' 芯客  '},
+              // {"name":' 芯客  '},
             ]
           }
       },

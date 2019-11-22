@@ -14,7 +14,6 @@ const service = axios.create({
 })
 service.interceptors.request.use(
   config => {
-
     let token = 'Bearer ' + getToken()
     config.headers['content-type'] = 'application/json; charset=utf-8'
     if (store.getters.token) {
@@ -29,7 +28,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const res = response.data
-    if (response.data.eCode === undefined || response.data.eCode === '' || response.data.eCode === 201|| response.data.eCode === 200 || response.data.eCode === 0 || response.data.eCode === 1||res.eCode === 10000) {
+    if (response.data.eCode === undefined || response.data.eCode === '' || response.data.eCode === 201|| response.data.eCode === 200 || response.data.eCode === 0 || response.data.eCode === 1||res.eCode === 10000||res.eCode === 400||res.eCode === 500) {
       return response.data
     } else {
       if (res.eCode === 100001 || res.eCode === 100002 || res.eCode === 100003) {
