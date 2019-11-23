@@ -430,5 +430,61 @@ export function getphonecodeinvalid(e) {
     params: e
   })
 }
+export function getperson(e) {
+  return request({
+    url: '/v1/investmentAdmin/xk/getperson',
+    method: 'post',
+    data: e
+  })
+}
+export function gettopup(e) {
+  return request({
+    url: '/v1/investmentAdmin/xk/gettopup',
+    method: 'post',
+    data: e
+  })
+}
+export function getwithdraw(e) {
+  return request({
+    url: '/v1/investmentAdmin/xk/getwithdraw',
+    method: 'post',
+    data: e
+  })
+}
+export function retrywithdraw(e) {
+  return request({
+    url: '/v1/investmentAdmin/xk/retrywithdraw',
+    method: 'get',
+    params: e
+  })
+}
+export function getmarketing(e) {
+  return request({
+    url: '/v1/investmentAdmin/xk/getmarketing',
+    method: 'post',
+    data: e
+  })
+}
+export function retrymarketing(e) {
+  return request({
+    url: '/v1/investmentAdmin/xk/retrymarketing',
+    method: 'get',
+    params: e
+  })
+}
+export function getrebate(e) {
+  return request({
+    url: '/v1/investmentAdmin/xk/getrebate',
+    method: 'post',
+    data: e
+  })
+}
+export function retryrebate(e) {
+  return request({
+    url: '/v1/investmentAdmin/xk/retryrebate',
+    method: 'get',
+    params: e
+  })
+}
 
 

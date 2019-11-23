@@ -29,21 +29,21 @@
             label="绑定时间"
             align="center">
             <template slot-scope="scope">
-              <span>{{timestampToTime(scope.row.time)}}</span>
+              <span>{{timestampToTime(scope.row.timestamp)}}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="用户地址"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.value}}</span>
+              <span>{{scope.row.address}}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="芯客手机号"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.value}}</span>
+              <span>{{scope.row.phone}}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -81,35 +81,42 @@
             label="充值时间"
             align="center">
             <template slot-scope="scope">
-              <span>{{timestampToTime(scope.row.time)}}</span>
+              <span>{{timestampToTime(scope.row.timestamp)}}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="用户地址"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.value}}</span>
+              <span>{{scope.row.address}}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="用户手机号"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.value}}</span>
+              <span>{{scope.row.phone}}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="充值数量"
             align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.value}}</span>
+              <span>{{scientificCounting(scope.row.amount)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="链内充值"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{is_success_1(scope.row.status)}}</span>
             </template>
           </el-table-column>
           <el-table-column
             label="是否返回成功"
             align="center">
             <template slot-scope="scope">
-              <span>{{is_success(scope.row.issuccess)}}</span>
+              <span>{{is_success(scope.row.xinke_state)}}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -153,42 +160,42 @@
               label="提现时间"
               align="center">
               <template slot-scope="scope">
-                <span>{{timestampToTime(scope.row.time)}}</span>
+                <span>{{timestampToTime(scope.row.timestamp)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="用户手机号"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.phone}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="在我方的对应地址"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.address}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="提现数量"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scientificCounting(scope.row.amount)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="是否已到账"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{is_get_mon(scope.row.status)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="是否已重试"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.retry==1?'否':'是'}}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -226,35 +233,28 @@
               label="提现时间"
               align="center">
               <template slot-scope="scope">
-                <span>{{timestampToTime(scope.row.time)}}</span>
+                <span>{{timestampToTime(scope.row.timestamp)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="用户手机号"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.phone}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="在我方的对应地址"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.address}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="提现数量"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="是否已到账"
-              align="center">
-              <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scientificCounting(scope.row.amount)}}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -292,42 +292,35 @@
               label="提现时间"
               align="center">
               <template slot-scope="scope">
-                <span>{{timestampToTime(scope.row.time)}}</span>
+                <span>{{timestampToTime(scope.row.timestamp)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="用户手机号"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.phone}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="在我方的对应地址"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.address}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="提现数量"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="是否已到账"
-              align="center">
-              <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scientificCounting(scope.row.amount)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="操作"
               align="center">
               <template slot-scope="scope">
-                <span class="is_ac" @click="edit_rule(0)">重试</span>
+                <span class="is_ac" @click="edit_rule(scope.row.Id)">重试</span>
               </template>
             </el-table-column>
           </el-table>
@@ -350,18 +343,18 @@
         </div>
       </div>
       <div class="ws_con_1" v-show="is_show_2[0].is_true">
-        <div class="con_search">
-          <div class="con_search_div">
-            <span class="el-icon-search us_search2_1_input_icon"></span>
-            <div class="input_fath">
-              <el-input v-model="search_phone_6"
-                        placeholder="请输入用户手机号进行检索">
-              </el-input>
-            </div>
-          </div>
-          <el-button type="primary" class="con_search_submit" @click="search_phone6()">搜索
-          </el-button>
-        </div>
+<!--        <div class="con_search">-->
+<!--          <div class="con_search_div">-->
+<!--            <span class="el-icon-search us_search2_1_input_icon"></span>-->
+<!--            <div class="input_fath">-->
+<!--              <el-input v-model="search_phone_6"-->
+<!--                        placeholder="请输入用户手机号进行检索">-->
+<!--              </el-input>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <el-button type="primary" class="con_search_submit" @click="search_phone6()">搜索-->
+<!--          </el-button>-->
+<!--        </div>-->
         <div class="con_table">
           <el-table
             :data="tableData_6"
@@ -373,56 +366,56 @@
               label="提现时间"
               align="center">
               <template slot-scope="scope">
-                <span>{{timestampToTime(scope.row.time)}}</span>
+                <span>{{timestampToTime(scope.row.timestamp)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="请求ID"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.create_id}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="请求币种"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.coin_type=='1'?'TUE':scope.row.coin_type}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="请求数量"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scientificCounting(scope.row.amount)}}</span>
               </template>
             </el-table-column>
-            <el-table-column
-              label="是否同意"
-              align="center">
-              <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
-              </template>
-            </el-table-column>
+<!--            <el-table-column-->
+<!--              label="是否同意"-->
+<!--              align="center">-->
+<!--              <template slot-scope="scope">-->
+<!--                <span>{{scope.row.status==?'是':'否'}}</span>-->
+<!--              </template>-->
+<!--            </el-table-column>-->
             <el-table-column
               label="内部转账是否完成"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{is_success_2(scope.row.status==1)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="转账hash"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.hash}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="操作"
               align="center">
               <template slot-scope="scope">
-                <span class="is_ac" @click="marketing_retry(0)">转账重试</span>
+                <span v-show="scope.row.status!=1" class="is_ac" @click="marketing_retry(scope.row.Id)">转账重试</span>
               </template>
             </el-table-column>
           </el-table>
@@ -437,18 +430,18 @@
         </el-pagination>
       </div>
       <div class="ws_con_2" v-show="is_show_2[1].is_true">
-        <div class="con_search">
-          <div class="con_search_div">
-            <span class="el-icon-search us_search2_1_input_icon"></span>
-            <div class="input_fath">
-              <el-input v-model="search_phone_7"
-                        placeholder="请输入用户手机号进行检索">
-              </el-input>
-            </div>
-          </div>
-          <el-button type="primary" class="con_search_submit" @click="search_phone7()">搜索
-          </el-button>
-        </div>
+<!--        <div class="con_search">-->
+<!--          <div class="con_search_div">-->
+<!--            <span class="el-icon-search us_search2_1_input_icon"></span>-->
+<!--            <div class="input_fath">-->
+<!--              <el-input v-model="search_phone_7"-->
+<!--                        placeholder="请输入用户手机号进行检索">-->
+<!--              </el-input>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <el-button type="primary" class="con_search_submit" @click="search_phone7()">搜索-->
+<!--          </el-button>-->
+<!--        </div>-->
         <div class="con_table">
           <el-table
             :data="tableData_7"
@@ -460,49 +453,49 @@
               label="请求时间"
               align="center">
               <template slot-scope="scope">
-                <span>{{timestampToTime(scope.row.time)}}</span>
+                <span>{{timestampToTime(scope.row.timestamp)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="请求ID"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.create_id}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="请求数量"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scientificCounting(scope.row.amount)}}</span>
               </template>
             </el-table-column>
-            <el-table-column
-              label="是否同意"
-              align="center">
-              <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
-              </template>
-            </el-table-column>
+<!--            <el-table-column-->
+<!--              label="是否同意"-->
+<!--              align="center">-->
+<!--              <template slot-scope="scope">-->
+<!--                <span>{{scope.row.value}}</span>-->
+<!--              </template>-->
+<!--            </el-table-column>-->
             <el-table-column
               label="内部转账是否完成"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{is_success_2(scope.row.status==1)}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="转账hash"
               align="center">
               <template slot-scope="scope">
-                <span>{{scope.row.value}}</span>
+                <span>{{scope.row.hash}}</span>
               </template>
             </el-table-column>
             <el-table-column
               label="操作"
               align="center">
               <template slot-scope="scope">
-                <span class="is_ac" @click="rebate(0)">转账重试</span>
+                <span v-show="scope.row.status!=1" class="is_ac" @click="rebate(scope.row.Id)">转账重试</span>
               </template>
             </el-table-column>
           </el-table>
@@ -521,6 +514,8 @@
 </template>
 
 <script>
+  import {getperson, gettopup, getwithdraw,retrywithdraw,getmarketing,retrymarketing,getrebate,retryrebate} from '../api/interface'
+
   export default {
     name: "coreCustomer",
     data() {
@@ -567,27 +562,13 @@
         search_phone_5: '',
         search_phone_6: '',
         search_phone_7: '',
-        tableData_1: [
-          {'name': 'za', 'value': '1111111', 'time': '1573197990'},
-        ],
-        tableData_2: [
-          {'name': 'za', 'value': '1111111', 'time': '1573197990', 'issuccess': 0},
-        ],
-        tableData_3: [
-          {'name': 'za', 'value': '1111111', 'time': '1573197990', 'issuccess': 0},
-        ],
-        tableData_4: [
-          {'name': 'za', 'value': '1111111', 'time': '1573197990', 'issuccess': 0},
-        ],
-        tableData_5: [
-          {'name': 'za', 'value': '1111111', 'time': '1573197990', 'issuccess': 0},
-        ],
-        tableData_6: [
-          {'name': 'za', 'value': '1111111', 'time': '1573197990', 'issuccess': 0},
-        ],
-        tableData_7: [
-          {'name': 'za', 'value': '1111111', 'time': '1573197990', 'issuccess': 0},
-        ],
+        tableData_1: [],
+        tableData_2: [],
+        tableData_3: [],
+        tableData_4: [],
+        tableData_5: [],
+        tableData_6: [],
+        tableData_7: [],
         currentPage_1: 1,
         pagesize_1: 10,
         totla_1: 0,
@@ -609,6 +590,13 @@
         currentPage_7: 1,
         pagesize_7: 10,
         totla_7: 0,
+        ser_phon_1: '',
+        ser_phon_2: '',
+        ser_phon_3: '',
+        ser_phon_4: '',
+        ser_phon_5: '',
+        ser_phon_6: '',
+        ser_phon_7: '',
       }
     },
     methods: {
@@ -617,7 +605,11 @@
         if (e == 0) {
           this.Initialization_data_1()
         } else if (e == 1) {
-
+          this.Initialization_data_2()
+        } else if (e == 2) {
+          this.Initialization_data_3()
+        }else if(e==3){
+          this.Initialization_data_4()
         }
         this.is_show.forEach((item, index, self) => {
           if (index == e) {
@@ -629,45 +621,170 @@
 
       },
       getdata_1(e) {
-        // getNodeSettingNew(e).then(response => {
-        //   if (response.data == []) {
-        //     this.tableData_1 = []
-        //   } else {
-        //     this.tableData_1 = response.data
-        //   }
-        // })
+        getperson(e).then(response => {
+          if (response.data.dataList.length === 0) {
+            this.tableData_1 = []
+            this.totla_1 = 0
+          } else {
+            this.tableData_1 = response.data.dataList
+            this.totla_1 = response.data.total
+            this.ser_phon_1 = this.search_phone_1
+          }
+        })
       },
       Initialization_data_1() {
         this.currentPage_1 = 1
         this.search_phone_1 = ''
-        // let data = {"status": "", "page": 1, "pageSize": 10}
-        // this.getdata_1(data)
+        this.ser_phon_1 = ''
+        let data = {"page": 1, "pagesize": 10, "phone": '', "address": ""}
+        this.getdata_1(data)
       },
       search_phone1() {
         this.currentPage_1 = 1
-        console.log(this.search_phone_1)
-        let data = {'phone': this.search_phone_1}
+        let data = {"page": 1, "pagesize": 10, "phone": this.search_phone_1, "address": ""}
+        this.getdata_1(data)
       },
       currentPageChange_1(e) {
         this.currentPage_1 = e
+        let data = {"page": this.currentPage_1, "pagesize": 10, "phone": this.ser_phon_1, "address": ""}
+        this.getdata_1(data)
+      },
+
+
+      getdata_2(e) {
+        gettopup(e).then(response => {
+          if (response.data.dataList.length === 0) {
+            this.tableData_2 = []
+            this.totla_2 = 0
+          } else {
+            this.tableData_2 = response.data.dataList
+            this.totla_2 = response.data.total
+            this.ser_phon_2 = this.search_phone_2
+          }
+        })
+      },
+      Initialization_data_2() {
+        this.currentPage_2 = 1
+        this.search_phone_2 = ''
+        this.ser_phon_2 = ''
+        let data = {"page": 1, "pagesize": 10, "phone": '', "address": ""}
+        this.getdata_2(data)
       },
       search_phone2() {
-
+        this.currentPage_2 = 1
+        let data = {"page": 1, "pagesize": 10, "phone": this.search_phone_2, "address": ""}
+        this.getdata_2(data)
       },
       currentPageChange_2(e) {
         this.currentPage_2 = e
+        let data = {"page": this.currentPage_2, "pagesize": 10, "phone": this.ser_phon_2, "address": ""}
+        this.getdata_2(data)
       },
       is_success(e) {
         let a = ''
-        if (e == 0) {
-          a = '失败'
-        } else {
+        if (e == '') {
+          a = '等待充值'
+        } else if (e == 1) {
           a = '成功'
+        } else {
+          a = '失败'
+        }
+        return a
+      },
+      is_success_1(e) {
+        let a = ''
+        if (e == -1) {
+          a = '等待验证'
+        } else if (e == 1) {
+          a = '成功'
+        } else if (e == -2) {
+          a = '等待充值'
+        } else {
+          a = '失败'
+        }
+        return a
+      },
+      is_success_2(e) {
+        let a = ''
+        if (e == -1) {
+          a = '等待验证'
+        } else if (e == 1) {
+          a = '成功'
+        } else if (e == -2) {
+          a = '等待转账'
+        } else {
+          a = '失败'
+        }
+        return a
+      },
+
+
+      getdata_3(e, q) {
+        getwithdraw(e).then(response => {
+          if (response.data.dataList.length === 0) {
+            this.tableData_3 = []
+            this.totla_3 = 0
+          } else {
+            if (q == -1) {
+              this.tableData_3 = response.data.dataList
+              this.totla_3 = response.data.total
+              this.ser_phon_3 = this.search_phone_3
+            } else if (q == 1) {
+              this.tableData_4 = response.data.dataList
+              this.totla_4 = response.data.total
+              this.ser_phon_4 = this.search_phone_4
+            } else if (q == 0) {
+              this.tableData_5 = response.data.dataList
+              this.totla_6 = response.data.total
+              this.ser_phon_5 = this.search_phone_5
+            }
+
+          }
+        })
+      },
+      Initialization_data_3() {
+        this.currentPage_3 = 1
+        this.search_phone_3 = ''
+        this.ser_phon_3 = ''
+        let data = {"page": 1, "pagesize": 10, "phone": '', "address": "", "status": ""}
+        this.getdata_3(data, -1)
+      },
+      Initialization_data_3_1() {
+        this.currentPage_4 = 1
+        this.search_phone_4 = ''
+        this.ser_phon_4 = ''
+        let data = {"page": 1, "pagesize": 10, "phone": '', "address": "", "status": "1"}
+        this.getdata_3(data, 1)
+      },
+      Initialization_data_3_2() {
+        this.currentPage_5 = 1
+        this.search_phone_5 = ''
+        this.ser_phon_5 = ''
+        let data = {"page": 1, "pagesize": 10, "phone": '', "address": "", "status": "0"}
+        this.getdata_3(data, 0)
+      },
+      is_get_mon(e) {
+        let a = ''
+        if (e == -2) {
+          a = '等待转账'
+        } else if (e == -1) {
+          a = '已转账等待验证'
+        } else if (e == 1) {
+          a = '成功'
+        } else {
+          a = '失败'
         }
         return a
       },
       swich_tab_1(e) {
         this.isactive_1 = e
+        if (e == 0) {
+          this.Initialization_data_3()
+        } else if (e == 1) {
+          this.Initialization_data_3_1()
+        } else if (e == 2) {
+          this.Initialization_data_3_2()
+        }
         this.is_show_1.forEach((item, index, self) => {
           if (index == e) {
             item.is_true = true
@@ -676,30 +793,81 @@
           }
         })
       },
-
-
       search_phone3() {
-
+        this.currentPage_3 = 1
+        let data = {"page": 1, "pagesize": 10, "phone": this.search_phone_3, "address": "", "status": ""}
+        this.getdata_3(data, -1)
       },
       currentPageChange_3(e) {
         this.currentPage_3 = e
+        let data = {"page": this.currentPage_3, "pagesize": 10, "phone": this.ser_phon_3, "address": ""}
+        this.getdata_3(data, -1)
       },
-      search_phone4() {
 
+
+      search_phone4() {
+        this.currentPage_4 = 1
+        let data = {"page": 1, "pagesize": 10, "phone": this.search_phone_4, "address": "", "status": "1"}
+        this.getdata_3(data, 1)
       },
       currentPageChange_4(e) {
         this.currentPage_4 = e
+        let data = {"page":this.currentPage_4, "pagesize": 10, "phone": this.ser_phon_4, "address": "", "status": "1"}
+        this.getdata_3(data, 1)
       },
-      search_phone5() {
 
+      search_phone5() {
+        this.currentPage_5 = 1
+        let data = {"page": 1, "pagesize": 10, "phone": this.search_phone_5, "address": "", "status": "0"}
+        this.getdata_3(data, 0)
       },
       currentPageChange_5(e) {
         this.currentPage_5 = e
+        let data = {"page":this.currentPage_5, "pagesize": 10, "phone": this.ser_phon_5, "address": "", "status": "0"}
+        this.getdata_3(data, 0)
+      },
+      edit_rule(e){
+        let data={'id':e}
+        retrywithdraw(data).then(response=>{
+          console.log(response)
+          if(response.eCode===200){
+            this.$message.success('重试指令已下发！');
+            this.Initialization_data_3_2()
+          }else {
+            this.$message.error('重试指令下发失败,请稍后重试!');
+          }
+        })
       },
       retry(e) {
 
       },
+
+
+      getdata_4(e) {
+        getmarketing(e).then(response => {
+          if (response.data.dataList.length === 0) {
+            this.tableData_6 = []
+            this.totla_6= 0
+          } else {
+            this.tableData_6 = response.data.dataList
+            this.totla_6 = response.data.total
+            this.ser_phon_6 = this.search_phone_6
+          }
+        })
+      },
+      Initialization_data_4() {
+        this.currentPage_6 = 1
+        this.search_phone_6 = ''
+        this.ser_phon_6 = ''
+        let data = {"page":1,"pagesize":10,"phone":"","address":""}
+        this.getdata_4(data)
+      },
       swich_tab_2(e) {
+        if(e==0){
+          this.Initialization_data_4()
+        }else {
+          this.Initialization_data_5()
+        }
         this.isactive_2 = e
         this.is_show_2.forEach((item, index, self) => {
           if (index == e) {
@@ -709,27 +877,72 @@
           }
         })
       },
+      /*暂时取消*/
       search_phone6() {
         // this.search_phone6
       },
       currentPageChange_6(e) {
         this.currentPage_6 = e
-        // this.search_phone6
+        let data = {"page":this.currentPage_6,"pagesize":10,"phone":"","address":""}
+        this.getdata_4(data)
       },
       marketing_retry(e) {
-
+        let data={'id':e}
+        retrymarketing(data).then(response=>{
+          if(response.eCode===200){
+            this.$message.success('重试指令已下发！');
+            this.currentPageChange_6(this.currentPage_6)
+          }else {
+            this.$message.error('重试指令下发失败,请稍后重试!');
+          }
+        })
       },
+      /*暂时取消*/
       search_phone7() {
         // this.search_phone7
       },
+
+
+
+
+      getdata_5(e) {
+        getrebate(e).then(response => {
+          if (response.data.dataList.length === 0) {
+            this.tableData_7 = []
+            this.totla_7= 0
+          } else {
+            this.tableData_7 = response.data.dataList
+            this.totla_7 = response.data.total
+            this.ser_phon_7 = this.search_phone_7
+          }
+        })
+      },
+      Initialization_data_5() {
+        this.currentPage_7 = 1
+        this.search_phone_7 = ''
+        this.ser_phon_7 = ''
+        let data = {"page":1,"pagesize":10,"phone":"","address":""}
+        this.getdata_5(data)
+      },
       currentPageChange_7(e) {
         this.currentPage_7 = e
-        // this.search_phone6
+        let data ={"page":this.currentPage_7,"pagesize":10,"phone":"","address":""}
+        this.getdata_5(data)
       },
       rebate(e) {
+        let data={'id':e}
+        retryrebate(data).then(response=>{
+          if(response.eCode===200){
+            this.$message.success('重试指令已下发！');
+            this.currentPageChange_7(this.currentPage_7)
+          }else {
+            this.$message.error('重试指令下发失败,请稍后重试!');
+          }
+        })
       },
-      rebates(e) {
-      }
+    },
+    created() {
+      this.Initialization_data_1()
     }
   }
 </script>

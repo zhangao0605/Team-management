@@ -2644,7 +2644,11 @@
           'code': '',
           'id': '',
         }
-        this.dialogTableVisible_1 = false
+        this.no_ty_select = 0
+        this.no_ty_selects = []
+        this.nodety_select = ''
+        this.nodety_select_1 = ''
+        this.nodety_selects = [], this.dialogTableVisible_1 = false
       },
       dialogsure_nusi() {
         if (this.table_form.user_phone == '' || this.table_form.code == '') {
@@ -2671,6 +2675,7 @@
                     type: 'success'
                   });
                   this.sea_userinfo()
+                  this.dialogcancle_nusi()
                   this.dialogTableVisible_1 = false
                 } else {
                   this.$message({
