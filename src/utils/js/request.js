@@ -1,15 +1,20 @@
 import axios from "axios";
-import { Message, MessageBox } from "element-ui";
+import {
+  Message,
+  MessageBox
+} from "element-ui";
 import store from "../../store";
-import { getToken } from "@/utils/js/token";
+import {
+  getToken
+} from "@/utils/js/token";
 
 const service = axios.create({
-  baseURL: document.location.protocol + window.location.search,
+  // baseURL: document.location.protocol + window.location.search,
   // baseURL: 'http://invest.thinkey.org/',
   // baseURL: 'http://investtest.thinkey.xyz/',
   // baseURL: this.$store.state.get_url,
   // baseURL: 'http://192.168.1.106:8600',
-  // baseURL: "http://192.168.1.108:8600",
+  baseURL: "http://192.168.1.108:8600",
   timeout: 30000
 });
 service.interceptors.request.use(

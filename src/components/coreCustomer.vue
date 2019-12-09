@@ -409,7 +409,7 @@
             <!--            </el-table-column>-->
             <el-table-column label="内部转账是否完成" align="center">
               <template slot-scope="scope">
-                <span>{{is_success_2(scope.row.status==1)}}</span>
+                <span>{{is_success_2(scope.row.status)}}</span>
               </template>
             </el-table-column>
             <el-table-column label="转账hash" align="center">
@@ -429,7 +429,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <span v-show="scope.row.status!=1" class="is_ac" @click="rebate(scope.row.Id)">转账重试</span>
+                <span v-show="scope.row.status===0" class="is_ac" @click="rebate(scope.row.Id)">转账重试</span>
               </template>
             </el-table-column>
           </el-table>
