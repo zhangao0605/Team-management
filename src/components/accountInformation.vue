@@ -1113,6 +1113,13 @@
               <span class="select_active" @click="get_historical_details(1,3,99)">{{scientificCounting(scope.row.tvp)}} USDT</span>
             </template>
           </el-table-column>
+                    <el-table-column
+            label="POOL"
+            align="center">
+            <template slot-scope="scope">
+              <span class="select_active" @click="get_historical_details(1,4,99)">{{scientificCounting(scope.row.pool)}} TUE</span>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
       <div class="con_table">
@@ -1509,6 +1516,7 @@
           {"name": '结算币价', "value": 'settlementPrice'},
           {"name": 'UV', "value": 'uv'},
           {"name": 'PVT', "value": 'tvp'},
+          {"name": 'POOL', "value": 'pool'},
         ],
         hist_list_3: [
           {"name": '数量 ', "value": 'num'},
@@ -2414,7 +2422,7 @@
               this.data_record_4 = []
               this.totla_record_1 = 0
             } else {
-              if (value == 2 || value == 3) {
+              if (value == 2 || value == 3|| value == 4) {
                 response.data.dataList.forEach((item, index, self) => {
                   item.value = this.scientificCounting(item.value)
                 })

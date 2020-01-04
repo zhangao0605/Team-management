@@ -1,8 +1,7 @@
 import Router from 'vue-router'
 import Vue from 'vue'
 Vue.use(Router)
-export const constantRouterMap = [
-  {
+export const constantRouterMap = [{
     path: '/',
     redirect: '/index',
     hidden: true,
@@ -56,12 +55,20 @@ export const constantRouterMap = [
     component: () => import('../views/home/home'),
     hidden: true,
   },
+  // {
+  //   path: '/posMining',
+  //   name: 'posMining',
+  //   component: () => import('../components/posMining'),
+  //   hidden: true,
+  // },
 
 
 ]
 
 
 export default new Router({
-  scrollBehavior: () => ({y: 0}),
+  scrollBehavior: () => ({
+    y: 0
+  }),
   routes: constantRouterMap
 })

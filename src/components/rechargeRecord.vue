@@ -760,7 +760,7 @@ export default {
 }
 
 .input_fath {
-  width: 80%;
+  width: 90%;
   position: relative;
   left: 3%;
 }

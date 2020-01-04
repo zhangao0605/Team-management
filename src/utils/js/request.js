@@ -9,7 +9,7 @@ import {
 } from "@/utils/js/token";
 
 const service = axios.create({
-  // baseURL: document.location.protocol + window.location.search,
+  baseURL: document.location.protocol + window.location.search,
   // baseURL: 'http://invest.thinkey.org/',
   // baseURL: 'http://investtest.thinkey.xyz/',
   // baseURL: this.$store.state.get_url,
