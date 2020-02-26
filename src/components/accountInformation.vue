@@ -1568,7 +1568,7 @@
         this.loading = true
         nodeInfo(e).then(response => {
           this.loading = false
-          if (response.dataList == []) {
+          if (response.dataList == []||response.dataList == null) {
             this.tableData = []
             this.totla = 0
           } else {

@@ -4,7 +4,12 @@ import BigNumber from "bignumber.js"
 import Iban from '../../../static/web3-eth-iban/src/index'
 export default {
   install(Vue, opt) {
-    Vue.prototype.tableHeaderColor = function ({row, column, rowIndex, columnIndex}) {
+    Vue.prototype.tableHeaderColor = function ({
+      row,
+      column,
+      rowIndex,
+      columnIndex
+    }) {
       if (rowIndex === 0) {
         return 'background-color:#ffffff ;color: #333;font-weight: 600;font-size: 15px;height:58px;'
       }
@@ -51,6 +56,17 @@ export default {
     Vue.prototype.to_16_decimal = function (e) {
       let ban = Iban.toAddress(e);
       return ban
+    }
+    Vue.prototype.slice_hash = function (e) {
+      if (e == '' || e == null || e == undefined) {
+        return ''
+      } else {
+        // e=this.to_32_decimal(e)
+        let a = e.slice(0, 4)
+        let b = e.substring(e.length - 4)
+        let c = a + ' *** ' + b
+        return c
+      }
     }
 
   }

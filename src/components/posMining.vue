@@ -4,37 +4,47 @@
       <el-table
         :data="alert_tabledate"
         :header-cell-style="this.tableHeaderColor"
-        style="margin-bottom:30px"
+        style="margin-bottom:50px"
       >
+        >
         <el-table-column align="center" label="收益发放时间">
-          <template slot-scope="scope">
-            <span>{{scientificCounting(scope.row.value)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="收益发放理由">
-          <template slot-scope="scope">
-            <span>{{scientificCounting(scope.row.value)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="出块数">
-          <template slot-scope="scope">
-            <span>{{scientificCounting(scope.row.value)}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="收益金额">
           <template slot-scope="scope">
             <span>{{timestampToTime(scope.row.timestamp)}}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="交易hash">
+        <!-- <el-table-column align="center" label="收益发放理由">
+          <template slot-scope="scope">
+            <span>{{scientificCounting(scope.row.value)}}</span>
+          </template>
+        </el-table-column>-->
+        <el-table-column align="center" label="出块数">
+          <template slot-scope="scope">
+            <span>{{scope.row.height}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="收益金额">
           <template slot-scope="scope">
             <span>{{scientificCounting(scope.row.value)}}</span>
           </template>
         </el-table-column>
+        <el-table-column align="center" label="交易hash">
+          <template slot-scope="scope">
+            <span>{{slice_hash(scope.row.hash)}}</span>
+          </template>
+        </el-table-column>
       </el-table>
+      <el-pagination
+        background
+        @current-change="currentPageChange_1"
+        :current-page="currentPage_1"
+        :page-size="pagesize_1"
+        layout="total,prev, pager, next"
+        :total="total_1"
+        style="margin-top:-30px"
+      ></el-pagination>
     </el-dialog>
-    <div class="con_search" style="width: 60%">
-      <div class="con_search_div">
+    <div class="con_search" style="width: 30%">
+      <div class="con_search_div" style="width:70%">
         <span class="el-icon-search us_search2_1_input_icon"></span>
         <div class="input_fath">
           <el-input v-model="search_ip" placeholder="请输入节点IP进行检索"></el-input>
@@ -46,7 +56,7 @@
         style="margin-left: -15%"
         @click="sea_ip()"
       >搜索</el-button>
-      <el-select
+      <!-- <el-select
         style="left: -12%;position: relative"
         v-model="select_value"
         @change="filter()"
@@ -58,7 +68,7 @@
           :label="item.typeName"
           :value="item.typeId"
         ></el-option>
-      </el-select>
+      </el-select>-->
     </div>
     <div class="con_table">
       <el-table
@@ -69,52 +79,60 @@
       >
         <el-table-column label="节点IP" align="center">
           <template slot-scope="scope">
-            <span>{{timestampToTime(scope.row.timestamp)}}</span>
+            <span>{{scope.row.ip}}</span>
           </template>
         </el-table-column>
         <el-table-column label="节点类型" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.exchangeTypeName}}</span>
+            <span>{{scope.row.nodeType=='0'?'共识节点':'数据节点'}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="是否已绑定账户" align="center">
+        <!-- <el-table-column label="是否已绑定账户" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.phone}}</span>
           </template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column label="绑定时间" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.amount}}</span>
+            <span>{{timestampToTime(scope.row.bindTimestamp)}}</span>
           </template>
         </el-table-column>
         <el-table-column label="绑定地址" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.amount}}</span>
+            <span>{{scope.row.address}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="绑定合约" align="center">
+        <el-table-column label="合约地址" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.contractAddress}}</span>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column label="绑定合约" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.amount}}</span>
           </template>
-        </el-table-column>
-        <el-table-column label="是否已锁定资金" align="center">
+        </el-table-column>-->
+        <!-- <el-table-column label="是否已锁定资金" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.amount}}</span>
           </template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column label="锁定时间" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.amount}}</span>
+            <span>{{timestampToTime(scope.row.lockTimestamp)}}</span>
           </template>
         </el-table-column>
         <el-table-column label="锁定数量" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.amount}}</span>
+            <span>{{scientificCounting(scope.row.balance)}}</span>
           </template>
         </el-table-column>
         <el-table-column label="累计收益（TUE）" align="center">
           <template slot-scope="scope">
-            <span class="table_item" @click="see_detail(scope.row.id)">{{scope.row.amount}}</span>
+            <span
+              class="table_item"
+              @click="see_detail(scope.row.address)"
+            >{{scientificCounting(scope.row.miningEarnings)}}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -124,13 +142,14 @@
         :current-page="currentPage"
         :page-size="pagesize"
         layout="total,prev, pager, next"
-        :total="totla"
+        :total="total"
       ></el-pagination>
     </div>
   </div>
 </template>
 
 <script>
+import { getposnodeinfo, getblocktxlist } from "../api/interface";
 export default {
   name: "pos",
   components: {},
@@ -139,7 +158,10 @@ export default {
       dialogTableVisible: false,
       currentPage: 1,
       pagesize: 10,
-      totla: 0,
+      total: 0,
+      currentPage_1: 1,
+      pagesize_1: 10,
+      total_1: 0,
       search_ip: "",
       search_ip_recode: "",
       select_value: "",
@@ -157,53 +179,92 @@ export default {
           typeName: "已发行MTO"
         }
       ],
-      tableData: [
-        { amount: 10 },
-        { amount: 10 },
-        { amount: 10 },
-        { amount: 10 }
-      ],
-      alert_tabledate: [
-        { amount: 10 },
-        { amount: 10 },
-        { amount: 10 },
-        { amount: 10 }
-      ]
+      tableData: [],
+      alert_tabledate: [],
+      detail_address: ""
     };
   },
   methods: {
     getdata(e) {
-      nodeInfo(e).then(response => {
-        if (response.dataList == []) {
+      getposnodeinfo(e).then(response => {
+        if (response.data.dataList == []) {
           this.tableData = [];
-          this.totla = 0;
+          this.total = 0;
         } else {
-          this.tableData = response.dataList;
-          this.totla = response.total;
+          this.tableData = response.data.dataList;
+          this.total = response.data.total;
           if (arguments.length == 2) {
             this.search_ip_recode = this.search_ip;
           }
         }
       });
     },
-    currentPageChange(e) {
-      this.currentPage = e;
-      let data = {};
+    Initialization_data() {
+      let data = { page: 1, pageSize: 10, ip: "", address: "" };
       this.getdata(data);
     },
+    currentPageChange(e) {
+      this.currentPage = e;
+      let data = {
+        page: this.currentPage,
+        pageSize: 10,
+        ip: this.search_ip_recode,
+        address: ""
+      };
+      this.getdata(data);
+    },
+
     sea_ip() {
-      let data = {};
-      console.log(this.search_ip);
+      this.currentPage = 1;
+      let data = {
+        page: 1,
+        pageSize: 10,
+        ip: this.search_ip,
+        address: ""
+      };
       this.getdata(data, 1);
     },
-    filter() {
-      console.log(this.select_value);
+
+    currentPageChange_1(e) {
+      this.currentPage_1 = e;
+      let data = {
+        page: this.currentPage_1,
+        pageSize: 10,
+        address: this.detail_address
+      };
+      getblocktxlist(data).then(response => {
+        if (response.data.dataList == []) {
+          this.alert_tabledate = [];
+          this.total_1 = 0;
+        } else {
+          this.alert_tabledate = response.data.dataList;
+          this.total_1 = response.data.total;
+        }
+      });
     },
-    see_detail() {
-      this.dialogTableVisible = true;
+    see_detail(e) {
+      this.detail_address = e;
+      this.currentPage_1 = 1;
+      let data = {
+        page: 1,
+        pageSize: 10,
+        address: e
+      };
+      getblocktxlist(data).then(response => {
+        if (response.data.dataList == []) {
+          this.alert_tabledate = [];
+          this.total_1 = 0;
+        } else {
+          this.alert_tabledate = response.data.dataList;
+          this.total_1 = response.data.total;
+        }
+        this.dialogTableVisible = true;
+      });
     }
   },
-  created() {},
+  created() {
+    this.Initialization_data();
+  },
   mounted() {},
   computed: {}
 };

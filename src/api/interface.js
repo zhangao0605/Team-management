@@ -486,5 +486,17 @@ export function retryrebate(e) {
     params: e
   })
 }
-
-
+export function getposnodeinfo(e) {
+  return request({
+    url: '/v1/investmentAdmin/pos/getposnodeinfo',
+    method: 'post',
+    data: e
+  })
+}
+export function getblocktxlist(e) {
+  return request({
+    url: '/v1/investmentAdmin/pos/getblocktxlist',
+    method: 'post',
+    data: e
+  })
+}
