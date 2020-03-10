@@ -6,6 +6,9 @@
       <el-menu-item index="2">用户收益</el-menu-item>
       <el-menu-item index="3">投票记录</el-menu-item>
       <el-menu-item index="4">投票记录详情</el-menu-item>
+      <el-menu-item index="5">数据统计</el-menu-item>
+      <el-menu-item index="6">日期统计</el-menu-item>
+      <el-menu-item index="7">王者解锁</el-menu-item>
 
     </el-menu>
     <div v-show="search_show">
@@ -290,20 +293,290 @@
         :total="totla_3">
       </el-pagination>
     </div>
+    <div class="show_con" v-show="list[5].is_show">
+      <div class="king_topRow">
+          <div>数据将于每日发奖结束后（约18:30）后更新</div>
+          <div>
+                <el-select v-model="selectKingName" class="select_sty">
+                    <el-option
+                    v-for="item in kingNameList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+                <el-select v-model="selectNodeType"  class="select_sty">
+                    <el-option
+                    v-for="item in nodeTypeList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+                <el-button @click="searchClick" style="width: 100px" type="primary">筛选</el-button>
+                
+          </div>
+      </div>
+
+      <el-table
+        :data="tableData_4"
+        v-loading="getDataLoading"
+        border
+        style="width: 100%;margin-bottom: 30px;margin-top: 40px;"
+        :header-cell-style="this.tableHeaderColor"
+      >
+        <el-table-column
+          label=""
+          align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.level == 'ALL' ? '总计' : scope.row.level + '级'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="数量"
+          align="center">
+          <template slot-scope="scope">
+            <span class="to_tr" @click="tkmNumClick(1,scope.row, '1')">{{scope.row.totalUserNum}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="自投票数量"
+          align="center">
+          <template slot-scope="scope">
+            <span class="to_tr" @click="tkmNumClick(1,scope.row, '2')">{{scope.row.votesSelf}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="贡献票数量"
+          align="center">
+          <template slot-scope="scope">
+            <span class="to_tr" @click="tkmNumClick(1,scope.row, '3')">{{scope.row.votesContributed}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="总票数"
+          align="center">
+          <template slot-scope="scope">
+            <span class="to_tr" @click="tkmNumClick(1,scope.row, '4')">{{scope.row.totalVoteNum}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="总计发放TKM数量"
+          align="center">
+          <template slot-scope="scope">
+            <span class="to_tr" @click="tkmNumClick(1,scope.row, '5')">{{scope.row.totalTKMNum}}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <div class="show_con" v-show="list[6].is_show">
+      <div>
+        <el-input v-model="search_days" class="search" placeholder="请输入查询最近天数"></el-input>
+        <el-button type="primary" style="margin-left: 30px" @click="search_Days()">查询</el-button>
+      </div>
+      <el-table
+        :data="tableData_5"
+        border
+        style="width: 100%;margin-bottom: 30px;margin-top: 40px;"
+        :header-cell-style="this.tableHeaderColor"
+      >
+        <el-table-column
+          label="日期"
+          align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.date}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="当日锁定人数"
+          align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.voterCount}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="当日锁定总量"
+          align="center">
+          <template slot-scope="scope">
+            <span>{{scientificCounting(scope.row.votesIn)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="当日申请提现总量"
+          align="center">
+          <template slot-scope="scope">
+            <span>{{scientificCounting(scope.row.votesOuting)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="当日提现成功总量"
+          align="center">
+          <template slot-scope="scope">
+            <span>{{scientificCounting(scope.row.votesOuted)}}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+     <div class="show_con" v-show="list[7].is_show">
+
+      <el-table
+        :data="tableData_6"
+        border
+        style="width: 100%;margin-bottom: 30px;margin-top: 40px;"
+        :header-cell-style="this.tableHeaderColor"
+      >
+        <el-table-column
+          label="王者地址"
+          align="center">
+          <template slot-scope="scope">
+            <span>{{to_32_decimal(scope.row.address)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="王者手机"
+          align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.phone}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="当前票数"
+          align="center">
+          <template slot-scope="scope">
+            <span>{{parseInt(scope.row.votes)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="目标票数"
+          align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.targetVotes}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="达成情况"
+          align="center">
+          <template slot-scope="scope">
+            <span>{{(scope.row.votes > scope.row.targetVotes)&&(scope.row.counttimes > scope.row.tagertTimes) ? '已达成': scope.row.votes > scope.row.targetVotes ?
+              scope.row.counttimes + '/' + scope.row.tagertTimes : '未达成'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="解锁数量"
+          align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.pledgelockedunlocked}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="单次解锁量"
+          align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.weekUnlockVotes}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="已解锁周数"
+          align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.unlockedWeeks}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="已解锁数量"
+          align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.unlockedVotes}}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <el-dialog
+      title=""
+      :visible.sync="dialogVisible"
+      width="50%"
+    >
+        <div style="padding-bottom: 60px">
+
+        <div class="timeRow">
+          <!-- <el-date-picker
+            v-model="timeValue"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期">
+          </el-date-picker> -->
+          <span v-show="this.dialogType == '5'">{{`总计：${this.clickItem.totalTKMNum} TKM`}}</span>
+        </div>
+        <el-table
+          :data="dialogData"
+          v-loading="dialogLoading"
+          border
+          style="width: 100%;margin-top: 20px;"
+          :header-cell-style="this.tableHeaderColor"
+        >
+          <el-table-column
+            label="时间"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row.day}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="dialogText"
+            align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row[dialogNum]}}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+          background
+          @current-change="numClickPage"
+          :current-page="dialogCurrentPage"
+          :page-size="5"
+          layout="total,prev, pager, next"
+          :total="dialogTotal">
+        </el-pagination>
+        </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import {getUsers, getUserTree, getUserProfit, getVote, getVoteDetail} from '../api/vote'
+  import {getUsers, getUserTree, getUserProfit, getVote, getVoteDetail, getDataTotalApi, getTimeTotalApi,getKingUnlockApi,
+  getDataHistoryApi
+  } from '../api/vote'
 
   export default {
 
     data() {
       return {
+        dialogData: [],
+        dialogLoading: false,
+        timeValue: '',
+        dialogVisible: false,
+        selectNodeType: '0',
+        selectKingName: '0',
+        kingNameList: [
+          {value: '0', label: '全部'},
+          {value: '普通', label: '普通'},
+          {value: '专家', label: '专家'},
+          {value: '委员', label: '委员'},
+        ],
+        nodeTypeList: [
+          {value: '0', label: '全部'},
+          // {value: '1', label: '普通'},
+          {value: '2', label: '共识节点'},
+          {value: '3', label: '数据节点'},
+        ],
         loading: false,
         activeIndex: '0',
         list: [
           {is_show: true},
+          {is_show: false},
+          {is_show: false},
+          {is_show: false},
           {is_show: false},
           {is_show: false},
           {is_show: false},
@@ -330,7 +603,18 @@
         currentPage_3: 1,
         totla_3: 0,
         search_address: '',
-        search_value: ''
+        search_value: '',
+        tableData_4: [],
+        tableData_5: [],
+        tableData_6: [],
+        getDataLoading: false,
+        search_days: '',
+        dialogType: '1',
+        dialogCurrentPage: 1,
+        dialogTotal: 0,
+        clickItem: '',
+        dialogText: '数量',
+        dialogNum: 'userCount'
       };
     },
     created() {
@@ -364,6 +648,14 @@
         } else if (key == 4) {
           this.getVoteDetail(1)
           this.currentPage_3 = 1
+        } else if (key == 5) {
+          this.search_show = false
+          this.getDataTotal()
+        } else if (key == 6) {
+          this.search_show = false
+          // this.getTimeTotal()
+        } else if (key == 7) {
+          this.getKingUnLock()
         }
       },
       handleNodeClick(data) {
@@ -422,6 +714,8 @@
         } else if (this.is_open == 4) {
           this.currentPage_3 = 1
           this.getVoteDetail(1, this.search_address)
+        } else if (this.is_open == 7) {
+          this.getKingUnLock(this.search_address)
         }
       },
       getUserTree() {
@@ -514,12 +808,95 @@
         this.currentPage_3 = e
         this.getVoteDetail(this.currentPage_3, this.search_value)
       },
-
-
+      search_Days(){
+          this.getTimeTotal()
+      },
+      numClickPage(e) {
+        this.dialogCurrentPage = e
+        this.tkmNumClick(this.dialogCurrentPage, this.clickItem, this.dialogType)
+      },
+      tkmNumClick(page, item, type){
+        this.clickItem = item;
+        this.dialogType = type;
+        this.dialogText = type == '1' ? '数量' : type == '2' ? '自投票数量' : type == '3' ? '贡献票数量' : type == '4' ? '总票数' : '总计发放TKM数量';
+        this.dialogNum = type == '1' ? 'userCount' : type == '2' ? 'votesSelf' : type == '3' ? 'votesContributed' : type == '4' ? 'votesTotal' : 'profit';
+        this.dialogVisible = true;
+        this.dialogLoading = true;
+        let data = {
+          level: item.level,
+          page: page,
+          rows: 5,
+        }
+        getDataHistoryApi(data).then(response => {
+          this.dialogData = response.data.data;
+          this.dialogTotal = response.data.total;
+          this.dialogLoading = false;
+        })
+      },
+      searchClick(){
+        this.getDataTotal()
+      },
+      getDataTotal() {
+        let title = this.selectKingName == '0' ? '' : this.selectKingName;
+        let nodeType = this.selectNodeType == '2' ? 0 : this.selectNodeType == '3' ? 1 : ''
+        let data = {
+          title: title,
+          nodeType: nodeType,
+        }
+        this.getDataLoading = true;
+        getDataTotalApi(data).then(response => {
+          this.tableData_4 = response.data;
+          this.getDataLoading = false;
+        })
+      },
+      getTimeTotal() {
+        if(!this.search_days){
+          return;
+        }
+        let data = {
+          days: this.search_days,
+        }
+        getTimeTotalApi(data).then(response => {
+          this.tableData_5 = response.data
+        })
+      },
+      getKingUnLock(q) {
+        let data = {
+          address: q,
+        }
+        getKingUnlockApi(data).then(response => {
+          if (response.data.length != 0 && q != '') {
+            this.search_value = q
+          } else if (q == '') {
+            this.search_value = ''
+          }
+          this.tableData_6 = response.data
+        })
+      },
     }
   };
 </script>
 <style>
+  .timeRow{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .to_tr{
+    cursor: pointer;
+    color: blue
+  }
+  .select_sty{
+    margin-right: 50px;
+  }
+  .king_topRow{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
   .widths {
     display: inline-block;
     min-width: 80px;

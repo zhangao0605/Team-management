@@ -12,6 +12,7 @@ const service = axios.create({
   baseURL: document.location.protocol + window.location.search,
   // baseURL: 'http://invest.thinkey.org/',
   // baseURL: 'http://investtest.thinkey.xyz/',
+  // baseURL: 'http://43.247.184.53:8280/wallet-admin/',
   // baseURL: this.$store.state.get_url,
   // baseURL: 'http://192.168.1.106:8600',
   // baseURL: "http://192.168.1.108:8600",

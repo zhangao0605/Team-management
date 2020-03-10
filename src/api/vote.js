@@ -2,6 +2,37 @@ import request from '@/utils/js/request'
 
 //================================================
 
+// 点击单元格获取数据
+export function getDataHistoryApi(data) {
+  return request({
+    url: "/vote/getDetailByParam",
+    method: "post",
+    data: data
+  });
+}
+// 获取数据统计数据
+export function getDataTotalApi(data) {
+  return request({
+    url: "/vote/getByParam",
+    method: "post",
+    data: data
+  });
+}
+// 获取日期统计数据
+export function getTimeTotalApi(data) {
+  return request({
+    url: "/vote/getHistory",
+    method: "get",
+    params: data
+  });
+}
+// 获取王者解锁数据
+export function getKingUnlockApi() {
+  return request({
+    url: "/vote/getKingsInfo",
+    method: "get",
+  });
+}
 // 获取所有权限
 export function getUsers(data) {
   return request({
